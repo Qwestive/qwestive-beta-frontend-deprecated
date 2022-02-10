@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -10,4 +14,38 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+@layer components {
+  .text-color-primary {
+    @apply text-gray-900;
+  }
+  .text-color-secondary {
+    @apply text-gray-500;
+  }
+  .btn-filled {
+    @apply py-2 px-4 bg-qwestive-purple text-white font-semibold 
+    rounded-lg shadow-md hover:bg-qwestive-purple-hover 
+    focus:outline-none focus:ring-2 focus:ring-qwestive-purple-hover;
+  }
+  .btn-transparent {
+    @apply py-2 px-4 bg-none text-qwestive-purple font-semibold 
+    rounded-lg shadow-md hover:bg-qwestive-white 
+    focus:outline-none focus:ring-2 focus:ring-qwestive-white;
+  }
+  .btn-transparent-borderless {
+    @apply py-2 px-4 bg-none text-qwestive-purple font-semibold 
+    rounded-lg hover:bg-qwestive-white 
+    focus:outline-none focus:ring-2 focus:ring-qwestive-white;
+  }
+  .btn-close-modal {
+    @apply bg-white rounded-md text-gray-400 hover:text-gray-500 
+    focus:outline-none focus:ring-2 focus:ring-offset-2 
+    focus:ring-qwestive-purple;
+  }
+  .text-field-input {
+    @apply flex-1 block w-full rounded-none
+    rounded-r-md sm:text-sm border-gray-300
+    focus:border-qwestive-purple focus:ring-qwestive-purple;
+  }
 }

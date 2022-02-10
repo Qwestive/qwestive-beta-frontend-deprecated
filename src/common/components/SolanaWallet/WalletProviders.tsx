@@ -15,7 +15,13 @@ import {
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 import { clusterApiUrl } from '@solana/web3.js';
 
-export default function ContextProvider({
+/*
+TO DO:
+- add a snackbar, toast for errors
+- create a personalized css
+- test all wallets
+*/
+export function WalletProviders({
   children,
 }: {
   children: ReactNode;
@@ -26,6 +32,9 @@ export default function ContextProvider({
   // You can also provide a custom RPC endpoint
   const endpoint = useMemo(() => clusterApiUrl(network), [network]);
 
+  // @solana/wallet-adapter-wallets includes all the adapters
+  // but supports tree shaking --
+  // Only the wallets you configure here will be compiled into your application
   const wallets = useMemo(
     () => [
       getPhantomWallet(),
@@ -46,3 +55,5 @@ export default function ContextProvider({
     </ConnectionProvider>
   );
 }
+
+export default WalletProviders;
