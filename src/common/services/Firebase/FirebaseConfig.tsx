@@ -11,15 +11,16 @@ import { getStorage } from 'firebase/storage';
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 export const firebaseConfig = {
-  apiKey: 'AIzaSyAxnuVjAujKL4tensp22UtWN5RvmxCKJ9Q',
-  authDomain: 'qwestive-beta-prod.firebaseapp.com',
-  projectId: 'qwestive-beta-prod',
-  storageBucket: 'qwestive-beta-prod.appspot.com',
-  messagingSenderId: '234760367876',
-  appId: '1:234760367876:web:9cb192a118ec8d5a522a51',
-  measurementId: 'G-36SGFC0785',
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
 
+// dev stuffs
 // Initialize Firebase
 export const FirebaseApp = initializeApp(firebaseConfig);
 export const FirebaseFunctions = getFunctions(FirebaseApp);
