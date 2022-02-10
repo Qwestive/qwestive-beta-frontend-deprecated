@@ -1,15 +1,17 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
-import { getFunctions, connectFunctionsEmulator } from 'firebase/functions';
+
+import { getFunctions } from 'firebase/functions';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
+
+// Emulators
+/* import { getFunctions, connectFunctionsEmulator } from 'firebase/functions';
 import { getAuth, connectAuthEmulator } from 'firebase/auth';
 import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
-import { getStorage, connectStorageEmulator } from 'firebase/storage';
+import { getStorage, connectStorageEmulator } from 'firebase/storage'; */
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 export const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -20,7 +22,6 @@ export const firebaseConfig = {
   measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
 
-// dev stuffs
 // Initialize Firebase
 export const FirebaseApp = initializeApp(firebaseConfig);
 export const FirebaseFunctions = getFunctions(FirebaseApp);
@@ -28,7 +29,8 @@ export const Firestore = getFirestore(FirebaseApp);
 export const FirebaseAuth = getAuth();
 export const FirebaseStorage = getStorage();
 
-connectFunctionsEmulator(FirebaseFunctions, 'localhost', 5001);
+// Emulators
+/* connectFunctionsEmulator(FirebaseFunctions, 'localhost', 5001);
 connectFirestoreEmulator(Firestore, 'localhost', 8081);
 connectAuthEmulator(FirebaseAuth, 'http://localhost:9099');
-connectStorageEmulator(FirebaseStorage, 'localhost', 9199);
+connectStorageEmulator(FirebaseStorage, 'localhost', 9199); */
