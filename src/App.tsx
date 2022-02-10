@@ -1,11 +1,11 @@
-import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import React from 'react';
+import logo from './logo.svg';
+import './App.css';
 
-import ContextProvider from "./SolanaWallet/ContextProvider";
-import ConnectionButton from "./SolanaWallet/ConnectionButton";
+import ContextProvider from './SolanaWallet/ContextProvider';
+import ConnectionButton from './SolanaWallet/ConnectionButton';
 
-function App() {
+function App(): JSX.Element {
   return (
     <ContextProvider>
       <div className="App">
@@ -19,8 +19,7 @@ function App() {
             className="App-link"
             href="https://reactjs.org"
             target="_blank"
-            rel="noopener noreferrer"
-          >
+            rel="noopener noreferrer">
             Learn React
           </a>
         </header>

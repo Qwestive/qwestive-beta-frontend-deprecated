@@ -1,0 +1,7 @@
+build
+node_modules
+.gitignore
+tailwind.config.js
+craco.config.js
+*.css
+*.svg

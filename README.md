@@ -1,4 +1,4 @@
-# Solana Wallet Adapter with CRA TypeScript
+# Solana Wallet Adapter CRA TypeScript Tailwind ESLint Prettier
 
 # Getting Started with Create React App
 

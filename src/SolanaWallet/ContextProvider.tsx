@@ -1,9 +1,9 @@
-import React, { useMemo, ReactNode } from "react";
+import React, { useMemo, ReactNode } from 'react';
 import {
   ConnectionProvider,
   WalletProvider,
-} from "@solana/wallet-adapter-react";
-import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
+} from '@solana/wallet-adapter-react';
+import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import {
   getLedgerWallet,
   getPhantomWallet,
@@ -11,9 +11,9 @@ import {
   getSolflareWallet,
   getSolletExtensionWallet,
   getSolletWallet,
-} from "@solana/wallet-adapter-wallets";
-import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
-import { clusterApiUrl } from "@solana/web3.js";
+} from '@solana/wallet-adapter-wallets';
+import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
+import { clusterApiUrl } from '@solana/web3.js';
 
 export default function ContextProvider({
   children,

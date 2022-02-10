@@ -1,0 +1,6 @@
+build
+node_modules
+.github
+.eslintrc.js
+.craco.config.js
+.tailwind.config.js
