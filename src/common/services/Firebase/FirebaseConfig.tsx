@@ -20,7 +20,6 @@ export const firebaseConfig = {
   measurementId: 'G-36SGFC0785',
 };
 
-// TEST 2 FOR GITIGNORE
 // Initialize Firebase
 export const FirebaseApp = initializeApp(firebaseConfig);
 export const FirebaseFunctions = getFunctions(FirebaseApp);
