@@ -37,7 +37,7 @@ export default function CoverImageSetting(): JSX.Element {
 
   return (
     <div>
-      <div className="relative content-center max-w-5xl mx-auto">
+      <div className="relative content-center max-w-5xl mx-auto -z-50">
         <input
           ref={inputFile}
           accept="image/*"

@@ -3,7 +3,7 @@ import { WalletMultiButton as ReactUIWalletMultiButton } from '@solana/wallet-ad
 import { useWallet } from '@solana/wallet-adapter-react';
 import { toast } from 'react-toastify';
 
-import SigninWithWallet from '../../services/Firebase/Authentication/SigninWithWallet';
+import SigninWithWallet from '../../../services/Firebase/Authentication/SigninWithWallet';
 
 /*
 TODO:

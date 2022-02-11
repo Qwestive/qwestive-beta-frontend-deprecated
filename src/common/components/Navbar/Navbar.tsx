@@ -11,7 +11,7 @@ import {
   userProfileImageAtom,
 } from '../../../recoil/userInfo';
 import defaultUserProfileImage from '../../../assets/defaultUserProfileImage.png';
-import WalletConnection from '../SolanaWallet/WalletConnection';
+import WalletConnection from '../Solana/SolanaWallet/WalletConnection';
 
 type classLogic = string | boolean;
 
@@ -141,7 +141,7 @@ const Navbar = function Navbar(): JSX.Element {
                           className="origin-top-right absolute 
                         right-0 mt-2 w-48 rounded-md shadow-lg py-1 
                         bg-white ring-1 ring-black ring-opacity-5 
-                        focus:outline-none">
+                        focus:outline-none z-50">
                           {userNavigation.map((item) => (
                             <Menu.Item key={item.name}>
                               {({ active }) => (
@@ -149,7 +149,7 @@ const Navbar = function Navbar(): JSX.Element {
                                   to={item.href}
                                   className={classNames(
                                     active ? 'bg-gray-100' : '',
-                                    'block px-4 py-2 text-sm text-gray-700'
+                                    ' block px-4 py-2 text-sm text-gray-700'
                                   )}>
                                   {item.name}
                                 </Link>

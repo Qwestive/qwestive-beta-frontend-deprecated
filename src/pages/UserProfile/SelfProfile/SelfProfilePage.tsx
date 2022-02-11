@@ -11,6 +11,9 @@ import {
 } from '../../../recoil/userInfo';
 
 import SignoutButton from '../../../common/components/SelfProfile/SignoutButton';
+
+import ReadTokenWallet from '../../../common/services/Solana/GetData/ReadTokenWallet';
+import SelfTokenContext from '../../../common/components/SelfProfile/SelfTokens/SelfTokenContext';
 /*
 TODO:
 - style everything
@@ -22,6 +25,11 @@ export default function SelfProfilePage(): JSX.Element {
   const userDisplayName = useRecoilValue(userDisplayNameAtom);
   const userProfileImage = useRecoilValue(userProfileImageAtom);
   const userCoverImage = useRecoilValue(userCoverImageAtom);
+
+  async function doThethin() {
+    await ReadTokenWallet();
+    console.log('poopoo');
+  }
 
   return (
     <div className="max-w-5xl mx-auto">
@@ -52,6 +60,10 @@ export default function SelfProfilePage(): JSX.Element {
         <Link to="/profile/settings">SettingsPage</Link>
       </button>
       <SignoutButton />
+      <button type="button" className="btn-filled" onClick={doThethin}>
+        log funct
+      </button>
+      <SelfTokenContext />
     </div>
   );
 }
