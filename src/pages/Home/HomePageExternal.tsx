@@ -76,7 +76,7 @@ function HomePageExternal(): JSX.Element {
           tracking-tight leading-10 font-extrabold">
           Who&apos;s using Qwestive?
         </h2>
-        <div className="flex flex-col md:flex-row justify-between mt-10">
+        <div className="flex flex-nowrap flex-row justify-between mt-10 text-color-secondary">
           {communities.map((item) => (
             <div id="{item}">
               <a
@@ -84,7 +84,11 @@ function HomePageExternal(): JSX.Element {
                 href="https://www.solana.com"
                 target="_blank"
                 rel="noreferrer">
-                <img src={defaultUserProfileImage} alt="" />
+                <img
+                  className="rounded-full"
+                  src={defaultUserProfileImage}
+                  alt=""
+                />
                 <h3>Solana Foundation</h3>
               </a>
             </div>
@@ -112,8 +116,8 @@ function HomePageExternal(): JSX.Element {
             ? 'w-full mt-40 animate-fadeIn'
             : 'w-full mt-40 opacity-0 translate-y-500'
         }>
-        <div className="flex flex-row justify-center">
-          <h3 className="text-center md:text-left text-3xl lg:text-3xl font-black text-white w-1/2">
+        <div className="flex flex-col md:flex-row justify-center">
+          <h3 className="text-center md:text-left text-3xl font-black text-white w-full md:w-1/2 mb-10 md:mb-0">
             <span
               className="bg-gradient-to-r text-transparent 
             bg-clip-text from-green-400 to-purple-500">

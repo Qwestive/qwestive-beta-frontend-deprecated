@@ -24,26 +24,26 @@ module.exports = {
 
       // that is animation class
       animation: {
-        'fadeIn': 'fadeIn 2s ease-in',
+        fadeIn: 'fadeIn 2s ease-in',
       },
 
       // that is actual animation
-      keyframes: theme => ({
-        'fadeIn': {
-          'from': {
+      keyframes: (theme) => ({
+        fadeIn: {
+          from: {
             opacity: '0',
-            transform: 'translateY(500px)'
+            transform: 'translateY(500px)',
           },
-          'to': {
+          to: {
             opacity: '100',
-            transform: 'translateY(0px)'
+            transform: 'translateY(0px)',
           },
         },
       }),
     },
   },
   variants: {
-    extend: {}
+    extend: {},
   },
   plugins: [require('@tailwindcss/forms')],
 };

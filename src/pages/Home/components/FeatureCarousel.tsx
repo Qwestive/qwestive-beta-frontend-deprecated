@@ -109,15 +109,15 @@ function FeatureCarousel(): JSX.Element {
         </nav>
       </div>
       <div className="container mx-auto mt-10 w-3/4">
-        <div className="flex flex-row">
-          <div className="w-1/2">
-            <h3 className="text-color-secondary text-2xl tracking-tight leading-10 font-extrabold mb-10">
+        <div className="flex flex-col md:flex-row">
+          <div className="w-full text-center md:w-1/2 text-color-secondary mt-4 md:mt-10">
+            <h3 className="text-2xl tracking-tight leading-10 font-extrabold mb-10">
               {tabs[currentTabIdx].header}
             </h3>
             <div>{tabs[currentTabIdx].description}</div>
           </div>
           <img
-            className="w-1/2 mt-10 md:mt-0"
+            className="w-full md:w-1/2 mt-10 md:mt-0"
             src={tabs[currentTabIdx].imageUrl}
             alt=""
           />
