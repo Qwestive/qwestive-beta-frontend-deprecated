@@ -16,6 +16,18 @@ code {
     monospace;
 }
 
+.fade-anim {
+  animation: fadeAnim 0.5s ease-out;
+}
+@keyframes fadeAnim {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 @layer components {
   .text-color-primary {
     @apply text-gray-900;

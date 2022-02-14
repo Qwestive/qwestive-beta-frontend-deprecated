@@ -1,16 +1,73 @@
-import React from 'react';
+import React, { useState } from 'react';
+import featureImage from '../../../assets/featureImage.svg';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
+class Tab {
+  name: string;
+
+  idx: number;
+
+  header: string;
+
+  description: string;
+
+  imageUrl: string;
+
+  constructor(
+    name: string,
+    idx: number,
+    header: string,
+    description: string,
+    imageUrl: string
+  ) {
+    this.name = name;
+    this.idx = idx;
+    this.header = header;
+    this.description = description;
+    this.imageUrl = imageUrl;
+  }
+}
+
 function FeatureCarousel(): JSX.Element {
+  const [currentTabIdx, setCurrentTabIdx] = useState(0);
+
   const tabs = [
-    { name: 'Content', href: '#', current: false },
-    { name: 'Votes', href: '#', current: false },
-    { name: 'Bounties', href: '#', current: true },
-    { name: 'And More...', href: '#', current: false },
+    new Tab(
+      'Conversations',
+      0,
+      'Exclusive Conversations',
+      'Member only discussions',
+      featureImage
+    ),
+    new Tab(
+      'Votes',
+      1,
+      'On-Chain Votes',
+      'Votes and Polls for the community',
+      featureImage
+    ),
+    new Tab(
+      'Bounties',
+      2,
+      'On-Chain Bounties and Contests',
+      'Reward valuable community contributions',
+      featureImage
+    ),
+    new Tab(
+      'More',
+      3,
+      'Airdrops, Tips, and more!',
+      'Any and all crypto-native interactions',
+      featureImage
+    ),
   ];
+
+  const handleTabSelect = (tabName: string) => {
+    setCurrentTabIdx(tabs.find((elem) => elem.name === tabName)?.idx ?? 0);
+  };
 
   return (
     <div>
@@ -20,29 +77,51 @@ function FeatureCarousel(): JSX.Element {
           id="tabs"
           name="tabs"
           className="block w-full focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"
-          defaultValue={tabs[0].name}>
+          defaultValue={tabs[currentTabIdx].name}
+          onChange={(e) => handleTabSelect(e.target.value)}>
           {tabs.map((tab) => (
             <option key={tab.name}>{tab.name}</option>
           ))}
         </select>
       </div>
-      <div className="hidden sm:block">
-        <nav className="flex space-x-4" aria-label="Tabs">
+      <div className="hidden sm:block w-full">
+        <nav className="flex space-x-6 justify-center" aria-label="Tabs">
           {tabs.map((tab) => (
-            <a
+            <button
               key={tab.name}
-              href={tab.href}
+              type="button"
               className={classNames(
-                tab.current
+                currentTabIdx === tab.idx
                   ? 'bg-gray-100 text-gray-700'
                   : 'text-gray-500 hover:text-gray-700',
                 'px-3 py-2 font-medium text-sm rounded-md'
               )}
-              aria-current={tab.current ? 'page' : undefined}>
+              onClick={() => {
+                handleTabSelect(tab.name);
+              }}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') handleTabSelect(tab.name);
+              }}
+              aria-current={currentTabIdx === tab.idx}>
               {tab.name}
-            </a>
+            </button>
           ))}
         </nav>
+      </div>
+      <div className="container mx-auto mt-10 w-3/4">
+        <div className="flex flex-row">
+          <div className="w-1/2">
+            <h3 className="text-color-secondary text-2xl tracking-tight leading-10 font-extrabold mb-10">
+              {tabs[currentTabIdx].header}
+            </h3>
+            <div>{tabs[currentTabIdx].description}</div>
+          </div>
+          <img
+            className="w-1/2 mt-10 md:mt-0"
+            src={tabs[currentTabIdx].imageUrl}
+            alt=""
+          />
+        </div>
       </div>
     </div>
   );

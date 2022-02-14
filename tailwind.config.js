@@ -21,10 +21,29 @@ module.exports = {
         'qwestive-purple': '#6560fb',
         'qwestive-purple-hover': '#4c48c2',
       },
+
+      // that is animation class
+      animation: {
+        'fadeIn': 'fadeIn 2s ease-in',
+      },
+
+      // that is actual animation
+      keyframes: theme => ({
+        'fadeIn': {
+          'from': {
+            opacity: '0',
+            transform: 'translateY(500px)'
+          },
+          'to': {
+            opacity: '100',
+            transform: 'translateY(0px)'
+          },
+        },
+      }),
     },
   },
   variants: {
-    extend: {},
+    extend: {}
   },
   plugins: [require('@tailwindcss/forms')],
 };
