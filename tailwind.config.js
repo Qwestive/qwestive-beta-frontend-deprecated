@@ -24,7 +24,7 @@ module.exports = {
 
       // that is animation class
       animation: {
-        fadeIn: 'fadeIn 2s ease-in',
+        fadeIn: 'fadeIn 1.5s ease-in',
       },
 
       // that is actual animation
@@ -32,7 +32,7 @@ module.exports = {
         fadeIn: {
           from: {
             opacity: '0',
-            transform: 'translateY(500px)',
+            transform: 'translateY(300px)',
           },
           to: {
             opacity: '100',

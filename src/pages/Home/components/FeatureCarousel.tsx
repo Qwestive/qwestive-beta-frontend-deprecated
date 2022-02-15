@@ -72,11 +72,11 @@ function FeatureCarousel(): JSX.Element {
   return (
     <div>
       <div className="sm:hidden">
-        {/* Use an "onChange" listener to redirect the user to the selected tab URL. */}
         <select
           id="tabs"
           name="tabs"
-          className="block w-full focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"
+          className="block w-full focus:ring-indigo-500 focus:border-indigo-500
+           border-gray-300 rounded-md"
           defaultValue={tabs[currentTabIdx].name}
           onChange={(e) => handleTabSelect(e.target.value)}>
           {tabs.map((tab) => (
@@ -110,8 +110,12 @@ function FeatureCarousel(): JSX.Element {
       </div>
       <div className="container mx-auto mt-10 w-3/4">
         <div className="flex flex-col md:flex-row">
-          <div className="w-full text-center md:w-1/2 text-color-secondary mt-4 md:mt-10">
-            <h3 className="text-2xl tracking-tight leading-10 font-extrabold mb-10">
+          <div
+            className="w-full text-center md:w-1/2 text-color-secondary mt-4
+             md:mt-10">
+            <h3
+              className="text-2xl tracking-tight leading-10 font-extrabold
+               mb-10">
               {tabs[currentTabIdx].header}
             </h3>
             <div>{tabs[currentTabIdx].description}</div>

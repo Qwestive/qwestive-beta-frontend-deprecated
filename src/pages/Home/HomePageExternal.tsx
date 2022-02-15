@@ -4,12 +4,11 @@ import bannerImage from '../../assets/landingBannerImage.svg';
 import telegramLogo from '../../assets/telegramLogo.svg';
 import twitterLogo from '../../assets/twitterLogo.svg';
 import discordLogo from '../../assets/discordLogo.svg';
-import defaultUserProfileImage from '../../assets/defaultUserProfileImage.png';
-import FeatureCarousel from './components/FeatureCarousel';
+import CommunityCarousel from './components/CommunityCarousel';
 import WalletConnection from '../../common/components/SolanaWallet/WalletConnection';
+import FeatureCarousel from './components/FeatureCarousel';
 
 function HomePageExternal(): JSX.Element {
-  const communities = [1, 2, 3, 4, 5];
   const [section2FadeIn, setSection2FadeIn] = useState(false);
   const [section3FadeIn, setSection3FadeIn] = useState(false);
   const [section4FadeIn, setSection4FadeIn] = useState(false);
@@ -31,9 +30,13 @@ function HomePageExternal(): JSX.Element {
 
   return (
     <div className="flex flex-col w-11/12 md:w-10/12 mx-auto">
-      <div className="flex flex-col items-center md:min-h-screen md:flex-row md:space-x-10 p-10">
+      <div
+        className="flex flex-col items-center 
+        md:min-h-screen md:flex-row md:space-x-10 p-10">
         <div className="w-3/4 md:w-1/2 flex flex-col items-center">
-          <h1 className="text-center md:text-left text-6xl lg:text-7xl font-black text-white">
+          <h1
+            className="text-center md:text-left text-6xl 
+            lg:text-7xl font-black text-white">
             <span
               className="bg-gradient-to-r text-transparent 
             bg-clip-text from-green-400 to-purple-500">
@@ -66,42 +69,21 @@ function HomePageExternal(): JSX.Element {
       </div>
       <div
         ref={section2Ref}
-        className={
-          section2FadeIn
-            ? 'w-full mt-20 md:mt-0 animate-fadeIn'
-            : 'w-full mt-40 md:mt-0 opacity-0 translate-y-500'
-        }>
+        className={`w-full mt-20
+        ${section2FadeIn ? 'animate-fadeIn' : 'opacity-0 translate-y-300'}`}>
         <h2
           className="text-center text-color-secondary text-4xl 
           tracking-tight leading-10 font-extrabold">
           Who&apos;s using Qwestive?
         </h2>
-        <div className="flex flex-nowrap flex-row justify-between mt-10 text-color-secondary">
-          {communities.map((item) => (
-            <div id="{item}">
-              <a
-                className="flex flex-col align-items-center"
-                href="https://www.solana.com"
-                target="_blank"
-                rel="noreferrer">
-                <img
-                  className="rounded-full"
-                  src={defaultUserProfileImage}
-                  alt=""
-                />
-                <h3>Solana Foundation</h3>
-              </a>
-            </div>
-          ))}
+        <div className="mt-10">
+          <CommunityCarousel />
         </div>
       </div>
       <div
         ref={section3Ref}
-        className={
-          section3FadeIn
-            ? 'w-full mt-40 animate-fadeIn'
-            : 'w-full mt-40 opacity-0 translate-y-500'
-        }>
+        className={`w-full mt-40 
+        ${section3FadeIn ? 'animate-fadeIn' : 'opacity-0 translate-y-300'}`}>
         <h2
           className="text-center text-color-secondary text-4xl 
           tracking-tight leading-10 font-extrabold mb-10">
@@ -111,13 +93,12 @@ function HomePageExternal(): JSX.Element {
       </div>
       <div
         ref={section4Ref}
-        className={
-          section4FadeIn
-            ? 'w-full mt-40 animate-fadeIn'
-            : 'w-full mt-40 opacity-0 translate-y-500'
-        }>
+        className={`w-full mt-40
+        ${section4FadeIn ? 'animate-fadeIn' : 'opacity-0 translate-y-300'}`}>
         <div className="flex flex-col md:flex-row justify-center">
-          <h3 className="text-center md:text-left text-3xl font-black text-white w-full md:w-1/2 mb-10 md:mb-0">
+          <h3
+            className="text-center md:text-left text-3xl font-black 
+            text-white w-full md:w-1/2 mb-10 md:mb-0">
             <span
               className="bg-gradient-to-r text-transparent 
             bg-clip-text from-green-400 to-purple-500">
