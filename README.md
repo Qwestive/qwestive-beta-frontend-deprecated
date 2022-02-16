@@ -67,7 +67,7 @@ Includes:
 - Typescript
 - CRA
 - Solana wallet adapter
-  Code quality linting with ESLint <br />
-  Code formatting with Prettier <br />
-  Linting, typechecking and formatting on by default using husky for commit hooks <br />
-  Testing with Jest and react-testing-library <br />
+- Code quality linting with ESLint <br />
+- Code formatting with Prettier <br />
+- Linting, typechecking and formatting on by default using husky for commit hooks <br />
+- Testing with Jest and react-testing-library <br />

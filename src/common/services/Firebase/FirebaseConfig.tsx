@@ -7,10 +7,10 @@ import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
 // Emulators
-/* import { getFunctions, connectFunctionsEmulator } from 'firebase/functions';
-import { getAuth, connectAuthEmulator } from 'firebase/auth';
-import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
-import { getStorage, connectStorageEmulator } from 'firebase/storage'; */
+// import { getFunctions, connectFunctionsEmulator } from 'firebase/functions';
+// import { getAuth, connectAuthEmulator } from 'firebase/auth';
+// import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
+// import { getStorage, connectStorageEmulator } from 'firebase/storage';
 
 export const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -30,7 +30,7 @@ export const FirebaseAuth = getAuth();
 export const FirebaseStorage = getStorage();
 
 // Emulators
-/* connectFunctionsEmulator(FirebaseFunctions, 'localhost', 5001);
-connectFirestoreEmulator(Firestore, 'localhost', 8081);
-connectAuthEmulator(FirebaseAuth, 'http://localhost:9099');
-connectStorageEmulator(FirebaseStorage, 'localhost', 9199); */
+// connectFunctionsEmulator(FirebaseFunctions, 'localhost', 5001);
+// connectFirestoreEmulator(Firestore, 'localhost', 8081);
+// connectAuthEmulator(FirebaseAuth, 'http://localhost:9099');
+// connectStorageEmulator(FirebaseStorage, 'localhost', 9199);

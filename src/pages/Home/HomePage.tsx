@@ -1,17 +1,14 @@
 import React from 'react';
+import { useRecoilValue } from 'recoil';
+import HomePageExternal from './HomePageExternal';
+import HomePageInternal from './HomePageInternal';
+
+import { userPublicKeyAtom } from '../../recoil/userInfo';
 
 function HomePage(): JSX.Element {
-  return (
-    <div className="p-10 min-h-screen flex items-center justify-center">
-      <h1 className="text-9xl font-black text-white text-center">
-        <span
-          className="bg-gradient-to-r text-transparent 
-        bg-clip-text from-green-400 to-purple-500">
-          Welcome to Qwestive
-        </span>
-      </h1>
-    </div>
-  );
+  const userPublicKey = useRecoilValue(userPublicKeyAtom);
+
+  return userPublicKey ? <HomePageInternal /> : <HomePageExternal />;
 }
 
 export default HomePage;
