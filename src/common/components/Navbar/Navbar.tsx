@@ -11,7 +11,7 @@ import {
   userProfileImageAtom,
 } from '../../../recoil/userInfo';
 import defaultUserProfileImage from '../../../assets/defaultUserProfileImage.png';
-import WalletConnection from '../SolanaWallet/WalletConnection';
+import WalletButton from '../SolanaWallet/WalletButton';
 
 type classLogic = string | boolean;
 
@@ -101,7 +101,7 @@ const Navbar = function Navbar(): JSX.Element {
               </div>
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <WalletConnection />
+                  <WalletButton />
                 </div>
                 {userPublicKey !== undefined && (
                   <div
