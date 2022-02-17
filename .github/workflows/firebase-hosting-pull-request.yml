@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: yarn install && yarn build
-       env:
+        env:
           REACT_APP_FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY_DEV }}
           REACT_APP_FIREBASE_AUTH_DOMAIN: ${{ secrets.FIREBASE_AUTH_DOMAIN_DEV }}
           REACT_APP_FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID_DEV }}
@@ -18,6 +18,7 @@ jobs:
           REACT_APP_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.FIREBASE_MESSAGING_SENDER_ID_DEV }}
           REACT_APP_FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID_DEV }}
           REACT_APP_FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID_DEV }}
+
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
