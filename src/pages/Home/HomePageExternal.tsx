@@ -5,7 +5,7 @@ import telegramLogo from '../../assets/telegramLogo.svg';
 import twitterLogo from '../../assets/twitterLogo.svg';
 import discordLogo from '../../assets/discordLogo.svg';
 import CommunityCarousel from './components/CommunityCarousel';
-import WalletConnection from '../../common/components/SolanaWallet/WalletConnection';
+import WalletButton from '../../common/components/SolanaWallet/WalletButton';
 import FeatureCarousel from './components/FeatureCarousel';
 
 function HomePageExternal(): JSX.Element {
@@ -105,7 +105,7 @@ function HomePageExternal(): JSX.Element {
               Connect your wallet. <br /> Your communities are waiting.
             </span>
           </h3>
-          <WalletConnection />
+          <WalletButton />
         </div>
       </div>
       <div
