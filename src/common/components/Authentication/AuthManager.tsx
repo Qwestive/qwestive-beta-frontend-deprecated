@@ -33,9 +33,7 @@ export default function AuthManager({
 }: {
   children: ReactNode;
 }): JSX.Element {
-  // const { disconnect, connected } = useWallet();
   const { publicKey, signMessage, disconnect, connected } = useWallet();
-
   const [userPublicKey, setUserPublickey] = useRecoilState(userPublicKeyAtom);
   const [, setUserName] = useRecoilState(userNameAtom);
   const [, setDisplayName] = useRecoilState(userDisplayNameAtom);
