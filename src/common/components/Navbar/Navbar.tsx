@@ -181,9 +181,10 @@ const Navbar = function Navbar(): JSX.Element {
                     // bad practice To change
                     className={classNames(
                       item.current
-                        ? 'bg-gray-900 text-white'
+                        ? 'bg-gray-900 text-white block w-full '
                         : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                      'block w-full text-left px-3 py-2 rounded-md text-base font-medium'
+                      'text-left px-3 py-2 rounded-md text-base font-medium' +
+                        ' block w-full'
                     )}
                     aria-current={item.current ? 'page' : undefined}>
                     <Link to={item.href}>{item.name}</Link>
