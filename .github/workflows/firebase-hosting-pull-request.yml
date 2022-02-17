@@ -13,5 +13,5 @@ jobs:
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_QWESTIVE_BETA_PROD }}'
-          projectId: qwestive-beta-prod
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_QWESTIVE_BETA_DEV_BCF81 }}'
+          projectId: qwestive-beta-dev-bcf81
