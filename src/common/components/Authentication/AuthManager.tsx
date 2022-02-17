@@ -4,7 +4,7 @@ import { useRecoilState } from 'recoil';
 import { doc, getDoc } from 'firebase/firestore';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { toast } from 'react-toastify';
-
+import SigninWithWallet from '../../services/Firebase/Authentication/SigninWithWallet';
 import SignoutWithWallet from '../../services/Firebase/Authentication/SignoutWithWallet';
 import {
   FirebaseAuth,
@@ -31,7 +31,7 @@ export default function AuthManager({
 }: {
   children: ReactNode;
 }): JSX.Element {
-  const { disconnect, connected } = useWallet();
+  const { publicKey, signMessage, disconnect, connected } = useWallet();
   const [userPublicKey, setUserPublickey] = useRecoilState(userPublicKeyAtom);
   const [, setUserName] = useRecoilState(userNameAtom);
   const [, setDisplayName] = useRecoilState(userDisplayNameAtom);
@@ -39,6 +39,25 @@ export default function AuthManager({
   const [, setCoverImageAtom] = useRecoilState(userCoverImageAtom);
   const [, setBio] = useRecoilState(userBioAtom);
   const [, setPersonalLink] = useRecoilState(userPersonalLinkAtom);
+
+  async function trySigninWithWallet() {
+    if (connected && publicKey) {
+      try {
+        await SigninWithWallet({
+          uid: publicKey.toString(),
+          publicKey,
+          signMessage,
+        });
+        /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+      } catch (error: any) {
+        toast.error(`Couldn't Signin: ${error?.message}`);
+      }
+    }
+  }
+
+  useEffect(() => {
+    trySigninWithWallet();
+  }, [connected]);
 
   useEffect(() => {
     onAuthStateChanged(FirebaseAuth, async (user) => {
