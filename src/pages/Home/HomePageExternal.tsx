@@ -42,6 +42,7 @@ function HomePageExternal(): JSX.Element {
             bg-clip-text from-green-400 to-purple-500">
               Token gated community spaces
             </span>
+            <p>Test</p>
           </h1>
           <div className="flex space-x-3 mt-8">
             <a
