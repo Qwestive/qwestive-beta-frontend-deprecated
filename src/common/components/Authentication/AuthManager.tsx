@@ -20,8 +20,6 @@ import {
   userPersonalLinkAtom,
 } from '../../../recoil/userInfo';
 
-import SigninWithWallet from '../../services/Firebase/Authentication/SigninWithWallet';
-
 /* 
 It is used as a component
 TODO:
@@ -33,7 +31,7 @@ export default function AuthManager({
 }: {
   children: ReactNode;
 }): JSX.Element {
-  const { publicKey, signMessage, disconnect, connected } = useWallet();
+  const { disconnect, connected } = useWallet();
   const [userPublicKey, setUserPublickey] = useRecoilState(userPublicKeyAtom);
   const [, setUserName] = useRecoilState(userNameAtom);
   const [, setDisplayName] = useRecoilState(userDisplayNameAtom);
@@ -41,25 +39,6 @@ export default function AuthManager({
   const [, setCoverImageAtom] = useRecoilState(userCoverImageAtom);
   const [, setBio] = useRecoilState(userBioAtom);
   const [, setPersonalLink] = useRecoilState(userPersonalLinkAtom);
-
-  async function trySigninWithWallet() {
-    if (connected && publicKey) {
-      try {
-        await SigninWithWallet({
-          uid: publicKey.toString(),
-          publicKey,
-          signMessage,
-        });
-        /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-      } catch (error: any) {
-        toast.error(`Couldn't Signin: ${error?.message}`);
-      }
-    }
-  }
-
-  useEffect(() => {
-    trySigninWithWallet();
-  }, [connected]);
 
   useEffect(() => {
     onAuthStateChanged(FirebaseAuth, async (user) => {
