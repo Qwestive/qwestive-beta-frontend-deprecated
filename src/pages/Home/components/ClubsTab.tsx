@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SearchIcon } from '@heroicons/react/solid';
 import OwnedTokenGrid from './OwnedTokenGrid';
+import { useTokenRegistry } from '../../../common/components/Solana/TokenRegistry';
+import GenerateTokenOwnedList from '../../../common/services/Solana/GetData/GenerateTokenOwnedList';
 
 const tokenOwnedList = [
   {
@@ -11,14 +13,14 @@ const tokenOwnedList = [
       'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60',
   },
   {
-    name: '$PRINTS',
+    name: '$PEACE',
     memberCount: 458,
     amountHeld: 5000,
     imageUrl:
       'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60',
   },
   {
-    name: '$PRINTS',
+    name: '$SQUIG',
     memberCount: 458,
     amountHeld: 5000,
     imageUrl:
@@ -26,6 +28,13 @@ const tokenOwnedList = [
   },
 ];
 export default function ClubsTab(): JSX.Element {
+  const tokenRegistry = useTokenRegistry();
+  const [loading, setLoading] = useState(false);
+  async function generateList() {
+    setLoading(true);
+    await GenerateTokenOwnedList(tokenRegistry);
+    setLoading(false);
+  }
   return (
     <div>
       {/* Search Bar  */}
@@ -55,7 +64,14 @@ export default function ClubsTab(): JSX.Element {
         </div>
       </div>
       {/* Token Grid  */}
-      <OwnedTokenGrid tokenOwnedList={tokenOwnedList} />
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <OwnedTokenGrid tokenOwnedList={tokenOwnedList} />
+      )}
+      <button type="button" className="btn-filled" onClick={generateList}>
+        GenerateTokenOwnedList
+      </button>
     </div>
   );
 }

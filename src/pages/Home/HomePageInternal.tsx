@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import ClassNamesLogic from '../../common/components/Util/ClassNamesLogic';
 import ClubsTab from './components/ClubsTab';
-
+import { TokenRegistryProvider } from '../../common/components/Solana/TokenRegistry';
 /*
 ToDo:
 Make two tabs
@@ -40,7 +40,9 @@ export default function HomePageInternal(): JSX.Element {
         </nav>
       </div>
       <div className={ClassNamesLogic(currentTab !== 0 && 'hidden', '')}>
-        <ClubsTab />
+        <TokenRegistryProvider>
+          <ClubsTab />
+        </TokenRegistryProvider>
       </div>
     </div>
   );
