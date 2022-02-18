@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "prod": "qwestive-beta-prod",
+    "dev": "qwestive-beta-dev-bcf81",
+    "default": "qwestive-beta-dev-bcf81"
+  },
+  "targets": {}
+}
