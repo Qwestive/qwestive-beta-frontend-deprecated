@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { useParams } from 'react-router-dom';
 
 import { userNameAtom } from '../../recoil/userInfo';
@@ -11,7 +11,7 @@ Checking if the asked user page match the currently
 logged in user, display user page accordingly
 */
 export default function UserProfilePage(): JSX.Element {
-  const [userNameRecoil] = useRecoilState(userNameAtom);
+  const userNameRecoil = useRecoilValue(userNameAtom);
   const { userName } = useParams<'userName'>();
 
   return userName === userNameRecoil ? (

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import { SearchIcon } from '@heroicons/react/solid';
 import OwnedTokenGrid from './OwnedTokenGrid';
 import { useTokenRegistry } from '../../../common/components/Solana/TokenRegistry';
 import GenerateTokenOwnedList from '../../../common/services/Solana/GetData/GenerateTokenOwnedList';
+import { userPublicKeyAtom } from '../../../recoil/userInfo';
 
 const tokenOwnedList = [
   {
@@ -28,11 +30,15 @@ const tokenOwnedList = [
   },
 ];
 export default function ClubsTab(): JSX.Element {
+  const userPublicKey = useRecoilValue(userPublicKeyAtom);
   const tokenRegistry = useTokenRegistry();
   const [loading, setLoading] = useState(false);
+
   async function generateList() {
     setLoading(true);
-    await GenerateTokenOwnedList(tokenRegistry);
+    if (userPublicKey !== undefined) {
+      await GenerateTokenOwnedList(tokenRegistry, userPublicKey);
+    }
     setLoading(false);
   }
   return (
