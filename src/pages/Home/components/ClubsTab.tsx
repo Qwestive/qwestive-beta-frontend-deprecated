@@ -6,38 +6,21 @@ import { useTokenRegistry } from '../../../common/components/Solana/TokenRegistr
 import GenerateTokenOwnedList from '../../../common/services/Solana/GetData/GenerateTokenOwnedList';
 import { userPublicKeyAtom } from '../../../recoil/userInfo';
 
-const tokenOwnedList = [
-  {
-    name: '$PRINTS',
-    memberCount: 0,
-    amountHeld: 5000,
-    imageUrl:
-      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60',
-  },
-  {
-    name: '$PEACE',
-    memberCount: 458,
-    amountHeld: 5000,
-    imageUrl:
-      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60',
-  },
-  {
-    name: '$SQUIG',
-    memberCount: 458,
-    amountHeld: 5000,
-    imageUrl:
-      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60',
-  },
-];
+import { ItokenOwned } from '../../../common/types';
+
 export default function ClubsTab(): JSX.Element {
   const userPublicKey = useRecoilValue(userPublicKeyAtom);
   const tokenRegistry = useTokenRegistry();
+  const [tokenOwnedList, setTokenOwnedList] = useState<ItokenOwned[]>([]);
+
   const [loading, setLoading] = useState(false);
 
   async function generateList() {
     setLoading(true);
     if (userPublicKey !== undefined) {
-      await GenerateTokenOwnedList(tokenRegistry, userPublicKey);
+      setTokenOwnedList(
+        await GenerateTokenOwnedList(tokenRegistry, userPublicKey)
+      );
     }
     setLoading(false);
   }

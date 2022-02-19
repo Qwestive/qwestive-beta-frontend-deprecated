@@ -2,7 +2,11 @@ import React from 'react';
 
 import ClassNamesLogic from '../../../common/components/Util/ClassNamesLogic';
 
-import { ItokenOwnedList } from '../../../common/types';
+import { ItokenOwned } from '../../../common/types';
+
+type ItokenOwnedList = {
+  tokenOwnedList: ItokenOwned[];
+};
 
 export default function OwnedTokenGrid({
   tokenOwnedList,
@@ -12,7 +16,7 @@ export default function OwnedTokenGrid({
       <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 ">
         {tokenOwnedList.map((token) => (
           <li
-            key={token.name}
+            key={token.mint}
             className="col-span-1 bg-white rounded-lg shadow 
             divide-y divide-gray-200">
             <div
@@ -34,7 +38,10 @@ export default function OwnedTokenGrid({
                     {token.memberCount === 0 ? 'New' : 'Active'}
                   </span>
                 </div>
-                <p className=" text-gray-900 text-base truncate">
+                <p className="mt-1 text-gray-500 text-sm truncate">
+                  {token.mint}
+                </p>
+                <p className=" mt-2 text-gray-900 text-base truncate">
                   {token.memberCount} Members
                 </p>
                 <p className="mt-1 text-gray-500 text-sm truncate">

@@ -3,13 +3,11 @@ import { ReactNode, Dispatch, SetStateAction } from 'react';
 import { SetterOrUpdater } from 'recoil';
 
 export interface ItokenOwned {
-  name: string;
-  memberCount: number;
+  mint: string;
   amountHeld: number;
-  imageUrl: string;
-}
-export interface ItokenOwnedList {
-  tokenOwnedList: Array<ItokenOwned>;
+  memberCount: number;
+  name: string | undefined;
+  imageUrl: string | undefined;
 }
 
 export interface IimageCropper {
