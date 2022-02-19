@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useRecoilValue } from 'recoil';
+import { toast } from 'react-toastify';
 import { SearchIcon } from '@heroicons/react/solid';
 import OwnedTokenGrid from './OwnedTokenGrid';
 import { useTokenRegistry } from '../../../common/components/Solana/TokenRegistry';
@@ -18,9 +19,14 @@ export default function ClubsTab(): JSX.Element {
   async function generateList() {
     setLoading(true);
     if (userPublicKey !== undefined) {
-      setTokenOwnedList(
-        await GenerateTokenOwnedList(tokenRegistry, userPublicKey)
-      );
+      try {
+        setTokenOwnedList(
+          await GenerateTokenOwnedList(tokenRegistry, userPublicKey)
+        );
+        /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+      } catch (error: any) {
+        toast.error(error?.message);
+      }
     }
     setLoading(false);
   }
