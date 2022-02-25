@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import { toast } from 'react-toastify';
 import { SearchIcon } from '@heroicons/react/solid';
@@ -30,6 +30,10 @@ export default function ClubsTab(): JSX.Element {
     }
     setLoading(false);
   }
+  useEffect(() => {
+    generateList();
+  }, [tokenRegistry]);
+
   return (
     <div>
       {/* Search Bar  */}
@@ -64,9 +68,6 @@ export default function ClubsTab(): JSX.Element {
       ) : (
         <OwnedTokenGrid tokenOwnedList={tokenOwnedList} />
       )}
-      <button type="button" className="btn-filled" onClick={generateList}>
-        GenerateTokenOwnedList
-      </button>
     </div>
   );
 }
