@@ -12,6 +12,7 @@ import {
 } from '../../../recoil/userInfo';
 import defaultUserProfileImage from '../../../assets/defaultUserProfileImage.png';
 import WalletButton from '../SolanaWallet/WalletButton';
+import configData from '../../../config.json';
 
 type classLogic = string | boolean;
 
@@ -20,11 +21,8 @@ function classNames(...classes: classLogic[]): string {
 }
 // TODO(diegoolalde): this is a template for a navbar. It requires multiple
 // changes:
-// - Add support for wallet connection.
-// - Fetch user information once wallet is connected.
 // - Add workings.
 // - Add tests.
-// - Add state management through atoms.
 const Navbar = function Navbar(): JSX.Element {
   const userPublicKey = useRecoilValue(userPublicKeyAtom);
   const userName = useRecoilValue(userNameAtom);
@@ -100,9 +98,11 @@ const Navbar = function Navbar(): JSX.Element {
                 )}
               </div>
               <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <WalletButton />
-                </div>
+                {configData.LANDING_PAGE_SIGN_IN_ENABLED && (
+                  <div className="flex-shrink-0">
+                    <WalletButton />
+                  </div>
+                )}
                 {userPublicKey !== undefined && (
                   <div
                     className="hidden md:ml-4 md:flex-shrink-0 md:flex 
