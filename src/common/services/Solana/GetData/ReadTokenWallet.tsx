@@ -3,8 +3,9 @@ import {
   Connection,
   PublicKey,
   ParsedAccountData,
-  Cluster,
 } from '@solana/web3.js';
+
+import { SolanaNetwork } from '../NetworkConfig';
 
 const TOKEN_PROGRAM_ID = new PublicKey(
   'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'
@@ -18,10 +19,7 @@ type ItokenOwned = {
 export default async function ReadTokenWallet(
   publickey: string
 ): Promise<ItokenOwned[]> {
-  const connection = new Connection(
-    clusterApiUrl((process.env.SOLANA_NETWORK ??= 'devnet') as Cluster),
-    'confirmed'
-  );
+  const connection = new Connection(clusterApiUrl(SolanaNetwork), 'confirmed');
 
   const accountTokens = await connection.getParsedProgramAccounts(
     TOKEN_PROGRAM_ID,
