@@ -1,4 +1,10 @@
-import React from 'react';
+import React, {
+  createContext,
+  useState,
+  useEffect,
+  ReactNode,
+  useContext,
+} from 'react';
 import {
   TokenListProvider,
   TokenInfoMap,
@@ -7,18 +13,16 @@ import {
   Strategy,
 } from '@solana/spl-token-registry';
 
-const TokenRegistryContext = React.createContext<TokenInfoMap>(new Map());
+const TokenRegistryContext = createContext<TokenInfoMap>(new Map());
 
-type ProviderProps = { children: React.ReactNode };
+type ProviderProps = { children: ReactNode };
 
 export function TokenRegistryProvider({
   children,
 }: ProviderProps): JSX.Element {
-  const [tokenRegistry, setTokenRegistry] = React.useState<TokenInfoMap>(
-    new Map()
-  );
+  const [tokenRegistry, setTokenRegistry] = useState<TokenInfoMap>(new Map());
 
-  React.useEffect(() => {
+  useEffect(() => {
     new TokenListProvider()
       .resolve(Strategy.Solana)
       .then((tokens: TokenListContainer) => {
@@ -41,7 +45,7 @@ export function TokenRegistryProvider({
 }
 
 export function useTokenRegistry(): TokenInfoMap {
-  const tokenRegistry = React.useContext(TokenRegistryContext);
+  const tokenRegistry = useContext(TokenRegistryContext);
 
   if (!tokenRegistry) {
     throw new Error(
