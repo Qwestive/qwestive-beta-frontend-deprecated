@@ -27,8 +27,8 @@ export default function HomePageInternal(): JSX.Element {
               key={tab.name}
               className={ClassNamesLogic(
                 currentTab === tab.idx
-                  ? 'border-gray-900 text-gray-900 font-bold'
-                  : 'border-transparent text-gray-900 font-medium' +
+                  ? 'border-gray-900 text-color-primary font-bold'
+                  : 'border-transparent text-color-primary font-medium' +
                       'hover:text-gray-700 hover:border-gray-300',
                 'flex-1 whitespace-nowrap py-4 px-1 border-b-4 text-lg'
               )}
