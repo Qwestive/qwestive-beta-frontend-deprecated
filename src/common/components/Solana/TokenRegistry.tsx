@@ -26,7 +26,9 @@ export function TokenRegistryProvider({
     new TokenListProvider()
       .resolve(Strategy.Solana)
       .then((tokens: TokenListContainer) => {
-        const tokenList = tokens.filterByClusterSlug('devnet').getList();
+        const tokenList = tokens
+          .filterByClusterSlug((process.env.SOLANA_NETWORK ??= 'devnet'))
+          .getList();
 
         setTokenRegistry(
           tokenList.reduce((map: TokenInfoMap, item: TokenInfo) => {
