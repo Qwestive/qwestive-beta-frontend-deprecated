@@ -1,13 +1,14 @@
 import { PublicKey } from '@solana/web3.js';
 import { ReactNode, Dispatch, SetStateAction } from 'react';
 import { SetterOrUpdater } from 'recoil';
+import { DocumentData } from 'firebase/firestore';
 
 export interface ItokenOwned {
   mint: string;
   amountHeld: number;
-  memberCount: number;
   name: string | undefined;
   imageUrl: string | undefined;
+  communityData: DocumentData | undefined;
 }
 
 export interface IimageCropper {

@@ -29,20 +29,20 @@ export default function OwnedTokenGrid({
                   </h3>
                   <span
                     className={ClassNamesLogic(
-                      token.memberCount === 0
+                      token.communityData
                         ? 'bg-pink-100 text-pink-800'
                         : ' text-green-800 bg-green-100',
                       'flex-shrink-0 inline-block px-2 py-0.5' +
                         'text-xs font-medium  rounded-full'
                     )}>
-                    {token.memberCount === 0 ? 'New' : 'Active'}
+                    {token.communityData ? 'New' : 'Active'}
                   </span>
                 </div>
                 <p className="mt-1 text-gray-500 text-sm truncate">
                   {token.mint}
                 </p>
                 <p className=" mt-2 text-gray-900 text-base truncate">
-                  {token.memberCount} Members
+                  {token.communityData?.memberCount ?? 0} Members
                 </p>
                 <p className="mt-1 text-gray-500 text-sm truncate">
                   You have {token.amountHeld} {token.name}
