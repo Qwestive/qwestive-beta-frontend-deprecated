@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import { useRecoilValue } from 'recoil';
 import { toast } from 'react-toastify';
 import { SearchIcon } from '@heroicons/react/solid';
@@ -13,16 +13,37 @@ export default function ClubsTab(): JSX.Element {
   const userPublicKey = useRecoilValue(userPublicKeyAtom);
   const tokenRegistry = useTokenRegistry();
   const [tokenOwnedList, setTokenOwnedList] = useState<ItokenOwned[]>([]);
+  const [tokenOwnedSearchedList, setTokenOwnedSearchedList] = useState<
+    ItokenOwned[]
+  >([]);
 
   const [loading, setLoading] = useState(false);
+  const [searchName, setSearchName] = useState('');
+
+  function searchListName(event: ChangeEvent<HTMLInputElement>) {
+    setSearchName(event.target.value);
+    setTokenOwnedSearchedList(
+      tokenOwnedList.filter((token) => {
+        return (
+          token.name
+            ?.toLowerCase()
+            .indexOf(event.target.value.toLowerCase()) !== -1
+        );
+      })
+    );
+  }
 
   async function generateList() {
     setLoading(true);
     if (userPublicKey !== undefined) {
       try {
-        setTokenOwnedList(
-          await GenerateTokenOwnedList(tokenRegistry, userPublicKey)
+        const tokenList = await GenerateTokenOwnedList(
+          tokenRegistry,
+          userPublicKey
         );
+        setTokenOwnedList(tokenList);
+        setTokenOwnedSearchedList(tokenList);
+        setSearchName('');
         /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
       } catch (error: any) {
         toast.error(error?.message);
@@ -31,42 +52,41 @@ export default function ClubsTab(): JSX.Element {
     setLoading(false);
   }
   useEffect(() => {
-    generateList();
+    if (tokenRegistry.size !== 0) {
+      generateList();
+    }
   }, [tokenRegistry]);
 
   return (
     <div>
       {/* Search Bar  */}
       <div className="flex-1 flex items-center justify-center mt-6">
-        <div className=" w-full ">
-          <div className="relative">
-            <div
-              className="absolute inset-y-0 left-0 pl-3 flex 
+        <div className="w-full">
+          <div
+            className="absolute inset-y-0 left-0 pl-3 flex 
             items-center pointer-events-none">
-              <SearchIcon
-                className="h-5 w-5 text-gray-400"
-                aria-hidden="true"
-              />
-            </div>
-            <input
-              id="search"
-              name="search"
-              className="text-lg block w-full pl-10 pr-3 py-3 border 
+            <SearchIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+          </div>
+          <input
+            id="search"
+            name="search"
+            className="text-lg block w-full pl-10 pr-3 py-3 border 
               border-gray-300 rounded-md leading-5 bg-white 
               placeholder-gray-500 focus:outline-none 
               focus:placeholder-gray-400 focus:ring-2 focus:ring-gray-500 
               focus:border-gray-500 "
-              placeholder="Search"
-              type="search"
-            />
-          </div>
+            placeholder="Search"
+            value={searchName}
+            onChange={(e) => searchListName(e)}
+            type="search"
+          />
         </div>
       </div>
       {/* Token Grid  */}
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <OwnedTokenGrid tokenOwnedList={tokenOwnedList} />
+        <OwnedTokenGrid tokenOwnedList={tokenOwnedSearchedList} />
       )}
     </div>
   );
