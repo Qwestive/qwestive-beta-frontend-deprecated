@@ -39,35 +39,35 @@ function FeatureCarousel(): JSX.Element {
       'Conversations',
       0,
       'Exclusive Conversations',
-      'Create spam-less conversations where access is gated by a token ownership minimum!',
+      'Meaningful conversations where only those who meet token requirements can participate.',
       featureImage
     ),
     new Tab(
       'Polls',
       1,
       'Exclusive Polls',
-      'Get a clear signal from your community with polls where only those who own the token minimum you set can participate.',
+      'Polls that provide a clear signal from those whose opnion actually matters, token holders.',
       featureImage
     ),
     new Tab(
       'Votes',
       2,
       'On-Chain Votes',
-      'Easily generate 1-click on-chain votes for token holders.',
+      'Verifiable on-chain votes to make important community decisions in just one click.',
       featureImage
     ),
     new Tab(
       'Bounties',
       3,
       'On-Chain Bounties and Contests',
-      'Reward valuable community contributions with on-chain bounties where only token holders can participate.',
+      'On-chain bounties and contests that allow rewarding and coordinating community contributions.',
       featureImage
     ),
     new Tab(
       'More...',
       4,
       'Airdrops, Tips, and more!',
-      'Any and all crypto-native interactions to empower token communities',
+      'Communities are empowered with simple, blockchain-enabled tools to exchange value!',
       featureImage
     ),
   ];
