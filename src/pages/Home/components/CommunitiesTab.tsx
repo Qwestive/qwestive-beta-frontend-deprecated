@@ -9,31 +9,30 @@ import { userPublicKeyAtom } from '../../../recoil/userInfo';
 
 import { ItokenOwned } from '../../../common/types';
 
-export default function ClubsTab(): JSX.Element {
+export default function CommunitiesTab(): JSX.Element {
   const userPublicKey = useRecoilValue(userPublicKeyAtom);
   const tokenRegistry = useTokenRegistry();
   const [tokenOwnedList, setTokenOwnedList] = useState<ItokenOwned[]>([]);
-  const [tokenOwnedSearchedList, setTokenOwnedSearchedList] = useState<
+  const [tokenOwnedSearchedResults, setTokenOwnedSearchedResults] = useState<
     ItokenOwned[]
   >([]);
 
   const [loading, setLoading] = useState(false);
-  const [searchName, setSearchName] = useState('');
+  const [searchPredicate, setSearchPredicate] = useState('');
 
-  function searchListName(event: ChangeEvent<HTMLInputElement>) {
-    setSearchName(event.target.value);
-    setTokenOwnedSearchedList(
-      tokenOwnedList.filter((token) => {
-        return (
+  function updateTokenOwnedSearchResults(event: ChangeEvent<HTMLInputElement>) {
+    setSearchPredicate(event.target.value);
+    setTokenOwnedSearchedResults(
+      tokenOwnedList.filter(
+        (token) =>
           token.name
             ?.toLowerCase()
             .indexOf(event.target.value.toLowerCase()) !== -1
-        );
-      })
+      )
     );
   }
 
-  async function generateList() {
+  async function generateTokenOwnedList() {
     setLoading(true);
     if (userPublicKey !== undefined) {
       try {
@@ -42,8 +41,8 @@ export default function ClubsTab(): JSX.Element {
           userPublicKey
         );
         setTokenOwnedList(tokenList);
-        setTokenOwnedSearchedList(tokenList);
-        setSearchName('');
+        setTokenOwnedSearchedResults(tokenList);
+        setSearchPredicate('');
         /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
       } catch (error: any) {
         toast.error(error?.message);
@@ -53,7 +52,7 @@ export default function ClubsTab(): JSX.Element {
   }
   useEffect(() => {
     if (tokenRegistry.size !== 0) {
-      generateList();
+      generateTokenOwnedList();
     }
   }, [tokenRegistry]);
 
@@ -61,14 +60,13 @@ export default function ClubsTab(): JSX.Element {
     <div>
       {/* Search Bar  */}
       <div className="flex-1 flex items-center justify-center mt-6">
-        <div className="w-full">
+        <div className="w-full relative">
           <div
             className="absolute inset-y-0 left-0 pl-3 flex 
             items-center pointer-events-none">
             <SearchIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
           </div>
           <input
-            id="search"
             name="search"
             className="text-lg block w-full pl-10 pr-3 py-3 border 
               border-gray-300 rounded-md leading-5 bg-white 
@@ -76,8 +74,8 @@ export default function ClubsTab(): JSX.Element {
               focus:placeholder-gray-400 focus:ring-2 focus:ring-gray-500 
               focus:border-gray-500 "
             placeholder="Search"
-            value={searchName}
-            onChange={(e) => searchListName(e)}
+            value={searchPredicate}
+            onChange={(e) => updateTokenOwnedSearchResults(e)}
             type="search"
           />
         </div>
@@ -86,7 +84,7 @@ export default function ClubsTab(): JSX.Element {
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <OwnedTokenGrid tokenOwnedList={tokenOwnedSearchedList} />
+        <OwnedTokenGrid tokenOwnedList={tokenOwnedSearchedResults} />
       )}
     </div>
   );

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import ClassNamesLogic from '../../common/components/Util/ClassNamesLogic';
-import ClubsTab from './components/ClubsTab';
+import CommunitiesTab from './components/CommunitiesTab';
 import { TokenRegistryProvider } from '../../common/components/Solana/TokenRegistry';
 /*
 ToDo:
@@ -14,7 +14,7 @@ export default function HomePageInternal(): JSX.Element {
   const [currentTab, setCurrentTab] = useState(0);
 
   const tabs = [
-    { name: 'Clubs', idx: 0 },
+    { name: 'Communities', idx: 0 },
     { name: 'Feed', idx: 1 },
   ];
   return (
@@ -41,7 +41,7 @@ export default function HomePageInternal(): JSX.Element {
       </div>
       <div className={ClassNamesLogic(currentTab !== 0 && 'hidden', '')}>
         <TokenRegistryProvider>
-          <ClubsTab />
+          <CommunitiesTab />
         </TokenRegistryProvider>
       </div>
     </div>
