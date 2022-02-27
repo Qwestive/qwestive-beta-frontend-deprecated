@@ -11,13 +11,10 @@ import {
   userProfileImageAtom,
 } from '../../../recoil/userInfo';
 import defaultUserProfileImage from '../../../assets/defaultUserProfileImage.png';
-import WalletButton from '../SolanaWallet/WalletButton';
+import WalletButton from '../Solana/SolanaWallet/WalletButton';
 
-type classLogic = string | boolean;
+import ClassNamesLogic from '../Util/ClassNamesLogic';
 
-function classNames(...classes: classLogic[]): string {
-  return classes.filter(Boolean).join(' ');
-}
 // TODO(diegoolalde): this is a template for a navbar. It requires multiple
 // changes:
 // - Add support for wallet connection.
@@ -88,7 +85,7 @@ const Navbar = function Navbar(): JSX.Element {
                       <Link
                         key={item.name}
                         to={item.href}
-                        className={classNames(
+                        className={ClassNamesLogic(
                           !item.current && 'text-gray-400 hover:text-gray-600',
                           'px-3 py-2 rounded-md text-sm font-medium'
                         )}
@@ -148,15 +145,15 @@ const Navbar = function Navbar(): JSX.Element {
                           className="origin-top-right absolute 
                         right-0 mt-2 w-48 rounded-md shadow-lg py-1 
                         bg-white ring-1 ring-black ring-opacity-5 
-                        focus:outline-none">
+                        focus:outline-none z-50">
                           {userNavigation.map((item) => (
                             <Menu.Item key={item.name}>
                               {({ active }) => (
                                 <Link
                                   to={item.href}
-                                  className={classNames(
+                                  className={ClassNamesLogic(
                                     active ? 'bg-gray-100' : '',
-                                    'block px-4 py-2 text-sm text-gray-700'
+                                    ' block px-4 py-2 text-sm text-gray-700'
                                   )}>
                                   {item.name}
                                 </Link>
@@ -179,7 +176,7 @@ const Navbar = function Navbar(): JSX.Element {
                   <Disclosure.Button
                     key={item.name}
                     // bad practice To change
-                    className={classNames(
+                    className={ClassNamesLogic(
                       item.current
                         ? 'bg-gray-900 text-white block w-full '
                         : 'text-gray-300 hover:bg-gray-700 hover:text-white',

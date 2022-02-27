@@ -5,7 +5,7 @@ import telegramLogo from '../../assets/telegramLogo.svg';
 import twitterLogo from '../../assets/twitterLogo.svg';
 import discordLogo from '../../assets/discordLogo.svg';
 import CommunityCarousel from './components/CommunityCarousel';
-import WalletButton from '../../common/components/SolanaWallet/WalletButton';
+import WalletButton from '../../common/components/Solana/SolanaWallet/WalletButton';
 import FeatureCarousel from './components/FeatureCarousel';
 
 function HomePageExternal(): JSX.Element {
