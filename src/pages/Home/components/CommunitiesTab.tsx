@@ -27,7 +27,7 @@ export default function CommunitiesTab(): JSX.Element {
         (token) =>
           token.name
             ?.toLowerCase()
-            .indexOf(event.target.value.toLowerCase()) !== -1
+            .indexOf(event.target.value.toLowerCase()) !== -1 ?? false
       )
     );
   }
