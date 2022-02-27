@@ -5,9 +5,9 @@ import telegramLogo from '../../assets/telegramLogo.svg';
 import twitterLogo from '../../assets/twitterLogo.svg';
 import discordLogo from '../../assets/discordLogo.svg';
 import CommunityCarousel from './components/CommunityCarousel';
-import WalletButton from '../../common/components/SolanaWallet/WalletButton';
+import WalletButton from '../../common/components/Solana/SolanaWallet/WalletButton';
 import FeatureCarousel from './components/FeatureCarousel';
-import configData from '../../config.json';
+import appConfig from '../../config.js';
 
 function HomePageExternal(): JSX.Element {
   const [section2aFadeIn, setSection2aFadeIn] = useState(false);
@@ -116,7 +116,7 @@ function HomePageExternal(): JSX.Element {
           3. Post, like, share value!
         </div>
       </div>
-      {configData.LANDING_PAGE_SHOW_COMMUNITIES_SECTION && (
+      {appConfig.LANDING_PAGE_SHOW_COMMUNITIES_SECTION && (
         <div
           ref={section3Ref}
           className={`w-full mt-20
@@ -146,7 +146,7 @@ function HomePageExternal(): JSX.Element {
         </h2>
         <FeatureCarousel />
       </div>
-      {configData.LANDING_PAGE_SIGN_IN_ENABLED && (
+      {appConfig.LANDING_PAGE_SIGN_IN_ENABLED && (
         <div
           ref={section5Ref}
           className={`w-full mt-40

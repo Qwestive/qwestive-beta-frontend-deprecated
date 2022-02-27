@@ -11,6 +11,7 @@ import {
 } from '../../../recoil/userInfo';
 
 import SignoutButton from '../../../common/components/SelfProfile/SignoutButton';
+
 /*
 TODO:
 - style everything

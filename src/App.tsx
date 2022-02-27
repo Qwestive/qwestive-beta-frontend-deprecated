@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Navigate, Route } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import { ToastContainer } from 'react-toastify';
 
-import WalletProviders from './common/components/SolanaWallet/WalletProviders';
+import WalletProviders from './common/components/Solana/SolanaWallet/WalletProviders';
 import AuthManager from './common/components/Authentication/AuthManager';
 import OnlyAuthRoute from './common/components/Authentication/OnlyAuthRoute';
 import Navbar from './common/components/Navbar/Navbar';
