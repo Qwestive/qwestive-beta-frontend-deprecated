@@ -52,7 +52,7 @@ function HomePageExternal(): JSX.Element {
   ]);
 
   return (
-    <div className="flex flex-col w-11/12 md:w-10/12 mx-auto">
+    <div className="flex flex-col w-10/12 max-w-10/12 mx-auto">
       <div
         className="flex flex-col items-center 
         md:min-h-screen md:flex-row md:space-x-10 p-10">
@@ -93,24 +93,24 @@ function HomePageExternal(): JSX.Element {
           alt=""
         />
       </div>
-      <div className="w-full py-20 text-center text-3xl font-extrabold flex">
+      <div className="p-10 text-center text-3xl font-extrabold flex flex-col w-3/4  md:w-full mx-auto md:flex-row">
         <div
           ref={section2aRef}
-          className={`bg-gradient-to-r text-transparent bg-clip-text from-purple-500 to-blue-500 ${
+          className={`bg-gradient-to-r text-transparent bg-clip-text from-purple-500 to-blue-500 my-10 ${
             section2aFadeIn ? 'animate-fadeIn' : 'opacity-0'
           }`}>
           1. Connect your wallet
         </div>
         <div
           ref={section2bRef}
-          className={`bg-gradient-to-r text-transparent bg-clip-text from-blue-500 to-gray-500 ${
+          className={`bg-gradient-to-r text-transparent bg-clip-text from-blue-500 to-gray-500 my-10 ${
             section2bFadeIn ? 'animate-fadeIn' : 'opacity-0'
           }`}>
           2. Access your token&apos;s community
         </div>
         <div
           ref={section2cRef}
-          className={`text-color-secondary  ${
+          className={`text-color-secondary  my-10 ${
             section2cFadeIn ? 'animate-fadeIn' : 'opacity-0'
           }`}>
           3. Post, like, share value!
@@ -135,7 +135,7 @@ function HomePageExternal(): JSX.Element {
       )}
       <div
         ref={section4Ref}
-        className={`w-full mt-40 
+        className={`w-full py-10
         ${
           section4FadeIn ? 'animate-fadeInSlide' : 'opacity-0 translate-y-300'
         }`}>
