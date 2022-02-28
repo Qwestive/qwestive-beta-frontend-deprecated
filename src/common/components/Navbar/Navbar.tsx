@@ -11,20 +11,11 @@ import {
   userProfileImageAtom,
 } from '../../../recoil/userInfo';
 import defaultUserProfileImage from '../../../assets/defaultUserProfileImage.png';
-import WalletButton from '../SolanaWallet/WalletButton';
+import appConfig from '../../../config.js';
+import WalletButton from '../Solana/SolanaWallet/WalletButton';
+import ClassNamesLogic from '../Util/ClassNamesLogic';
 
-type classLogic = string | boolean;
-
-function classNames(...classes: classLogic[]): string {
-  return classes.filter(Boolean).join(' ');
-}
-// TODO(diegoolalde): this is a template for a navbar. It requires multiple
-// changes:
-// - Add support for wallet connection.
-// - Fetch user information once wallet is connected.
-// - Add workings.
-// - Add tests.
-// - Add state management through atoms.
+// Main navigation bar for the app.
 const Navbar = function Navbar(): JSX.Element {
   const userPublicKey = useRecoilValue(userPublicKeyAtom);
   const userName = useRecoilValue(userNameAtom);
@@ -42,7 +33,7 @@ const Navbar = function Navbar(): JSX.Element {
   ];
 
   return (
-    <Disclosure as="nav" className="bg-white">
+    <Disclosure as="nav" className="bg-gray-100">
       {({ open }) => (
         <>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -88,7 +79,7 @@ const Navbar = function Navbar(): JSX.Element {
                       <Link
                         key={item.name}
                         to={item.href}
-                        className={classNames(
+                        className={ClassNamesLogic(
                           !item.current && 'text-gray-400 hover:text-gray-600',
                           'px-3 py-2 rounded-md text-sm font-medium'
                         )}
@@ -100,9 +91,11 @@ const Navbar = function Navbar(): JSX.Element {
                 )}
               </div>
               <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <WalletButton />
-                </div>
+                {appConfig.LANDING_PAGE_SIGN_IN_ENABLED && (
+                  <div className="flex-shrink-0">
+                    <WalletButton />
+                  </div>
+                )}
                 {userPublicKey !== undefined && (
                   <div
                     className="hidden md:ml-4 md:flex-shrink-0 md:flex 
@@ -148,15 +141,15 @@ const Navbar = function Navbar(): JSX.Element {
                           className="origin-top-right absolute 
                         right-0 mt-2 w-48 rounded-md shadow-lg py-1 
                         bg-white ring-1 ring-black ring-opacity-5 
-                        focus:outline-none">
+                        focus:outline-none z-50">
                           {userNavigation.map((item) => (
                             <Menu.Item key={item.name}>
                               {({ active }) => (
                                 <Link
                                   to={item.href}
-                                  className={classNames(
+                                  className={ClassNamesLogic(
                                     active ? 'bg-gray-100' : '',
-                                    'block px-4 py-2 text-sm text-gray-700'
+                                    ' block px-4 py-2 text-sm text-gray-700'
                                   )}>
                                   {item.name}
                                 </Link>
@@ -179,7 +172,7 @@ const Navbar = function Navbar(): JSX.Element {
                   <Disclosure.Button
                     key={item.name}
                     // bad practice To change
-                    className={classNames(
+                    className={ClassNamesLogic(
                       item.current
                         ? 'bg-gray-900 text-white block w-full '
                         : 'text-gray-300 hover:bg-gray-700 hover:text-white',
