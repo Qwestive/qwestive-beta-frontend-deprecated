@@ -42,10 +42,10 @@ module.exports = {
         },
         fadeIn: {
           from: {
-            opacity: '0'
+            opacity: '0',
           },
           to: {
-            opacity: '100'
+            opacity: '100',
           },
         },
       }),
