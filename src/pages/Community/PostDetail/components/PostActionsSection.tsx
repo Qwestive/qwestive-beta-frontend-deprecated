@@ -1,25 +1,25 @@
 import React, { useState } from 'react';
 
 type PostActionsSectioData = {
-  numVotes: number;
-  numComments: number;
-  numViews: number;
-  tipReceivingPublicKey: string;
+  upVotes: Array<string> | undefined;
+  downVotes: Array<string> | undefined;
+  numComments: number | undefined;
+  tipReceivingPublicKey: string | undefined;
 };
 
 function PostActionsSection({
-  numVotes,
+  upVotes,
+  downVotes,
   numComments,
-  numViews,
   tipReceivingPublicKey,
 }: PostActionsSectioData): JSX.Element {
   const [value] = useState('');
 
   return (
     <div className="flex">
-      <div>{numVotes}</div>
-      <div>{numComments}</div>
-      <div>{numViews}</div>
+      <div>{upVotes?.length ?? 0}</div>
+      <div>{downVotes?.length ?? 0}</div>
+      <div>{numComments ?? 0}</div>
     </div>
   );
 }
