@@ -77,3 +77,16 @@ export interface IpostData {
   downVoteUserIds: [];
   numberOfComments: number;
 }
+
+export interface IpostComment {
+  id: string;
+  postId: string;
+  parentCommentId: string;
+  grandParentCommentId: string;
+  depth: number;
+  authorUserName: string;
+  authorPublicKey: string;
+  authorProfileImageUrl: string;
+  body: string;
+  numberOfChildrenComments: number;
+}

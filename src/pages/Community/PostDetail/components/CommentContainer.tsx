@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
-import { PostComment } from './Types';
-import { writePostToDb } from '../../../../common/services/Firebase/WriteToDb';
+import { IpostComment } from '../../../../common/types';
 
 type Comment = {
-  comment: PostComment;
+  comment: IpostComment;
+  childComments: Array<Comment>;
 };
 
-function CommentContainer({ comment }: Comment): JSX.Element {
+type CommentContainerProps = {
+  commentNode: Comment;
+};
+
+function CommentContainer({ commentNode }: CommentContainerProps): JSX.Element {
   const [voteCount, setVoteCount] = useState(0);
 
   const handleComment = () => {
     console.log('Comment');
-    writePostToDb();
   };
 
   const handleSendTip = () => {
@@ -31,15 +34,15 @@ function CommentContainer({ comment }: Comment): JSX.Element {
       <div className="flex justify-start content-center">
         <img
           className="-ml-3 h-6 w-6 rounded-full"
-          src={comment.authorProfileImageUrl}
+          src={commentNode.comment.authorProfileImageUrl}
           alt=""
         />
         <div className="text-xs text-color-secondary mx-4">
-          {comment.authorPublicKey}
+          {commentNode.comment.authorPublicKey}
         </div>
       </div>
       <div className="border-solid border-l-2 border-gray-300 pl-4">
-        <div className="text-sm my-2">{comment.body}</div>
+        <div className="text-sm my-2">{commentNode.comment.body}</div>
         <div className="flex text-xs text-color-secondary">
           <div className="flex mr-6">
             <button
@@ -92,9 +95,9 @@ function CommentContainer({ comment }: Comment): JSX.Element {
           </button>
         </div>
         <div>
-          {(comment?.comments ?? []).map((item) => (
-            <div key={item.id}>
-              <CommentContainer comment={item} />
+          {(commentNode.childComments ?? []).map((item) => (
+            <div key={item.comment.id}>
+              <CommentContainer commentNode={item} />
             </div>
           ))}
         </div>
