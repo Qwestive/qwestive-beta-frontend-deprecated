@@ -10,13 +10,13 @@ type CommentContainerProps = {
   commentNode: Comment;
 };
 
+/// Component which displays a single comment.
+///
+/// TODO: add logic to interact with a comment: add sub-comment, send tip,
+/// up/downvote.
 function CommentContainer({ commentNode }: CommentContainerProps): JSX.Element {
-  const [downVotes, setUpVotes] = useState(
-    commentNode?.comment?.upVoteUserIds ?? []
-  );
-  const [upVotes, setDownVotes] = useState(
-    commentNode?.comment?.downVoteUserIds ?? []
-  );
+  const [downVotes] = useState(commentNode?.comment?.upVoteUserIds ?? []);
+  const [upVotes] = useState(commentNode?.comment?.downVoteUserIds ?? []);
 
   const handleComment = () => {
     // TODO: add logic

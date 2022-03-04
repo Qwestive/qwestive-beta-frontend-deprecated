@@ -13,16 +13,24 @@ type Comment = {
   childComments: Array<Comment>;
 };
 
+/// Section of post detail page which shows all of the comments for a post.
+///
+/// TODO:
+/// - Add logic to paginate and sort comments.
+/// - Add styling for the case when comments fail to load.
 function CommentSection({ postId }: CommentSectionProps): JSX.Element {
   const [commentsFailedToLoad, setCommentsFailedToLoad] = useState(false);
   const [comments, setComments] = useState<Array<Comment>>([]);
+  const [numHiddenComments] = useState<number>(0);
 
+  // Builds a tree data structure of comments from an array of comments.
+  //
+  // There are no limits to the depth of the tree.
   function buildCommentTree(postComments: Array<IpostComment>): Array<Comment> {
     const topLevelComments: Array<IpostComment> = [];
     const commentByParentMap = new Map<string, Array<IpostComment>>();
 
     postComments.forEach((element) => {
-      console.log(element);
       if (element.depth === 0) {
         topLevelComments.push(element);
       }
@@ -54,6 +62,10 @@ function CommentSection({ postId }: CommentSectionProps): JSX.Element {
     setComments(buildCommentTree(await getCommentsForPost(targetPostId)));
   }
 
+  function showMoreComments() {
+    // TODO: add logic to show more comments.
+  }
+
   useEffect(() => {
     try {
       fetchCommentsForPost(postId);
@@ -64,17 +76,23 @@ function CommentSection({ postId }: CommentSectionProps): JSX.Element {
 
   return (
     <div>
-      <CommentInputContainer />
-      {comments.map((item) => (
-        <div key={item.comment.id}>
-          <CommentContainer commentNode={item} />
-        </div>
-      ))}
-      <button
-        type="button"
-        className="mt-2 ml-1 text-xs hover:text-qwestive-purple-hover">
-        10 more replies
-      </button>
+      {commentsFailedToLoad && <h1>Comments failed to load</h1>}
+      {!commentsFailedToLoad && (
+        <>
+          <CommentInputContainer />
+          {comments.map((item) => (
+            <div key={item.comment.id}>
+              <CommentContainer commentNode={item} />
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={showMoreComments}
+            className="mt-2 ml-1 text-xs hover:text-qwestive-purple-hover">
+            {numHiddenComments} more comments
+          </button>
+        </>
+      )}
     </div>
   );
 }

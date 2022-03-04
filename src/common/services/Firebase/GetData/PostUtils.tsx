@@ -1,6 +1,6 @@
 import { doc, getDoc } from 'firebase/firestore';
 import { Firestore } from '../FirebaseConfig';
-import { postConverter } from '../converters/PostConverter';
+import { postConverter } from '../Converters/PostConverter';
 import { IpostData } from '../../../types';
 
 export async function getPostInfo(postId: string): Promise<IpostData> {

@@ -4,7 +4,8 @@ import { IpostData } from '../../../types';
 // Firestore data converter
 export const postConverter = {
   toFirestore: (post: IpostData): DocumentData => {
-    /// Note, we don't simply return post because post contains id field which we do not wish DocumentData to contain.
+    // Note, we don't simply return post because post contains id field which
+    // we do not wish DocumentData to contain.
     return {
       postType: post.postType,
       accessTokenId: post.accessTokenId,
@@ -22,7 +23,8 @@ export const postConverter = {
     };
   },
   fromFirestore: (snapshot: DocumentData): IpostData => {
-    /// Note, we don't simply return data because IpostData requires id field which is missing from data.
+    // Note, we don't simply return data because IpostData requires id field
+    // which is missing from snapshot data.
     const data = snapshot.data();
     return {
       id: snapshot.id,

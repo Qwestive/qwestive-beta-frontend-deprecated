@@ -3,6 +3,8 @@ import { IpostComment } from '../../../types';
 
 export const commentConverter = {
   toFirestore(comment: IpostComment): DocumentData {
+    // Note, we don't simply return comment because comment contains id field
+    // which we do not wish DocumentData to contain.
     return {
       postId: comment.postId,
       parentCommentId: comment.parentCommentId,
@@ -17,6 +19,8 @@ export const commentConverter = {
     };
   },
   fromFirestore(snapshot: QueryDocumentSnapshot): IpostComment {
+    // Note, we don't simply return data because IpostComment requires id field
+    // which is missing from snapshot data.
     const data = snapshot.data();
     return {
       id: snapshot.id,

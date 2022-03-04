@@ -1,6 +1,6 @@
 import { query, collection, where, getDocs } from 'firebase/firestore';
 import { Firestore } from '../FirebaseConfig';
-import { commentConverter } from '../converters/CommentConverter';
+import { commentConverter } from '../Converters/CommentConverter';
 import { IpostComment } from '../../../types';
 
 // Fetch all comments for a post.
@@ -8,13 +8,10 @@ import { IpostComment } from '../../../types';
 export async function getCommentsForPost(
   postId: string
 ): Promise<Array<IpostComment>> {
-  const userQuery = query(
+  const q = query(
     collection(Firestore, 'comments'),
     where('postId', '==', postId)
   ).withConverter(commentConverter);
-  const userSnapshot = await getDocs(userQuery);
-  if (userSnapshot.docs.length !== 0) {
-    return userSnapshot.docs.map((item) => item.data());
-  }
-  throw new Error("User doesn't exist");
+  const snap = await getDocs(q);
+  return snap.docs.map((item) => item.data());
 }
