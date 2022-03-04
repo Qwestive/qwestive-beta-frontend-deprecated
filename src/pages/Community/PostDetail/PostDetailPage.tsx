@@ -45,7 +45,7 @@ function PostDetailPage(): JSX.Element {
             numComments={postData?.numberOfComments ?? 0}
             tipReceivingPublicKey={postData?.authorPublicKey ?? ''}
           />
-          <CommentSection comments={[]} />
+          <CommentSection postId={postId} />
         </>
       )}
     </div>

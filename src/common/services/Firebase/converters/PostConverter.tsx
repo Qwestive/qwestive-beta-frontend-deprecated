@@ -1,90 +1,15 @@
 import { DocumentData } from 'firebase/firestore';
 import { IpostData } from '../../../types';
 
-export default class Post implements IpostData {
-  postId: string;
-
-  postType: string;
-
-  accessTokenId: string;
-
-  accessMinimumTokenBalance: number;
-
-  authorUserName: string;
-
-  authorPublicKey: string;
-
-  authorProfileImageUrl: string;
-
-  title: string;
-
-  contents: string;
-
-  creationDate: Date;
-
-  upVoteUserIds: [];
-
-  downVoteUserIds: [];
-
-  numberOfComments: number;
-
-  constructor(
-    postId: string,
-    postType: string,
-    accessTokenId: string,
-    accessMinimumTokenBalance: number,
-    authorUserName: string,
-    authorPublicKey: string,
-    authorProfileImageUrl: string,
-    title: string,
-    contents: string,
-    creationDate: Date,
-    upVoteUserIds: [],
-    downVoteUserIds: [],
-    numberOfComments: number
-  ) {
-    this.postId = postId;
-    this.postType = postType;
-    this.accessTokenId = accessTokenId;
-    this.accessMinimumTokenBalance = accessMinimumTokenBalance;
-    this.authorUserName = authorUserName;
-    this.authorPublicKey = authorPublicKey;
-    this.authorProfileImageUrl = authorProfileImageUrl;
-    this.title = title;
-    this.contents = contents;
-    this.creationDate = creationDate;
-    this.upVoteUserIds = upVoteUserIds;
-    this.downVoteUserIds = downVoteUserIds;
-    this.numberOfComments = numberOfComments;
-  }
-
-  toString(): string {
-    return `Post {
-            ID: ${this.postId}
-            postType: ${this.postType}
-            accessTokenId: ${this.accessTokenId}
-            accessMinimumTokenBalance: ${this.accessMinimumTokenBalance},
-            authorUserName: ${this.authorUserName},
-            authorPublicKey: ${this.authorPublicKey},
-            authorProfileImageUrl: ${this.authorProfileImageUrl},
-            title: ${this.title},
-            contents: ${this.contents},
-            creationDate: ${this.creationDate},
-            upVoteUserIds: ${this.upVoteUserIds},
-            downVoteUserIds: ${this.downVoteUserIds},
-            numberOfComments: ${this.numberOfComments}
-        }`;
-  }
-}
-
 // Firestore data converter
 export const postConverter = {
   toFirestore: (post: IpostData): DocumentData => {
+    /// Note, we don't simply return post because post contains id field which we do not wish DocumentData to contain.
     return {
-      ID: post.postId,
       postType: post.postType,
       accessTokenId: post.accessTokenId,
       accessMinimumTokenBalance: post.accessMinimumTokenBalance,
+      authorUserId: post.authorUserId,
       authorUserName: post.authorUserName,
       authorPublicKey: post.authorPublicKey,
       authorProfileImageUrl: post.authorProfileImageUrl,
@@ -97,21 +22,23 @@ export const postConverter = {
     };
   },
   fromFirestore: (snapshot: DocumentData): IpostData => {
+    /// Note, we don't simply return data because IpostData requires id field which is missing from data.
     const data = snapshot.data();
-    return new Post(
-      data.postId,
-      data.postType,
-      data.accessTokenId,
-      data.accessMinimumTokenBalance,
-      data.authorUserName,
-      data.authorPublicKey,
-      data.authorProfileImageUrl,
-      data.title,
-      data.contents,
-      data.creationDate,
-      data.upVoteUserIds,
-      data.downVoteUserIds,
-      data.numberOfComments
-    );
+    return {
+      id: snapshot.id,
+      postType: data.postType,
+      accessTokenId: data.accessTokenId,
+      accessMinimumTokenBalance: data.accessMinimumTokenBalance,
+      authorUserId: data.authorUserId,
+      authorUserName: data.authorUserName,
+      authorPublicKey: data.authorPublicKey,
+      authorProfileImageUrl: data.authorProfileImageUrl,
+      title: data.title,
+      contents: data.contents,
+      creationDate: data.creationDate,
+      upVoteUserIds: data.upVoteUserIds,
+      downVoteUserIds: data.downVoteUserIds,
+      numberOfComments: data.numberOfComments,
+    } as IpostData;
   },
 };

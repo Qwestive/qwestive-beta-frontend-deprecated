@@ -63,18 +63,19 @@ export interface IsignedMessage {
 }
 
 export interface IpostData {
-  postId: string;
+  id: string;
   postType: string;
   accessTokenId: string;
   accessMinimumTokenBalance: number;
+  authorUserId: string;
   authorUserName: string;
   authorPublicKey: string;
   authorProfileImageUrl: string;
   title: string;
   contents: string;
   creationDate: Date;
-  upVoteUserIds: [];
-  downVoteUserIds: [];
+  upVoteUserIds: Array<string>;
+  downVoteUserIds: Array<string>;
   numberOfComments: number;
 }
 
@@ -82,11 +83,12 @@ export interface IpostComment {
   id: string;
   postId: string;
   parentCommentId: string;
-  grandParentCommentId: string;
   depth: number;
+  authorUserId: string;
   authorUserName: string;
   authorPublicKey: string;
   authorProfileImageUrl: string;
   body: string;
-  numberOfChildrenComments: number;
+  upVoteUserIds: Array<string>;
+  downVoteUserIds: Array<string>;
 }

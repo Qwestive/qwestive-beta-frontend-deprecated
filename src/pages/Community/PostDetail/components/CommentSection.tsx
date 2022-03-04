@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { IpostComment } from '../../../../common/types';
 import CommentContainer from './CommentContainer';
 import CommentInputContainer from './CommentInputContainer';
+import { getCommentsForPost } from '../../../../common/services/Firebase/GetData/CommentUtils';
 
 type CommentSectionProps = {
-  postId: string;
+  postId: string | undefined;
 };
 
 type Comment = {
@@ -21,6 +22,7 @@ function CommentSection({ postId }: CommentSectionProps): JSX.Element {
     const commentByParentMap = new Map<string, Array<IpostComment>>();
 
     postComments.forEach((element) => {
+      console.log(element);
       if (element.depth === 0) {
         topLevelComments.push(element);
       }
@@ -49,7 +51,7 @@ function CommentSection({ postId }: CommentSectionProps): JSX.Element {
     if (targetPostId === undefined || targetPostId === null) {
       throw new Error('Invalid post ID: null');
     }
-    buildCommentTree(await getCommentsForPost(targetPostId));
+    setComments(buildCommentTree(await getCommentsForPost(targetPostId)));
   }
 
   useEffect(() => {

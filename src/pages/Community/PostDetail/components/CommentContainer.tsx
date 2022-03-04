@@ -11,22 +11,27 @@ type CommentContainerProps = {
 };
 
 function CommentContainer({ commentNode }: CommentContainerProps): JSX.Element {
-  const [voteCount, setVoteCount] = useState(0);
+  const [downVotes, setUpVotes] = useState(
+    commentNode?.comment?.upVoteUserIds ?? []
+  );
+  const [upVotes, setDownVotes] = useState(
+    commentNode?.comment?.downVoteUserIds ?? []
+  );
 
   const handleComment = () => {
-    console.log('Comment');
+    // TODO: add logic
   };
 
   const handleSendTip = () => {
-    console.log('Send Tip');
+    // TODO: add logic
   };
 
   const handleUpvote = () => {
-    console.log('Upvote');
+    // TODO: add logic
   };
 
   const handleDownVote = () => {
-    console.log('Downvote');
+    // TODO: add logic
   };
 
   return (
@@ -62,7 +67,7 @@ function CommentContainer({ commentNode }: CommentContainerProps): JSX.Element {
                 />
               </svg>
             </button>
-            <div className="mx-1">{voteCount}</div>
+            <div className="mx-1">{upVotes.length - downVotes.length}</div>
             <button
               className="hover:text-qwestive-purple-hover"
               type="button"
