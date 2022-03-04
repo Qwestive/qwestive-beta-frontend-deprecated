@@ -107,9 +107,9 @@ function HomePageExternal(): JSX.Element {
         <div
           ref={section2bRef}
           className={`bg-gradient-to-r text-transparent bg-clip-text
-          from-blue-500 to-gray-500 my-10 ${
-            section2bFadeIn ? 'animate-fadeIn' : 'opacity-0'
-          }`}>
+            from-blue-500 to-gray-500 my-10 ${
+              section2bFadeIn ? 'animate-fadeIn' : 'opacity-0'
+            }`}>
           2. Access your token&apos;s community
         </div>
         <div
