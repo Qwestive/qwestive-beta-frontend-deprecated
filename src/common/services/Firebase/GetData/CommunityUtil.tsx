@@ -1,6 +1,6 @@
 import { doc, getDoc } from 'firebase/firestore';
 import { Firestore } from '../FirebaseConfig';
-import { Icommunity } from '../../../types';
+import { Icommunity, Icategories } from '../../../types';
 
 export async function getCommunityInfo(
   mint: string
@@ -13,6 +13,18 @@ export async function getCommunityInfo(
       cId: mint,
       memberCount: communityDoc.data().memberCount,
     };
+  }
+  return undefined;
+}
+
+export async function getPostCategories(
+  cId: string
+): Promise<Array<Icategories> | undefined> {
+  const categorieRef = doc(Firestore, 'categories', cId);
+  const communityDoc = await getDoc(categorieRef);
+
+  if (communityDoc.exists()) {
+    return communityDoc.data().categories;
   }
   return undefined;
 }

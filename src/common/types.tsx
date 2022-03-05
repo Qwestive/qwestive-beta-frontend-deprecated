@@ -3,6 +3,13 @@ import { ReactNode, Dispatch, SetStateAction } from 'react';
 import { SetterOrUpdater } from 'recoil';
 import { DocumentData } from 'firebase/firestore';
 
+export type TpostSorting = 'New' | 'Top' | 'Poll' | 'Bounty';
+
+export interface Icategories {
+  name: string;
+  count: number;
+}
+
 export interface Icommunity {
   cId: string;
   memberCount: string;

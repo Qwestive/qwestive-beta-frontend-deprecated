@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { TokenInfo } from '@solana/spl-token-registry';
 
 import { Icommunity } from '../../../../common/types';
