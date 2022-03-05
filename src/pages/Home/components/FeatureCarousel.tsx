@@ -77,9 +77,8 @@ function FeatureCarousel(): JSX.Element {
     ),
   ];
 
-  const handleTabSelect = (tabName: string) => {
+  const handleTabSelect = (tabName: string) =>
     setCurrentTabIdx(tabs.find((elem) => elem.name === tabName)?.idx ?? 0);
-  };
 
   return (
     <div>

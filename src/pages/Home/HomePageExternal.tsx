@@ -94,14 +94,14 @@ function HomePageExternal(): JSX.Element {
         />
       </div>
       <div
-        className="p-10 text-center text-3xl font-extrabold flex flex-col w-3/4
-          md:w-full mx-auto md:flex-row">
+        className="p-10 text-center text-3xl font-extrabold flex flex-colw-3/4
+         md:w-full mx-auto md:flex-row">
         <div
           ref={section2aRef}
           className={`bg-gradient-to-r text-transparent bg-clip-text
-            from-purple-500 to-blue-500 my-10 ${
-              section2aFadeIn ? 'animate-fadeIn' : 'opacity-0'
-            }`}>
+          from-purple-500 to-blue-500 my-10 ${
+            section2aFadeIn ? 'animate-fadeIn' : 'opacity-0'
+          }`}>
           1. Connect your wallet
         </div>
         <div

@@ -61,3 +61,34 @@ export interface IsignedMessage {
   signature: Uint8Array | undefined;
   publicKeyBytes: Uint8Array | undefined;
 }
+
+export interface IpostData {
+  id: string;
+  postType: string;
+  accessTokenId: string;
+  accessMinimumTokenBalance: number;
+  authorUserId: string;
+  authorUserName: string;
+  authorPublicKey: string;
+  authorProfileImageUrl: string;
+  title: string;
+  contents: string;
+  creationDate: Date;
+  upVoteUserIds: Array<string>;
+  downVoteUserIds: Array<string>;
+  numberOfComments: number;
+}
+
+export interface IpostComment {
+  id: string;
+  postId: string;
+  parentCommentId: string;
+  depth: number;
+  authorUserId: string;
+  authorUserName: string;
+  authorPublicKey: string;
+  authorProfileImageUrl: string;
+  body: string;
+  upVoteUserIds: Array<string>;
+  downVoteUserIds: Array<string>;
+}
