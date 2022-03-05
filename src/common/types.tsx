@@ -3,12 +3,17 @@ import { ReactNode, Dispatch, SetStateAction } from 'react';
 import { SetterOrUpdater } from 'recoil';
 import { DocumentData } from 'firebase/firestore';
 
+export interface Icommunity {
+  cId: string;
+  memberCount: string;
+}
+
 export interface ItokenOwned {
   mint: string;
   amountHeld: number;
   name: string | undefined;
   imageUrl: string | undefined;
-  communityData: DocumentData | undefined;
+  communityData: Icommunity | undefined;
 }
 
 export interface IimageCropper {

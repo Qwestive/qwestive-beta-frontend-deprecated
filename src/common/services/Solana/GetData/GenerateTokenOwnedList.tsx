@@ -18,7 +18,8 @@ export default async function GenerateTokenOwnedList(
 
   for (let i = 0; i < tokenOwned.length; i += 1) {
     const tokenInfos = tokenRegistry.get(tokenOwned[i].mint);
-    const communityData = getCommunityInfo(tokenOwned[i].mint);
+    /* eslint-disable-next-line no-await-in-loop */
+    const communityData = await getCommunityInfo(tokenOwned[i].mint);
     if (tokenInfos !== undefined) {
       // add to the beginning
       tokenOwnedList.unshift({
