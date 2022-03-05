@@ -1,6 +1,8 @@
 import React from 'react';
 import { PlusIcon } from '@heroicons/react/solid';
 
+import { Link } from 'react-router-dom';
+
 import ClassNamesLogic from '../../../../common/components/Util/ClassNamesLogic';
 import {
   Icommunity,
@@ -12,6 +14,7 @@ import {
 type TpostDisplayList = {
   currentPostSorting: TpostSorting;
   setCurrentPostSorting: React.Dispatch<React.SetStateAction<TpostSorting>>;
+  communityInfo: Icommunity | undefined;
 };
 
 const postSortingTypes = ['New', 'Top', 'Poll', 'Bounty'] as TpostSorting[];
@@ -19,10 +22,11 @@ const postSortingTypes = ['New', 'Top', 'Poll', 'Bounty'] as TpostSorting[];
 export default function PostDisplayList({
   currentPostSorting,
   setCurrentPostSorting,
+  communityInfo,
 }: TpostDisplayList): JSX.Element {
   return (
     <div className="mt-5 px-3">
-      {/* Filters */}
+      {/* Filters buttons */}
       <div className=" flex justify-between items-center">
         <div className="space-x-3 flex overflow-auto hideScrollBar">
           {postSortingTypes.map((sortinType) => (
@@ -39,27 +43,28 @@ export default function PostDisplayList({
             </button>
           ))}
         </div>
+        {/* Large screen post button */}
         <div className="hidden sm:block">
-          <button
-            type="button"
-            className="btn-filled rounded-3xl py-2.5"
-            onClick={() => console.log('newpost')}>
+          <Link to={`/new-post/${communityInfo?.cId}`}>
+            <button type="button" className="btn-filled rounded-3xl py-2.5">
+              <p className="flex items-center gap-1 ">
+                <PlusIcon className="h-5" /> Post
+              </p>
+            </button>
+          </Link>
+        </div>
+      </div>
+      {/* Post List */}
+      <div>Post </div>
+      {/* Small screen post button */}
+      <div className="block sm:hidden absolute bottom-10 right-5 z-10">
+        <Link to={`/new-post/${communityInfo?.cId}`}>
+          <button type="button" className="btn-filled rounded-3xl py-2.5">
             <p className="flex items-center gap-1 ">
               <PlusIcon className="h-5" /> Post
             </p>
           </button>
-        </div>
-      </div>
-      <p>Post </p>
-      <div className="block sm:hidden absolute bottom-10 right-5 z-40">
-        <button
-          type="button"
-          className="btn-filled rounded-3xl py-2.5"
-          onClick={() => console.log('newpost')}>
-          <p className="flex items-center gap-1 ">
-            <PlusIcon className="h-5" /> Post
-          </p>
-        </button>
+        </Link>
       </div>
     </div>
   );

@@ -103,6 +103,7 @@ export default function MainCommunityPage({
           <PostDisplayList
             currentPostSorting={currentPostSorting}
             setCurrentPostSorting={setCurrentPostSorting}
+            communityInfo={communityInfo}
           />
         </div>
       </div>

@@ -15,7 +15,6 @@ import { getCommunityInfo } from '../../../common/services/Firebase/GetData/Comm
 TODO: check credentials
 */
 
-/* eslint-disable no-nested-ternary */
 export default function CommunityPage(): JSX.Element {
   const { cId } = useParams<'cId'>();
   const tokenRegistry = useTokenRegistry();

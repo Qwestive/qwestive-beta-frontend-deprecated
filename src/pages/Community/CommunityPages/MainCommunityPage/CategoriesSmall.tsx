@@ -21,11 +21,6 @@ export default function CategoriesSmall({
   setCurrentCategorie,
   currentCategorie,
 }: TcategoriesSmall): JSX.Element {
-  const [categoriesViewCounter, setCategorieViewCounter] = useState(1);
-  const [subsetCategoriesList, setSubsetCategoriesList] = useState(
-    categoriesList?.slice(0, categoriesViewCounter * 5)
-  );
-
   return (
     <div
       className=" w-full  px-3
@@ -76,17 +71,16 @@ export default function CategoriesSmall({
              max-h-60 overflow-auto hideScrollBar
              ">
               <div className="py-1">
-                <Menu.Items
-                  className={ClassNamesLogic(
-                    currentCategorie === 'All'
-                      ? 'bg-gray-200'
-                      : 'hover:bg-gray-100',
-                    'py-1'
-                  )}>
+                <Menu.Item>
                   <button
                     type="button"
-                    className="w-full"
-                    onClick={() => setCurrentCategorie('All')}>
+                    className={ClassNamesLogic(
+                      currentCategorie === 'All'
+                        ? 'bg-gray-200'
+                        : 'hover:bg-gray-100',
+                      'py-1 w-full'
+                    )}
+                    onClick={() => setCurrentCategorie('All Topics')}>
                     <div className="flex">
                       <p
                         className="px-4 w-52 truncate 
@@ -95,20 +89,18 @@ export default function CategoriesSmall({
                       </p>
                     </div>
                   </button>
-                </Menu.Items>
-                {subsetCategoriesList !== undefined &&
-                  subsetCategoriesList.map((categorie) => (
-                    <Menu.Items
-                      key={categorie.name}
-                      className={ClassNamesLogic(
-                        currentCategorie === categorie.name
-                          ? 'bg-gray-200'
-                          : 'hover:bg-gray-100',
-                        'py-1'
-                      )}>
+                </Menu.Item>
+                {categoriesList !== undefined &&
+                  categoriesList.map((categorie) => (
+                    <Menu.Item key={categorie.name}>
                       <button
                         type="button"
-                        className="w-full"
+                        className={ClassNamesLogic(
+                          currentCategorie === categorie.name
+                            ? 'bg-gray-200'
+                            : 'hover:bg-gray-100',
+                          'py-1 w-full'
+                        )}
                         onClick={() => setCurrentCategorie(categorie.name)}>
                         <div className="flex">
                           <p
@@ -119,83 +111,13 @@ export default function CategoriesSmall({
                           <p className="pr-3"> {categorie.count}</p>
                         </div>
                       </button>
-                    </Menu.Items>
+                    </Menu.Item>
                   ))}
               </div>
             </Menu.Items>
           </Transition>
         </Menu>
       </div>
-      {/* <div className="text-base text-color-primary mt-8">
-        <p className="font-bold px-4">CATEGORIES</p>
-        <div className="mt-3 space-y-1.5">
-          <div
-            className={ClassNamesLogic(
-              currentCategorie === 'All' ? 'bg-gray-300' : 'hover:bg-gray-200'
-            )}>
-            <button type="button" className="w-full">
-              <p className="px-4 font-medium text-left ">All</p>
-            </button>
-          </div>
-          {subsetCategoriesList !== undefined &&
-            subsetCategoriesList.map((categorie) => (
-              <div
-                key={categorie.name}
-                className={ClassNamesLogic(
-                  currentCategorie === categorie.name
-                    ? 'bg-gray-300'
-                    : 'hover:bg-gray-200'
-                )}>
-                <button
-                  type="button"
-                  className="w-full"
-                  onClick={() => setCurrentCategorie(categorie.name)}>
-                  <div className="flex">
-                    <p
-                      className="px-4 w-52 truncate 
-                    overflow-hidden font-medium text-left  ">
-                      {categorie.name}
-                    </p>
-                    <p className="pr-3"> {categorie.count}</p>
-                  </div>
-                </button>
-              </div>
-            ))}
-          {categoriesList !== undefined &&
-            subsetCategoriesList !== undefined &&
-            subsetCategoriesList.length < categoriesList.length && (
-              <button
-                type="button"
-                className="px-3 text-qwestive-purple font-medium underline"
-                onClick={() => {
-                  setSubsetCategoriesList(
-                    categoriesList?.slice(0, (categoriesViewCounter + 1) * 5)
-                  );
-                  setCategorieViewCounter(categoriesViewCounter + 1);
-                }}>
-                View more
-              </button>
-            )}
-          {categoriesList !== undefined &&
-            subsetCategoriesList !== undefined &&
-            subsetCategoriesList.length > 5 &&
-            categoriesViewCounter > 1 && (
-              <button
-                type="button"
-                className="px-3 text-qwestive-purple font-medium underline"
-                onClick={() => {
-                  setSubsetCategoriesList(
-                    categoriesList?.slice(0, (categoriesViewCounter - 1) * 5)
-                  );
-                  setCategorieViewCounter(categoriesViewCounter - 1);
-                }}>
-                View Less
-              </button>
-            )}
-        </div>
-
-        <div className="border-b border-gray-900 pt-3" />
-      </div> */}
     </div>
   );
 }
