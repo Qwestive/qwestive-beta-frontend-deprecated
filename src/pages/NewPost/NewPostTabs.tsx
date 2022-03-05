@@ -16,7 +16,7 @@ export default function NewPostTabs(): JSX.Element {
   return (
     <div className="">
       <div className="text-xl mt-1 font-bold text-color-primary">New post</div>
-      <div>
+      <div className="bg-white">
         {/* Small tabs dropdown */}
         <div className="mt-4 sm:hidden">
           <Listbox value={currentTab} onChange={setCurrentTab}>
@@ -28,7 +28,7 @@ export default function NewPostTabs(): JSX.Element {
                 border-gray-200 
                 bg-white
                 text-color-primary
-                rounded-md shadow-sm pl-3 pr-10 py-2 
+                 shadow-sm pl-3 pr-10 py-2 
                 text-left 
                 font-medium text-sm">
                   <span className="block truncate">
@@ -99,7 +99,7 @@ export default function NewPostTabs(): JSX.Element {
           </Listbox>
         </div>
         {/* Large tabs */}
-        <div className=" mt-4 hidden sm:block">
+        <div className=" mt-4 hidden sm:block bg-white">
           <div className=" ">
             <nav className="-mb-px flex" aria-label="Tabs">
               {tabs.map((tab, idx) => (
