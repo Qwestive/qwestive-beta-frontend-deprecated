@@ -13,7 +13,7 @@ import {
   Strategy,
 } from '@solana/spl-token-registry';
 
-import { SolanaNetwork } from '../../services/Solana/NetworkConfig';
+import appConfig from '../../../config.js';
 
 const TokenRegistryContext = createContext<TokenInfoMap>(new Map());
 
@@ -28,7 +28,9 @@ export function TokenRegistryProvider({
     new TokenListProvider()
       .resolve(Strategy.Solana)
       .then((tokens: TokenListContainer) => {
-        const tokenList = tokens.filterByClusterSlug(SolanaNetwork).getList();
+        const tokenList = tokens
+          .filterByClusterSlug(appConfig.SOLANA_NETWORK)
+          .getList();
 
         setTokenRegistry(
           tokenList.reduce((map: TokenInfoMap, item: TokenInfo) => {

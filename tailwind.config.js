@@ -25,18 +25,27 @@ module.exports = {
       // that is animation class
       animation: {
         fadeIn: 'fadeIn 1.5s ease-in',
+        fadeInSlide: 'fadeInSlide 1.5s ease-in',
       },
 
       // that is actual animation
       keyframes: (theme) => ({
-        fadeIn: {
+        fadeInSlide: {
           from: {
             opacity: '0',
-            transform: 'translateY(300px)',
+            transform: 'translateY(200px)',
           },
           to: {
             opacity: '100',
             transform: 'translateY(0px)',
+          },
+        },
+        fadeIn: {
+          from: {
+            opacity: '0',
+          },
+          to: {
+            opacity: '100',
           },
         },
       }),

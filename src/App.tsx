@@ -11,6 +11,7 @@ import Navbar from './common/components/Navbar/Navbar';
 import HomePage from './pages/Home/HomePage';
 import UserProfilePage from './pages/UserProfile/UserProfilePage';
 import ProfileSettingPage from './pages/UserProfile/SelfProfile/ProfileSettingPage';
+import PostDetailPage from './pages/Community/PostDetail/PostDetailPage';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -40,6 +41,7 @@ function App(): JSX.Element {
                 path="/profile/settings"
                 element={<OnlyAuthRoute element={<ProfileSettingPage />} />}
               />
+              <Route path="/post/:postId" element={<PostDetailPage />} />
             </Routes>
           </AuthManager>
         </BrowserRouter>

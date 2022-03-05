@@ -39,35 +39,46 @@ function FeatureCarousel(): JSX.Element {
       'Conversations',
       0,
       'Exclusive Conversations',
-      'Member only discussions',
+      'Meaningful conversations where only those who meet token requirements' +
+        ' can participate.',
+      featureImage
+    ),
+    new Tab(
+      'Polls',
+      1,
+      'Exclusive Polls',
+      'Polls that provide a clear signal from those whose opnion actually ' +
+        'matters, token holders.',
       featureImage
     ),
     new Tab(
       'Votes',
-      1,
+      2,
       'On-Chain Votes',
-      'Votes and Polls for the community',
+      'Verifiable on-chain votes to make important community decisions in ' +
+        'just one click.',
       featureImage
     ),
     new Tab(
       'Bounties',
-      2,
+      3,
       'On-Chain Bounties and Contests',
-      'Reward valuable community contributions',
+      'On-chain bounties and contests that allow rewarding and coordinating ' +
+        'community contributions.',
       featureImage
     ),
     new Tab(
-      'More',
-      3,
+      'More...',
+      4,
       'Airdrops, Tips, and more!',
-      'Any and all crypto-native interactions',
+      'Communities are empowered with simple, blockchain-enabled tools to ' +
+        'exchange value!',
       featureImage
     ),
   ];
 
-  const handleTabSelect = (tabName: string) => {
+  const handleTabSelect = (tabName: string) =>
     setCurrentTabIdx(tabs.find((elem) => elem.name === tabName)?.idx ?? 0);
-  };
 
   return (
     <div>
