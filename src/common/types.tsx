@@ -1,7 +1,6 @@
 import { PublicKey } from '@solana/web3.js';
 import { ReactNode, Dispatch, SetStateAction } from 'react';
 import { SetterOrUpdater } from 'recoil';
-import { DocumentData } from 'firebase/firestore';
 
 export type TpostSorting = 'New' | 'Top' | 'Poll' | 'Bounty';
 

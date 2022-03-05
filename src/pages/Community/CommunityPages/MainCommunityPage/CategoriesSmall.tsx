@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import { TokenInfo } from '@solana/spl-token-registry';
 
 import { Menu, Transition } from '@headlessui/react';

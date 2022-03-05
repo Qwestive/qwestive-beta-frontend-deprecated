@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import NewPostTabs from './NewPostTabs';
-
-import { getCommunityInfo } from '../../common/services/Firebase/GetData/CommunityUtil';
-import { Icommunity } from '../../common/types';
 
 /*
 TODO: check credentials
@@ -17,15 +14,12 @@ export default function NewPostPage(): JSX.Element {
   const [hasAccess, setHasAccess] = useState(false);
   const [loadingPage, setLoadingPage] = useState(true);
 
-  const [communityInfo, setCommunityInfo] = useState<Icommunity | undefined>();
-
   async function handleLoadPage() {
     setLoadingPage(true);
     if (cId !== undefined) {
       try {
         // check credentials
         setHasAccess(true);
-        setCommunityInfo(await getCommunityInfo(cId));
 
         /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
       } catch (error: any) {
@@ -41,7 +35,14 @@ export default function NewPostPage(): JSX.Element {
 
   return (
     <div className="max-w-5xl mx-auto px-2 mt-5">
-      {loadingPage ? <p>Loading..</p> : <NewPostTabs />}
+      {loadingPage && <p>Loading..</p>}
+      {!loadingPage && hasAccess && <NewPostTabs />}
+      {!loadingPage && !hasAccess && (
+        <div>
+          <p>You do Not have access</p>
+          <Link to="/">Go back home</Link>
+        </div>
+      )}
     </div>
   );
 }

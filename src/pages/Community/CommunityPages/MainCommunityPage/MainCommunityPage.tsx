@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { TokenInfo } from '@solana/spl-token-registry';
+import { toast } from 'react-toastify';
 
 import { getPostCategories } from '../../../../common/services/Firebase/GetData/CommunityUtil';
+import { queryPosts } from '../../../../common/services/Firebase/GetData/PostUtils';
 
 import CategoriesLarge from './CategoriesLarge';
 import CategoriesSmall from './CategoriesSmall';
@@ -22,11 +24,13 @@ type TnotAccessPage = {
 /* 
 for when we have members 
 const tabs = [
-  { name: 'home', idx: 0 },
-  { name: 'members', idx: 1 },
+  { name: 'home' },
+  { name: 'members' },
 ]; */
 
-const falseCategories = [
+/* 
+
+const fakeCategories = [
   { name: 'Ideas', count: 10 },
   { name: 'eeee', count: 10 },
   { name: 'svsvdvdfsv', count: 10 },
@@ -45,7 +49,7 @@ const falseCategories = [
   },
   { name: 'Finance', count: 10 },
   { name: 'Pooo', count: 10 },
-];
+]; */
 
 export default function MainCommunityPage({
   communityInfo,
@@ -55,7 +59,7 @@ export default function MainCommunityPage({
 
   const [categoriesList, setCategoriesList] = useState<
     Array<Icategories> | undefined
-  >(falseCategories);
+  >();
 
   const [postList, setPostList] = useState<Array<IpostData> | undefined>();
   const [currentPostSorting, setCurrentPostSorting] =
@@ -63,20 +67,45 @@ export default function MainCommunityPage({
 
   const [currentCategorie, setCurrentCategorie] = useState('All Topics');
 
+  const [postsLoading, setPostsLoading] = useState(true);
+
   async function GetPosts() {
-    // fetch posts
-    console.log('getting posts');
+    if (communityInfo?.cId !== undefined) {
+      setPostsLoading(true);
+      try {
+        setPostList(
+          await queryPosts(
+            communityInfo.cId,
+            currentPostSorting,
+            currentCategorie
+          )
+        );
+
+        /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+      } catch (error: any) {
+        toast.error('Failed to load posts');
+      }
+      setPostsLoading(false);
+    }
   }
 
   async function GetCategories() {
     if (communityInfo !== undefined) {
-      setCategoriesList(await getPostCategories(communityInfo.cId));
+      try {
+        setCategoriesList(await getPostCategories(communityInfo.cId));
+        /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+      } catch (error: any) {
+        toast.error('Failed to read post categories');
+      }
     }
   }
 
   useEffect(() => {
-    GetCategories();
     GetPosts();
+  }, [currentPostSorting, currentCategorie]);
+
+  useEffect(() => {
+    GetCategories();
   }, []);
 
   return (
@@ -104,6 +133,8 @@ export default function MainCommunityPage({
             currentPostSorting={currentPostSorting}
             setCurrentPostSorting={setCurrentPostSorting}
             communityInfo={communityInfo}
+            postList={postList}
+            postsLoading={postsLoading}
           />
         </div>
       </div>

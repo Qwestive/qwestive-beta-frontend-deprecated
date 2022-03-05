@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { TokenInfo } from '@solana/spl-token-registry';
 
 import NotAccessPage from './Components/NotAccessPage';
+import NewCommunityPage from './MainCommunityPage/NewCommunityPage';
 import MainCommunityPage from './MainCommunityPage/MainCommunityPage';
 import { Icommunity } from '../../../common/types';
 
@@ -62,12 +63,21 @@ export default function CommunityPage(): JSX.Element {
       {!loadingPage && !hasAccess && (
         <NotAccessPage communityInfo={communityInfo} tokenInfo={tokenInfo} />
       )}
-      {!loadingPage && hasAccess && (
-        <MainCommunityPage
-          communityInfo={communityInfo}
-          tokenInfo={tokenInfo}
-        />
-      )}
+      {!loadingPage &&
+        hasAccess &&
+        cId !== undefined &&
+        communityInfo !== undefined && (
+          <MainCommunityPage
+            communityInfo={communityInfo}
+            tokenInfo={tokenInfo}
+          />
+        )}
+      {!loadingPage &&
+        hasAccess &&
+        cId !== undefined &&
+        communityInfo === undefined && (
+          <NewCommunityPage cId={cId} tokenInfo={tokenInfo} />
+        )}
     </div>
   );
 }

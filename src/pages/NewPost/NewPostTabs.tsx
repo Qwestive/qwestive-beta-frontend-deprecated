@@ -58,7 +58,7 @@ export default function NewPostTabs(): JSX.Element {
                     bg-white
                     text-color-primary
                     dark:text-neutral-200
-                    shadow-lg max-h-60 
+                     max-h-60 
                     rounded-md py-1 
                   focus:outline-none
                   font-medium text-sm
