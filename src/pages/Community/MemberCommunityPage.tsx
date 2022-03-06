@@ -2,21 +2,20 @@ import React, { useEffect, useState } from 'react';
 import { TokenInfo } from '@solana/spl-token-registry';
 import { toast } from 'react-toastify';
 
-import { getPostCategories } from '../../../../common/services/Firebase/GetData/CommunityUtil';
-import { queryPosts } from '../../../../common/services/Firebase/GetData/PostUtils';
-
-import CategoriesLarge from './CategoriesLarge';
-import CategoriesSmall from './CategoriesSmall';
-import PostDisplayList from './PostDisplayList';
+import { getPostCategories } from '../../common/services/Firebase/GetData/CommunityUtil';
+import { queryPosts } from '../../common/services/Firebase/GetData/PostUtils';
+import CategoriesLarge from './components/CategoriesLarge';
+import CategoriesSmall from './components/CategoriesSmall';
+import PostDisplayList from './Feed/PostDisplayList';
 
 import {
   Icommunity,
   IpostData,
   Icategories,
   TpostSorting,
-} from '../../../../common/types';
+} from '../../common/types';
 
-type TnotAccessPage = {
+type TmemberCommunityPage = {
   communityInfo: Icommunity | undefined;
   tokenInfo: TokenInfo | undefined;
 };
@@ -51,13 +50,11 @@ const fakeCategories = [
   { name: 'Pooo', count: 10 },
 ]; */
 
-export default function MainCommunityPage({
+export default function MemberCommunityPage({
   communityInfo,
   tokenInfo,
-}: TnotAccessPage): JSX.Element {
-  // const [currentTab, setCurrentTab] = useState(0);
-
-  const [categoriesList, setCategoriesList] = useState<
+}: TmemberCommunityPage): JSX.Element {
+  const [categoryList, setCategoryList] = useState<
     Array<Icategories> | undefined
   >();
 
@@ -65,7 +62,7 @@ export default function MainCommunityPage({
   const [currentPostSorting, setCurrentPostSorting] =
     useState<TpostSorting>('New');
 
-  const [currentCategorie, setCurrentCategorie] = useState('All Topics');
+  const [currentCategory, setCurrentCategory] = useState('All Topics');
 
   const [postsLoading, setPostsLoading] = useState(true);
 
@@ -77,7 +74,7 @@ export default function MainCommunityPage({
           await queryPosts(
             communityInfo.cId,
             currentPostSorting,
-            currentCategorie
+            currentCategory
           )
         );
 
@@ -92,7 +89,7 @@ export default function MainCommunityPage({
   async function GetCategories() {
     if (communityInfo !== undefined) {
       try {
-        setCategoriesList(await getPostCategories(communityInfo.cId));
+        setCategoryList(await getPostCategories(communityInfo.cId));
         /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
       } catch (error: any) {
         toast.error('Failed to read post categories');
@@ -102,7 +99,7 @@ export default function MainCommunityPage({
 
   useEffect(() => {
     GetPosts();
-  }, [currentPostSorting, currentCategorie]);
+  }, [currentPostSorting, currentCategory]);
 
   useEffect(() => {
     GetCategories();
@@ -113,21 +110,20 @@ export default function MainCommunityPage({
       <div className="items-center w-full block md:hidden">
         <CategoriesSmall
           tokenInfo={tokenInfo}
-          categoriesList={categoriesList}
-          setCurrentCategorie={setCurrentCategorie}
-          currentCategorie={currentCategorie}
+          categoryList={categoryList}
+          setCurrentCategory={setCurrentCategory}
+          currentCategory={currentCategory}
         />
       </div>
       <div className="flex mx-auto gap-5 mt-2 mb-2 ">
         <div className="items-center w-56 hidden md:block">
           <CategoriesLarge
             tokenInfo={tokenInfo}
-            categoriesList={categoriesList}
-            setCurrentCategorie={setCurrentCategorie}
-            currentCategorie={currentCategorie}
+            categoryList={categoryList}
+            setCurrentCategory={setCurrentCategory}
+            currentCategory={currentCategory}
           />
         </div>
-
         <div className="w-full ">
           <PostDisplayList
             currentPostSorting={currentPostSorting}

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IpostData } from '../../../../common/types';
+import { IpostData } from '../../../common/types';
 
 type TpostPreviewCard = {
   post: IpostData;

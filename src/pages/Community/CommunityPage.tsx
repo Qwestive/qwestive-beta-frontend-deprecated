@@ -3,14 +3,12 @@ import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { TokenInfo } from '@solana/spl-token-registry';
 
-import NotAccessPage from './Components/NotAccessPage';
-import NewCommunityPage from './MainCommunityPage/NewCommunityPage';
-import MainCommunityPage from './MainCommunityPage/MainCommunityPage';
-import { Icommunity } from '../../../common/types';
-
-import { useTokenRegistry } from '../../../common/components/Solana/TokenRegistry';
-
-import { getCommunityInfo } from '../../../common/services/Firebase/GetData/CommunityUtil';
+import NonMemberCommunityPage from './NonMemberCommunityPage';
+import NewCommunityPage from './NewCommunityPage';
+import MemberCommunityPage from './MemberCommunityPage';
+import { Icommunity } from '../../common/types';
+import { useTokenRegistry } from '../../common/components/Solana/TokenRegistry';
+import { getCommunityInfo } from '../../common/services/Firebase/GetData/CommunityUtil';
 
 /*
 TODO: check credentials
@@ -61,13 +59,16 @@ export default function CommunityPage(): JSX.Element {
     <div className="max-w-5xl mx-auto px-2">
       {loadingPage && <p>Loading ...</p>}
       {!loadingPage && !hasAccess && (
-        <NotAccessPage communityInfo={communityInfo} tokenInfo={tokenInfo} />
+        <NonMemberCommunityPage
+          communityInfo={communityInfo}
+          tokenInfo={tokenInfo}
+        />
       )}
       {!loadingPage &&
         hasAccess &&
         cId !== undefined &&
         communityInfo !== undefined && (
-          <MainCommunityPage
+          <MemberCommunityPage
             communityInfo={communityInfo}
             tokenInfo={tokenInfo}
           />

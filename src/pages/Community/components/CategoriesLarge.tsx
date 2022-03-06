@@ -1,26 +1,26 @@
 import React, { useState } from 'react';
 import { TokenInfo } from '@solana/spl-token-registry';
 
-import ClassNamesLogic from '../../../../common/components/Util/ClassNamesLogic';
-import { Icategories } from '../../../../common/types';
+import ClassNamesLogic from '../../../common/components/Util/ClassNamesLogic';
+import { Icategories } from '../../../common/types';
 
-import defaultUserProfileImage from '../../../../assets/defaultUserProfileImage.png';
+import defaultUserProfileImage from '../../../assets/defaultUserProfileImage.png';
 
 type TcategoriesLarge = {
   tokenInfo: TokenInfo | undefined;
-  categoriesList: Array<Icategories> | undefined;
-  setCurrentCategorie: React.Dispatch<React.SetStateAction<string>>;
-  currentCategorie: string;
+  categoryList: Array<Icategories> | undefined;
+  setCurrentCategory: React.Dispatch<React.SetStateAction<string>>;
+  currentCategory: string;
 };
 export default function CategoriesLarge({
   tokenInfo,
-  categoriesList,
-  setCurrentCategorie,
-  currentCategorie,
+  categoryList,
+  setCurrentCategory,
+  currentCategory,
 }: TcategoriesLarge): JSX.Element {
-  const [categoriesViewCounter, setCategorieViewCounter] = useState(1);
-  const [subsetCategoriesList, setSubsetCategoriesList] = useState(
-    categoriesList?.slice(0, categoriesViewCounter * 5)
+  const [categoriesViewCounter, setCategoriesViewCounter] = useState(1);
+  const [subsetCategoryList, setSubsetCategoryList] = useState(
+    categoryList?.slice(0, categoriesViewCounter * 5)
   );
 
   return (
@@ -44,68 +44,68 @@ export default function CategoriesLarge({
         <div className="mt-3 space-y-1.5">
           <div
             className={ClassNamesLogic(
-              currentCategorie === 'All Topics'
+              currentCategory === 'All Topics'
                 ? 'bg-gray-300'
                 : 'hover:bg-gray-200'
             )}>
             <button
               type="button"
               className="w-full"
-              onClick={() => setCurrentCategorie('All Topics')}>
+              onClick={() => setCurrentCategory('All Topics')}>
               <p className="px-4 font-medium text-left ">All Topics</p>
             </button>
           </div>
-          {subsetCategoriesList !== undefined &&
-            subsetCategoriesList.map((categorie) => (
+          {subsetCategoryList !== undefined &&
+            subsetCategoryList.map((category) => (
               <div
-                key={categorie.name}
+                key={category.name}
                 className={ClassNamesLogic(
-                  currentCategorie === categorie.name
+                  currentCategory === category.name
                     ? 'bg-gray-300'
                     : 'hover:bg-gray-200'
                 )}>
                 <button
                   type="button"
                   className="w-full"
-                  onClick={() => setCurrentCategorie(categorie.name)}>
+                  onClick={() => setCurrentCategory(category.name)}>
                   <div className="flex">
                     <p
                       className="px-4 w-52 truncate 
                     overflow-hidden font-medium text-left  ">
-                      {categorie.name}
+                      {category.name}
                     </p>
-                    <p className="pr-3"> {categorie.count}</p>
+                    <p className="pr-3"> {category.count}</p>
                   </div>
                 </button>
               </div>
             ))}
-          {categoriesList !== undefined &&
-            subsetCategoriesList !== undefined &&
-            subsetCategoriesList.length < categoriesList.length && (
+          {categoryList !== undefined &&
+            subsetCategoryList !== undefined &&
+            subsetCategoryList.length < categoryList.length && (
               <button
                 type="button"
                 className="px-3 text-qwestive-purple font-medium underline"
                 onClick={() => {
-                  setSubsetCategoriesList(
-                    categoriesList?.slice(0, (categoriesViewCounter + 1) * 5)
+                  setSubsetCategoryList(
+                    categoryList?.slice(0, (categoriesViewCounter + 1) * 5)
                   );
-                  setCategorieViewCounter(categoriesViewCounter + 1);
+                  setCategoriesViewCounter(categoriesViewCounter + 1);
                 }}>
                 View more
               </button>
             )}
-          {categoriesList !== undefined &&
-            subsetCategoriesList !== undefined &&
-            subsetCategoriesList.length > 5 &&
+          {categoryList !== undefined &&
+            setSubsetCategoryList !== undefined &&
+            setSubsetCategoryList.length > 5 &&
             categoriesViewCounter > 1 && (
               <button
                 type="button"
                 className="px-3 text-qwestive-purple font-medium underline"
                 onClick={() => {
-                  setSubsetCategoriesList(
-                    categoriesList?.slice(0, (categoriesViewCounter - 1) * 5)
+                  setSubsetCategoryList(
+                    categoryList?.slice(0, (categoriesViewCounter - 1) * 5)
                   );
-                  setCategorieViewCounter(categoriesViewCounter - 1);
+                  setCategoriesViewCounter(categoriesViewCounter - 1);
                 }}>
                 View Less
               </button>

@@ -1,25 +1,24 @@
 import React, { Fragment } from 'react';
 import { TokenInfo } from '@solana/spl-token-registry';
-
 import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/solid';
 
-import ClassNamesLogic from '../../../../common/components/Util/ClassNamesLogic';
-import { Icategories } from '../../../../common/types';
+import ClassNamesLogic from '../../../common/components/Util/ClassNamesLogic';
+import { Icategories } from '../../../common/types';
 
-import defaultUserProfileImage from '../../../../assets/defaultUserProfileImage.png';
+import defaultUserProfileImage from '../../../assets/defaultUserProfileImage.png';
 
 type TcategoriesSmall = {
   tokenInfo: TokenInfo | undefined;
-  categoriesList: Array<Icategories> | undefined;
-  setCurrentCategorie: React.Dispatch<React.SetStateAction<string>>;
-  currentCategorie: string;
+  categoryList: Array<Icategories> | undefined;
+  setCurrentCategory: React.Dispatch<React.SetStateAction<string>>;
+  currentCategory: string;
 };
 export default function CategoriesSmall({
   tokenInfo,
-  categoriesList,
-  setCurrentCategorie,
-  currentCategorie,
+  categoryList,
+  setCurrentCategory,
+  currentCategory,
 }: TcategoriesSmall): JSX.Element {
   return (
     <div
@@ -39,7 +38,6 @@ export default function CategoriesSmall({
         </div>
       </div>
       {/* Community Categories */}
-
       <div className="">
         <Menu as="div" className="relative inline-block text-left">
           <div>
@@ -51,10 +49,9 @@ export default function CategoriesSmall({
                 className="mr-1 ml-2  h-5 w-5"
                 aria-hidden="true"
               />
-              {currentCategorie}
+              {currentCategory}
             </Menu.Button>
           </div>
-
           <Transition
             as={Fragment}
             enter="transition ease-out duration-100"
@@ -75,12 +72,12 @@ export default function CategoriesSmall({
                   <button
                     type="button"
                     className={ClassNamesLogic(
-                      currentCategorie === 'All'
+                      currentCategory === 'All'
                         ? 'bg-gray-200'
                         : 'hover:bg-gray-100',
                       'py-1 w-full'
                     )}
-                    onClick={() => setCurrentCategorie('All Topics')}>
+                    onClick={() => setCurrentCategory('All Topics')}>
                     <div className="flex">
                       <p
                         className="px-4 w-52 truncate 
@@ -90,25 +87,25 @@ export default function CategoriesSmall({
                     </div>
                   </button>
                 </Menu.Item>
-                {categoriesList !== undefined &&
-                  categoriesList.map((categorie) => (
-                    <Menu.Item key={categorie.name}>
+                {categoryList !== undefined &&
+                  categoryList.map((category) => (
+                    <Menu.Item key={category.name}>
                       <button
                         type="button"
                         className={ClassNamesLogic(
-                          currentCategorie === categorie.name
+                          currentCategory === category.name
                             ? 'bg-gray-200'
                             : 'hover:bg-gray-100',
                           'py-1 w-full'
                         )}
-                        onClick={() => setCurrentCategorie(categorie.name)}>
+                        onClick={() => setCurrentCategory(category.name)}>
                         <div className="flex">
                           <p
-                            className="px-4 w-52 truncate 
-                    overflow-hidden  text-left  ">
-                            {categorie.name}
+                            className="px-4 w-52 truncate overflow-hidden 
+                             text-left">
+                            {category.name}
                           </p>
-                          <p className="pr-3"> {categorie.count}</p>
+                          <p className="pr-3"> {category.count}</p>
                         </div>
                       </button>
                     </Menu.Item>

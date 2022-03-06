@@ -1,9 +1,9 @@
 import React from 'react';
 import { PlusIcon } from '@heroicons/react/solid';
 import { TokenInfo } from '@solana/spl-token-registry';
-
 import { Link } from 'react-router-dom';
-import defaultUserProfileImage from '../../../../assets/defaultUserProfileImage.png';
+
+import defaultUserProfileImage from '../../assets/defaultUserProfileImage.png';
 
 type TnewCommunityPage = {
   cId: string;
@@ -37,7 +37,7 @@ export default function NewCommunityPage({
       </div>
       <div>
         <p className="text-center mt-10 font-bold text-2xl max-w-lg mx-auto">
-          This is a new Community, be the first to post something!
+          This is a new community, be the first to post something!
         </p>
         <div className="flex justify-center mt-10 transform scale-125">
           <Link to={`/new-post/${cId}`}>

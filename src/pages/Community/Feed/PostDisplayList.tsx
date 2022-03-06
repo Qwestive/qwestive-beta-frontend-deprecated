@@ -2,9 +2,9 @@ import React from 'react';
 import { PlusIcon } from '@heroicons/react/solid';
 
 import { Link } from 'react-router-dom';
-import PostPreviewCard from '../Components/PostPreviewCard';
-import ClassNamesLogic from '../../../../common/components/Util/ClassNamesLogic';
-import { Icommunity, IpostData, TpostSorting } from '../../../../common/types';
+import PostPreviewCard from './PostPreviewCard';
+import ClassNamesLogic from '../../../common/components/Util/ClassNamesLogic';
+import { Icommunity, IpostData, TpostSorting } from '../../../common/types';
 
 type TpostDisplayList = {
   currentPostSorting: TpostSorting;
