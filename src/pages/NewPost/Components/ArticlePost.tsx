@@ -88,6 +88,7 @@ export default function ArticlePost({ cId }: TarticlePost): JSX.Element {
       /* eslint-disable-next-line */
     } catch (error: any) {
       toast.error(error?.message);
+      setPublishing(false);
     }
   }
 
