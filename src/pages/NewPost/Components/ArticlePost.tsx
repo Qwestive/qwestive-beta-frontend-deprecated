@@ -236,7 +236,7 @@ export default function ArticlePost({ cId }: TarticlePost): JSX.Element {
             className="btn-transparent px-6 rounded-3xl py-2"
             onClick={() => navigate(-1)}
             disabled={publishing}>
-            cancel
+            Cancel
           </button>
         </div>
       </div>

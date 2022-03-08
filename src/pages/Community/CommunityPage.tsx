@@ -20,9 +20,7 @@ export default function CommunityPage(): JSX.Element {
 
   const [hasAccess, setHasAccess] = useState(false);
   const [loadingPage, setLoadingPage] = useState(true);
-
   const [communityInfo, setCommunityInfo] = useState<Icommunity | undefined>();
-
   const [tokenInfo, setTokenInfo] = useState<TokenInfo | undefined>();
   const [tokenRegistryHasLoaded, setTokenRegistryHasLoaded] = useState(false);
 
