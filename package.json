@@ -24,7 +24,6 @@
     "@types/react": "^17.0.20",
     "@types/react-dom": "^17.0.9",
     "@types/react-router-dom": "^5.3.3",
-    "ckeditor5-custom-build": "^0.0.6",
     "compressorjs": "^1.1.1",
     "dompurify": "^2.3.6",
     "firebase": "^9.6.6",
