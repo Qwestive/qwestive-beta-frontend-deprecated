@@ -4,6 +4,8 @@ import { CheckIcon, ChevronDownIcon } from '@heroicons/react/solid';
 
 import ClassNamesLogic from '../../common/components/Util/ClassNamesLogic';
 
+import ArticlePost from './Components/ArticlePost';
+
 export default function NewPostTabs(): JSX.Element {
   const [currentTab, setCurrentTab] = useState(0);
 
@@ -123,13 +125,13 @@ export default function NewPostTabs(): JSX.Element {
           </div>
         </div>
         {/* Tab Content */}
-        <div className="mt-5">
+        <div className="mt-0.5">
           <div
             className={ClassNamesLogic(
               currentTab === 0 ? 'block' : 'hidden',
               ''
             )}>
-            <p>Tab 0</p>
+            <ArticlePost />
           </div>
           <div
             className={ClassNamesLogic(
