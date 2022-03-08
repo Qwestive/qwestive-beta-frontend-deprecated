@@ -36,7 +36,9 @@ export default function NewPostPage(): JSX.Element {
   return (
     <div className="max-w-5xl mx-auto px-2 mt-5">
       {loadingPage && <p>Loading..</p>}
-      {!loadingPage && hasAccess && <NewPostTabs />}
+      {!loadingPage && hasAccess && cId !== undefined && (
+        <NewPostTabs cId={cId} />
+      )}
       {!loadingPage && !hasAccess && (
         <div>
           <p>You do Not have access</p>

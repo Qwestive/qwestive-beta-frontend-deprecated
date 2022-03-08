@@ -1,0 +1,42 @@
+.ck-editor__editable {
+  @apply bg-white !important;
+}
+
+.ck-content {
+  @apply text-gray-900 border 
+  border-gray-200
+  focus:ring-2
+  focus:ring-inset
+  focus:ring-qwestive-purple
+  font-sans
+  !important;
+}
+.ck-content ul,
+.ck-content ul li {
+  list-style-type: inherit;
+}
+
+.ck-content ul {
+  /* Default user agent stylesheet, you can change it to your needs. */
+  padding-left: 40px;
+}
+
+.ck-content a {
+  /* Default user agent stylesheet, you can change it to your needs. */
+  @apply text-qwestive-purple underline;
+}
+
+.ck-content h2 {
+  /* Default user agent stylesheet, you can change it to your needs. */
+  @apply text-2xl;
+}
+
+.ck-content h3 {
+  /* Default user agent stylesheet, you can change it to your needs. */
+  @apply text-xl;
+}
+
+.ck-content h4 {
+  /* Default user agent stylesheet, you can change it to your needs. */
+  @apply text-lg;
+}

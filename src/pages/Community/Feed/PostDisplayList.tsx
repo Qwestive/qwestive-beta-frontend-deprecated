@@ -27,19 +27,19 @@ export default function PostDisplayList({
     <div>
       <div className="mt-5 px-3">
         {/* Filters buttons */}
-        <div className=" flex justify-between items-center">
+        <div className="flex justify-between items-center">
           <div className="space-x-3 flex overflow-auto hideScrollBar">
-            {postSortingTypes.map((sortinType) => (
+            {postSortingTypes.map((sortingType) => (
               <button
                 type="button"
                 className={ClassNamesLogic(
-                  currentPostSorting === sortinType
+                  currentPostSorting === sortingType
                     ? ' bg-gray-900 text-white'
                     : 'bg-gray-300 text-color-primary hover:bg-gray-400',
                   'rounded-3xl px-4 py-1 font-medium'
                 )}
-                onClick={() => setCurrentPostSorting(sortinType)}>
-                {sortinType}
+                onClick={() => setCurrentPostSorting(sortingType)}>
+                {sortingType}
               </button>
             ))}
           </div>

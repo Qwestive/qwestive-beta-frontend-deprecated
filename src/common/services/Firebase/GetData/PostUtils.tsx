@@ -48,7 +48,7 @@ export async function queryPosts(
     postQuery = query(
       postRef,
       where('cId', '==', cId),
-      where('postType', '==', 'Poll'),
+      where('postType', '==', 'poll'),
       orderBy('creationDate', 'desc'),
       limit(10)
     );
@@ -56,10 +56,10 @@ export async function queryPosts(
     postQuery = query(
       postRef,
       where('cId', '==', cId),
-      where('postType', '==', 'Bounty'),
+      where('postType', '==', 'bounty'),
       orderBy('creationDate', 'desc'),
       limit(10)
-    ).withConverter(postConverter);
+    );
   }
 
   const querySnapshot = await getDocs(postQuery);

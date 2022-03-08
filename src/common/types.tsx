@@ -73,6 +73,25 @@ export interface IsignedMessage {
   publicKeyBytes: Uint8Array | undefined;
 }
 
+export interface IpostPreview {
+  cId: string;
+  authorId: string;
+  title: string;
+  type: string;
+  category: string;
+  creationTimestamp: number;
+  isPublic: boolean;
+  tokenRequirement: number;
+  commentCount: number;
+  // upVotes: string[];
+  // downVotes: string[];
+}
+
+// I ll let you do that
+export interface IpostArticle {
+  content: string;
+}
+
 export interface IpostData {
   id: string;
   postType: string;
