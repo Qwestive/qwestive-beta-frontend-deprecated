@@ -6,7 +6,11 @@ import ClassNamesLogic from '../../common/components/Util/ClassNamesLogic';
 
 import ArticlePost from './Components/ArticlePost';
 
-export default function NewPostTabs(): JSX.Element {
+type TnewPostTabs = {
+  cId: string;
+};
+
+export default function NewPostTabs({ cId }: TnewPostTabs): JSX.Element {
   const [currentTab, setCurrentTab] = useState(0);
 
   const tabs = [
@@ -131,7 +135,7 @@ export default function NewPostTabs(): JSX.Element {
               currentTab === 0 ? 'block' : 'hidden',
               ''
             )}>
-            <ArticlePost />
+            <ArticlePost cId={cId} />
           </div>
           <div
             className={ClassNamesLogic(

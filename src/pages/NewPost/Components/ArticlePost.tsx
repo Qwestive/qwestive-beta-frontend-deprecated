@@ -1,16 +1,30 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { EyeIcon } from '@heroicons/react/solid';
+import { toast } from 'react-toastify';
+import { useRecoilValue } from 'recoil';
 
+import WriteArticlePost from '../../../common/services/Firebase/WriteData/WriteArticlePost';
+import { userPublicKeyAtom } from '../../../recoil/userInfo';
+import { IpostPreview, IpostArticle } from '../../../common/types';
 import ClassNamesLogic from '../../../common/components/Util/ClassNamesLogic';
 import CKeditorMaker from '../../../common/components/Posts/CKeditor/CKeditorMaker';
 
 const MAXTITLELENGTH = 100;
+const MINTITLELENGTH = 1;
+
 const MAXARTICLELENGTH = 500000;
+const MINARTICLELENGTH = 5;
+
 const MAXCATEGORYLENGTH = 20;
 
-export default function ArticlePost(): JSX.Element {
+type TarticlePost = {
+  cId: string;
+};
+
+export default function ArticlePost({ cId }: TarticlePost): JSX.Element {
   const navigate = useNavigate();
+  const userPublicKey = useRecoilValue(userPublicKeyAtom);
 
   const [title, setTitle] = useState('');
   const [articleText, setArticleText] = useState('');
@@ -19,14 +33,72 @@ export default function ArticlePost(): JSX.Element {
 
   const [postPublic, setPostPublic] = useState(true);
 
+  const [publishing, setPublishing] = useState(false);
+
+  async function handlePublish() {
+    // check data is valid
+    setPublishing(true);
+    try {
+      if (title.length > MAXTITLELENGTH) {
+        throw new Error('Title too long');
+      }
+      if (title.length < MINTITLELENGTH) {
+        throw new Error(
+          `The title should be at least ${MINTITLELENGTH} characters long`
+        );
+      }
+      if (articleText.length > MAXARTICLELENGTH) {
+        throw new Error('Article too long');
+      }
+      if (articleText.length < MINARTICLELENGTH) {
+        throw new Error(
+          `The post should be at least ${MINARTICLELENGTH} characters long`
+        );
+      }
+      if (category.length > MAXCATEGORYLENGTH) {
+        throw new Error('Topic too long');
+      }
+      let isPublic = true;
+      if (!postPublic && tokenRequirement > 0) {
+        isPublic = false;
+      }
+
+      if (userPublicKey !== undefined) {
+        const postPreview: IpostPreview = {
+          cId,
+          authorId: userPublicKey,
+          title,
+          type: 'Article',
+          category,
+          creationTimestamp: new Date().getTime(),
+          isPublic,
+          tokenRequirement,
+          commentCount: 0,
+        };
+        const postArticle: IpostArticle = {
+          content: articleText,
+        };
+        const articleId = await WriteArticlePost(postPreview, postArticle);
+
+        toast.success('post published');
+        navigate(`/post/${articleId}`);
+      } else {
+        navigate('/');
+      }
+      /* eslint-disable-next-line */
+    } catch (error: any) {
+      toast.error(error?.message);
+    }
+  }
+
   return (
-    <div>
+    <div className="mb-5">
       {/* Title */}
       <div className="p-px">
         <input
-          type="email"
-          name="email"
-          id="email"
+          type="text"
+          name="title"
+          id="title"
           className="border border-transparent 
           focus:border-qwestive-purple
            block w-full 
@@ -151,13 +223,18 @@ export default function ArticlePost(): JSX.Element {
       {/* Action Buttons */}
       <div className="bg-gray-100 ">
         <div className="flex justify-start gap-3 pr-2 pt-4">
-          <button type="button" className="btn-filled rounded-3xl px-6 py-2">
-            Publish
+          <button
+            type="button"
+            className="btn-filled rounded-3xl px-6 py-2"
+            onClick={() => handlePublish()}
+            disabled={publishing}>
+            {publishing ? <p>Loading ...</p> : <p>Publish</p>}
           </button>
           <button
             type="button"
             className="btn-transparent px-6 rounded-3xl py-2"
-            onClick={() => navigate(-1)}>
+            onClick={() => navigate(-1)}
+            disabled={publishing}>
             cancel
           </button>
         </div>
