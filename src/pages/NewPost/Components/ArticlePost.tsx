@@ -5,7 +5,11 @@ import { toast } from 'react-toastify';
 import { useRecoilValue } from 'recoil';
 
 import WriteArticlePost from '../../../common/services/Firebase/WriteData/WriteArticlePost';
-import { userPublicKeyAtom } from '../../../recoil/userInfo';
+import {
+  userPublicKeyAtom,
+  userProfileImageAtom,
+  userNameAtom,
+} from '../../../recoil/userInfo';
 import { IpostPreview, IpostArticle } from '../../../common/types';
 import ClassNamesLogic from '../../../common/components/Util/ClassNamesLogic';
 import CKeditorMaker from '../../../common/components/Posts/CKeditor/CKeditorMaker';
@@ -25,6 +29,9 @@ type TarticlePost = {
 export default function ArticlePost({ cId }: TarticlePost): JSX.Element {
   const navigate = useNavigate();
   const userPublicKey = useRecoilValue(userPublicKeyAtom);
+  const userName = useRecoilValue(userNameAtom);
+  const userProfileImage = useRecoilValue(userProfileImageAtom);
+
   const [title, setTitle] = useState('');
   const [articleText, setArticleText] = useState('');
   const [category, setCategory] = useState('');
@@ -55,24 +62,25 @@ export default function ArticlePost({ cId }: TarticlePost): JSX.Element {
       if (category.length > MAXCATEGORYLENGTH) {
         throw new Error('Topic too long');
       }
-      let isPublic = true;
-      if (!postPublic && tokenRequirement > 0) {
-        isPublic = false;
-      }
 
       if (userPublicKey !== undefined) {
         const postPreview: IpostPreview = {
-          cId,
-          authorId: userPublicKey,
+          id: '',
+          postType: 'article',
+          accessTokenId: cId,
+          accessMinimumTokenBalance: tokenRequirement,
+          authorUserId: userPublicKey,
+          authorUserName: userName ?? '',
+          authorPublicKey: userPublicKey,
+          authorProfileImageUrl: userProfileImage ?? '',
           title,
-          type: 'Article',
-          category,
-          creationTimestamp: new Date().getTime(),
-          isPublic,
-          tokenRequirement,
-          commentCount: 0,
+          creationDate: new Date(),
+          upVoteUserIds: [],
+          downVoteUserIds: [],
+          numberOfComments: 0,
         };
         const postArticle: IpostArticle = {
+          ...postPreview,
           content: articleText,
         };
         const articleId = await WriteArticlePost(postPreview, postArticle);
@@ -169,7 +177,12 @@ export default function ArticlePost({ cId }: TarticlePost): JSX.Element {
               </div>
             </button>
             {/* Exclusive Button */}
-            <button type="button" onClick={() => setPostPublic(false)}>
+            <button
+              type="button"
+              onClick={() => {
+                setPostPublic(false);
+                setTokenRequirement(0);
+              }}>
               <div className="flex gap-1 items-center">
                 <div className="transform scale-75">
                   <div

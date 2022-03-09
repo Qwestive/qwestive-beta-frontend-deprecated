@@ -2,12 +2,9 @@ import { PublicKey } from '@solana/web3.js';
 import { ReactNode, Dispatch, SetStateAction } from 'react';
 import { SetterOrUpdater } from 'recoil';
 
-export type TpostSorting = 'New' | 'Top' | 'Poll' | 'Bounty';
-
-export interface Icategories {
-  name: string;
-  count: number;
-}
+/* 
+  Community types
+*/
 
 export interface Icommunity {
   cId: string;
@@ -21,6 +18,10 @@ export interface ItokenOwned {
   imageUrl: string | undefined;
   communityData: Icommunity | undefined;
 }
+
+/* 
+  User setting types
+*/
 
 export interface IimageCropper {
   setImageEditingModalOpen: Dispatch<SetStateAction<boolean>>;
@@ -48,6 +49,10 @@ export interface IimageEditingModal {
   children: ReactNode;
 }
 
+/* 
+  Auth types
+*/
+
 export interface IsignoutWithWallet {
   disconnect: () => Promise<void>;
   connected: boolean;
@@ -73,22 +78,36 @@ export interface IsignedMessage {
   publicKeyBytes: Uint8Array | undefined;
 }
 
-export interface IpostPreview {
-  cId: string;
-  authorId: string;
-  title: string;
-  type: string;
-  category: string;
-  creationTimestamp: number;
-  isPublic: boolean;
-  tokenRequirement: number;
-  commentCount: number;
-  // upVotes: string[];
-  // downVotes: string[];
+/* 
+  Post types
+*/
+
+export type TpostSorting = 'New' | 'Top' | 'Poll' | 'Bounty';
+
+export type TpostType = 'article' | 'poll' | 'bounty' | 'vote';
+
+export interface Icategories {
+  name: string;
+  count: number;
 }
 
-// I ll let you do that
-export interface IpostArticle {
+export interface IpostPreview {
+  id: string;
+  postType: TpostType;
+  accessTokenId: string;
+  accessMinimumTokenBalance: number;
+  authorUserId: string;
+  authorUserName: string;
+  authorPublicKey: string;
+  authorProfileImageUrl: string;
+  title: string;
+  creationDate: Date;
+  upVoteUserIds: Array<string>;
+  downVoteUserIds: Array<string>;
+  numberOfComments: number;
+}
+
+export interface IpostArticle extends IpostPreview {
   content: string;
 }
 
