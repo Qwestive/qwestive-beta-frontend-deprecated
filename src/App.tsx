@@ -11,9 +11,13 @@ import Navbar from './common/components/Navbar/Navbar';
 import HomePage from './pages/Home/HomePage';
 import UserProfilePage from './pages/UserProfile/UserProfilePage';
 import ProfileSettingPage from './pages/UserProfile/SelfProfile/ProfileSettingPage';
+
+import CommunityPage from './pages/Community/CommunityPage';
 import PostDetailPage from './pages/Community/PostDetail/PostDetailPage';
+import NewPostPage from './pages/NewPost/NewPostPage';
 
 import 'react-toastify/dist/ReactToastify.css';
+import { TokenRegistryProvider } from './common/components/Solana/TokenRegistry';
 
 function App(): JSX.Element {
   return (
@@ -41,7 +45,26 @@ function App(): JSX.Element {
                 path="/profile/settings"
                 element={<OnlyAuthRoute element={<ProfileSettingPage />} />}
               />
-              <Route path="/post/:postId" element={<PostDetailPage />} />
+              <Route
+                path="/c/:cId"
+                element={
+                  <OnlyAuthRoute
+                    element={
+                      <TokenRegistryProvider>
+                        <CommunityPage />
+                      </TokenRegistryProvider>
+                    }
+                  />
+                }
+              />
+              <Route
+                path="/new-post/:cId"
+                element={<OnlyAuthRoute element={<NewPostPage />} />}
+              />
+              <Route
+                path="/post/:postId"
+                element={<OnlyAuthRoute element={<PostDetailPage />} />}
+              />
             </Routes>
           </AuthManager>
         </BrowserRouter>
