@@ -13,7 +13,7 @@ export default function NonMemberCommunityPage({
   tokenInfo,
 }: TnonMemberCommunityPage): JSX.Element {
   return (
-    <div className=" mt-10 text-center text-color-primary">
+    <div className="mt-10 text-center text-color-primary">
       <div className="font-bold text-xl">
         You do not have access to this community
       </div>

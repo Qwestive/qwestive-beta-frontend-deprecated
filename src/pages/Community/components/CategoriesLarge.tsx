@@ -24,7 +24,7 @@ export default function CategoriesLarge({
   );
 
   return (
-    <div className=" w-full ">
+    <div className="w-full ">
       {/* Token Infos */}
       <div>
         <div className="flex items-center py-2 gap-2 justify-left">
@@ -43,16 +43,16 @@ export default function CategoriesLarge({
         <p className="font-bold px-4">CATEGORIES</p>
         <div className="mt-3 space-y-1.5">
           <div
-            className={ClassNamesLogic(
+            className={
               currentCategory === 'All Topics'
                 ? 'bg-gray-300'
                 : 'hover:bg-gray-200'
-            )}>
+            }>
             <button
               type="button"
               className="w-full"
               onClick={() => setCurrentCategory('All Topics')}>
-              <p className="px-4 font-medium text-left ">All Topics</p>
+              <p className="px-4 font-medium text-left">All Topics</p>
             </button>
           </div>
           {subsetCategoryList !== undefined &&
@@ -74,7 +74,7 @@ export default function CategoriesLarge({
                     overflow-hidden font-medium text-left  ">
                       {category.name}
                     </p>
-                    <p className="pr-3"> {category.count}</p>
+                    <p className="pr-3">{category.count}</p>
                   </div>
                 </button>
               </div>
@@ -95,8 +95,8 @@ export default function CategoriesLarge({
               </button>
             )}
           {categoryList !== undefined &&
-            setSubsetCategoryList !== undefined &&
-            setSubsetCategoryList.length > 5 &&
+            subsetCategoryList !== undefined &&
+            subsetCategoryList.length > 5 &&
             categoriesViewCounter > 1 && (
               <button
                 type="button"

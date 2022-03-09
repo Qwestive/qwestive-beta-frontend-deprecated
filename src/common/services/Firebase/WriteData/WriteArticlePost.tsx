@@ -8,8 +8,6 @@ export default async function WriteArticlePost(
   postArticle: IpostArticle
 ): Promise<string> {
   if (FirebaseAuth.currentUser != null) {
-    // no need to check credentials here
-    // the rules shoold be in firestore
     const previewPostRef = await addDoc(
       collection(Firestore, 'postPreviews'),
       postPreview
@@ -17,7 +15,6 @@ export default async function WriteArticlePost(
     const postArticleRef = doc(Firestore, 'posts', previewPostRef.id);
     await setDoc(postArticleRef, postArticle);
 
-    // maybe display the link
     return previewPostRef.id;
   }
   throw new Error('User can not be null to write an article');

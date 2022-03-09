@@ -66,7 +66,7 @@ export default function MemberCommunityPage({
 
   const [postsLoading, setPostsLoading] = useState(true);
 
-  async function GetPosts() {
+  async function getPosts() {
     if (communityInfo?.cId !== undefined) {
       setPostsLoading(true);
       try {
@@ -86,7 +86,7 @@ export default function MemberCommunityPage({
     }
   }
 
-  async function GetCategories() {
+  async function getCategories() {
     if (communityInfo !== undefined) {
       try {
         setCategoryList(await getPostCategories(communityInfo.cId));
@@ -98,11 +98,11 @@ export default function MemberCommunityPage({
   }
 
   useEffect(() => {
-    GetPosts();
+    getPosts();
   }, [currentPostSorting, currentCategory]);
 
   useEffect(() => {
-    GetCategories();
+    getCategories();
   }, []);
 
   return (

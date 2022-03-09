@@ -22,7 +22,7 @@ export default function CategoriesSmall({
 }: TcategoriesSmall): JSX.Element {
   return (
     <div
-      className=" w-full  px-3
+      className="w-full px-3
     flex justify-between items-center">
       {/* Token Infos */}
       <div>
@@ -38,15 +38,15 @@ export default function CategoriesSmall({
         </div>
       </div>
       {/* Community Categories */}
-      <div className="">
+      <div>
         <Menu as="div" className="relative inline-block text-left">
           <div>
             <Menu.Button
               className="inline-flex justify-center w-full 
-            rounded-md   px-4 py-2  text-sm 
+            rounded-md px-4 py-2 text-sm 
             font-medium text-gray-700 ">
               <ChevronDownIcon
-                className="mr-1 ml-2  h-5 w-5"
+                className="mr-1 ml-2 h-5 w-5"
                 aria-hidden="true"
               />
               {currentCategory}

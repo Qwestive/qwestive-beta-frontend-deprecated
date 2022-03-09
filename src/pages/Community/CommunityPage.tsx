@@ -28,7 +28,7 @@ export default function CommunityPage(): JSX.Element {
     setLoadingPage(true);
     if (cId !== undefined) {
       try {
-        // check credentials
+        // TODO: check credentials.
         setHasAccess(true);
         setTokenInfo(tokenRegistry.get(cId));
         setCommunityInfo(await getCommunityInfo(cId));
