@@ -16,11 +16,11 @@ export default async function GenerateTokenOwnedList(
   const tokenOwned = await ReadTokenWallet(publicKey);
   const tokenOwnedList = new Array<ItokenOwned>();
 
-  const getCommunityThreads = [];
+  const communityInfoPromises = [];
   for (let i = 0; i < tokenOwned.length; i += 1) {
-    getCommunityThreads.push(getCommunityInfo(tokenOwned[i].mint));
+    communityInfoPromises.push(getCommunityInfo(tokenOwned[i].mint));
   }
-  const communitiesData = await Promise.all(getCommunityThreads);
+  const communityInfoArray = await Promise.all(communityInfoPromises);
   for (let i = 0; i < tokenOwned.length; i += 1) {
     const tokenInfos = tokenRegistry.get(tokenOwned[i].mint);
 
@@ -30,7 +30,7 @@ export default async function GenerateTokenOwnedList(
         name: tokenInfos.symbol,
         amountHeld: tokenOwned[i].uiAmount,
         imageUrl: tokenInfos.logoURI,
-        communityData: communitiesData[i],
+        communityData: communityInfoArray[i],
       });
     } else {
       tokenOwnedList.push({
@@ -38,7 +38,7 @@ export default async function GenerateTokenOwnedList(
         name: 'Unknown',
         amountHeld: tokenOwned[i].uiAmount,
         imageUrl: defaultUserProfileImage,
-        communityData: communitiesData[i],
+        communityData: communityInfoArray[i],
       });
     }
   }

@@ -47,9 +47,9 @@ export default function PostDisplayList({
           <div className="hidden sm:block">
             <Link to={`/new-post/${communityInfo?.cId}`}>
               <button type="button" className="btn-filled rounded-3xl py-2.5">
-                <p className="flex items-center gap-1 ">
+                <div className="flex items-center gap-1 ">
                   <PlusIcon className="h-5" /> Post
-                </p>
+                </div>
               </button>
             </Link>
           </div>
@@ -66,9 +66,9 @@ export default function PostDisplayList({
         <div className="block sm:hidden absolute bottom-10 right-5 z-10">
           <Link to={`/new-post/${communityInfo?.cId}`}>
             <button type="button" className="btn-filled rounded-3xl py-2.5">
-              <p className="flex items-center gap-1 ">
+              <div className="flex items-center gap-1 ">
                 <PlusIcon className="h-5" /> Post
-              </p>
+              </div>
             </button>
           </Link>
         </div>

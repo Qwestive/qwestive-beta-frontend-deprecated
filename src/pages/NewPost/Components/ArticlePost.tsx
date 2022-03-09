@@ -25,19 +25,16 @@ type TarticlePost = {
 export default function ArticlePost({ cId }: TarticlePost): JSX.Element {
   const navigate = useNavigate();
   const userPublicKey = useRecoilValue(userPublicKeyAtom);
-
   const [title, setTitle] = useState('');
   const [articleText, setArticleText] = useState('');
   const [category, setCategory] = useState('');
   const [tokenRequirement, setTokenRequirement] = useState(0);
-
   const [postPublic, setPostPublic] = useState(true);
-
-  const [publishing, setPublishing] = useState(false);
+  const [publishDisabled, setPublishDisabled] = useState(false);
 
   async function handlePublish() {
     // check data is valid
-    setPublishing(true);
+    setPublishDisabled(true);
     try {
       if (title.length > MAXTITLELENGTH) {
         throw new Error('Title too long');
@@ -88,7 +85,7 @@ export default function ArticlePost({ cId }: TarticlePost): JSX.Element {
       /* eslint-disable-next-line */
     } catch (error: any) {
       toast.error(error?.message);
-      setPublishing(false);
+      setPublishDisabled(false);
     }
   }
 
@@ -228,14 +225,14 @@ export default function ArticlePost({ cId }: TarticlePost): JSX.Element {
             type="button"
             className="btn-filled rounded-3xl px-6 py-2"
             onClick={() => handlePublish()}
-            disabled={publishing}>
-            {publishing ? <p>Loading ...</p> : <p>Publish</p>}
+            disabled={publishDisabled}>
+            {publishDisabled ? <p>Loading ...</p> : <p>Publish</p>}
           </button>
           <button
             type="button"
             className="btn-transparent px-6 rounded-3xl py-2"
             onClick={() => navigate(-1)}
-            disabled={publishing}>
+            disabled={publishDisabled}>
             Cancel
           </button>
         </div>

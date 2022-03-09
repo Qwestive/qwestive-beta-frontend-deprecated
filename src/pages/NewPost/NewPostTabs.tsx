@@ -21,7 +21,12 @@ export default function NewPostTabs({ cId }: TnewPostTabs): JSX.Element {
   ];
   return (
     <div className="">
-      <div className="text-xl mt-1 font-bold text-color-primary">New post</div>
+      <div
+        className="text-xl mt-1 
+      font-bold 
+      text-color-primary">
+        New post
+      </div>
       <div className="bg-white">
         {/* Small tabs dropdown */}
         <div className="mt-4 sm:hidden">
@@ -74,8 +79,8 @@ export default function NewPostTabs({ cId }: TnewPostTabs): JSX.Element {
                         key={tab.name}
                         className={({ active }) =>
                           ClassNamesLogic(
-                            active ? ' bg-gray-100 ' : '',
-                            ' select-none relative py-2 pl-8 pr-4'
+                            active ? 'bg-gray-100 ' : '',
+                            'select-none relative py-2 pl-8 pr-4'
                           )
                         }
                         value={idx}>
@@ -105,7 +110,7 @@ export default function NewPostTabs({ cId }: TnewPostTabs): JSX.Element {
           </Listbox>
         </div>
         {/* Large tabs */}
-        <div className=" mt-4 hidden sm:block bg-white">
+        <div className="mt-4 hidden sm:block bg-white">
           <div className=" ">
             <nav className="-mb-px flex" aria-label="Tabs">
               {tabs.map((tab, idx) => (
@@ -130,32 +135,16 @@ export default function NewPostTabs({ cId }: TnewPostTabs): JSX.Element {
         </div>
         {/* Tab Content */}
         <div className="mt-0.5">
-          <div
-            className={ClassNamesLogic(
-              currentTab === 0 ? 'block' : 'hidden',
-              ''
-            )}>
+          <div className={currentTab === 0 ? 'block' : 'hidden'}>
             <ArticlePost cId={cId} />
           </div>
-          <div
-            className={ClassNamesLogic(
-              currentTab === 1 ? 'block' : 'hidden',
-              ''
-            )}>
+          <div className={currentTab === 1 ? 'block' : 'hidden'}>
             <p>Tab 1</p>
           </div>
-          <div
-            className={ClassNamesLogic(
-              currentTab === 2 ? 'block' : 'hidden',
-              ''
-            )}>
+          <div className={currentTab === 2 ? 'block' : 'hidden'}>
             <p>Tab 2</p>
           </div>
-          <div
-            className={ClassNamesLogic(
-              currentTab === 3 ? 'block' : 'hidden',
-              ''
-            )}>
+          <div className={currentTab === 3 ? 'block' : 'hidden'}>
             <p>Tab 3</p>
           </div>
         </div>

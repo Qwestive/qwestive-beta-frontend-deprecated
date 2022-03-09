@@ -18,7 +18,7 @@ export default function NewPostPage(): JSX.Element {
     setLoadingPage(true);
     if (cId !== undefined) {
       try {
-        // check credentials
+        // TODO: check credentials
         setHasAccess(true);
 
         /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
@@ -41,7 +41,10 @@ export default function NewPostPage(): JSX.Element {
       )}
       {!loadingPage && !hasAccess && (
         <div>
-          <p>You do Not have access</p>
+          <p>
+            You can not create posts for this community. To do so, you must own
+            the community&apos;s token
+          </p>
           <Link to="/">Go back home</Link>
         </div>
       )}
