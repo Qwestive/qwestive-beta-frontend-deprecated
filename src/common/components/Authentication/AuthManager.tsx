@@ -67,6 +67,7 @@ export default function AuthManager({
         if (user.uid !== userPublicKey) {
           try {
             setUserPublickey(user.uid);
+
             // get firestore, set user recoil
             const userRef = doc(Firestore, 'users', user.uid);
             const userDoc = await getDoc(userRef);

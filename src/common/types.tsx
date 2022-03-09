@@ -1,15 +1,27 @@
 import { PublicKey } from '@solana/web3.js';
 import { ReactNode, Dispatch, SetStateAction } from 'react';
 import { SetterOrUpdater } from 'recoil';
-import { DocumentData } from 'firebase/firestore';
+
+/* 
+  Community types
+*/
+
+export interface Icommunity {
+  cId: string;
+  memberCount: string;
+}
 
 export interface ItokenOwned {
   mint: string;
   amountHeld: number;
   name: string | undefined;
   imageUrl: string | undefined;
-  communityData: DocumentData | undefined;
+  communityData: Icommunity | undefined;
 }
+
+/* 
+  User setting types
+*/
 
 export interface IimageCropper {
   setImageEditingModalOpen: Dispatch<SetStateAction<boolean>>;
@@ -37,6 +49,10 @@ export interface IimageEditingModal {
   children: ReactNode;
 }
 
+/* 
+  Auth types
+*/
+
 export interface IsignoutWithWallet {
   disconnect: () => Promise<void>;
   connected: boolean;
@@ -60,6 +76,39 @@ export interface IsignedMessage {
   encodedMessage: Uint8Array;
   signature: Uint8Array | undefined;
   publicKeyBytes: Uint8Array | undefined;
+}
+
+/* 
+  Post types
+*/
+
+export type TpostSorting = 'New' | 'Top' | 'Poll' | 'Bounty';
+
+export type TpostType = 'article' | 'poll' | 'bounty' | 'vote';
+
+export interface Icategories {
+  name: string;
+  count: number;
+}
+
+export interface IpostPreview {
+  id: string;
+  postType: TpostType;
+  accessTokenId: string;
+  accessMinimumTokenBalance: number;
+  authorUserId: string;
+  authorUserName: string;
+  authorPublicKey: string;
+  authorProfileImageUrl: string;
+  title: string;
+  creationDate: Date;
+  upVoteUserIds: Array<string>;
+  downVoteUserIds: Array<string>;
+  numberOfComments: number;
+}
+
+export interface IpostArticle extends IpostPreview {
+  content: string;
 }
 
 export interface IpostData {

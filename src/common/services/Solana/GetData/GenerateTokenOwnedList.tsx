@@ -16,26 +16,29 @@ export default async function GenerateTokenOwnedList(
   const tokenOwned = await ReadTokenWallet(publicKey);
   const tokenOwnedList = new Array<ItokenOwned>();
 
+  const communityInfoPromises = [];
+  for (let i = 0; i < tokenOwned.length; i += 1) {
+    communityInfoPromises.push(getCommunityInfo(tokenOwned[i].mint));
+  }
+  const communityInfoArray = await Promise.all(communityInfoPromises);
   for (let i = 0; i < tokenOwned.length; i += 1) {
     const tokenInfos = tokenRegistry.get(tokenOwned[i].mint);
-    const communityData = getCommunityInfo(tokenOwned[i].mint);
+
     if (tokenInfos !== undefined) {
-      // add to the beginning
       tokenOwnedList.unshift({
         mint: tokenOwned[i].mint,
         name: tokenInfos.symbol,
         amountHeld: tokenOwned[i].uiAmount,
         imageUrl: tokenInfos.logoURI,
-        communityData,
+        communityData: communityInfoArray[i],
       });
     } else {
-      // add to the end
       tokenOwnedList.push({
         mint: tokenOwned[i].mint,
         name: 'Unknown',
         amountHeld: tokenOwned[i].uiAmount,
         imageUrl: defaultUserProfileImage,
-        communityData,
+        communityData: communityInfoArray[i],
       });
     }
   }
