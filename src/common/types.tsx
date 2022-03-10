@@ -91,8 +91,7 @@ export interface Icategories {
   count: number;
 }
 
-export interface IpostPreview {
-  id: string;
+export interface IpostPreviewSubmission {
   postType: TpostType;
   accessTokenId: string;
   accessMinimumTokenBalance: number;
@@ -105,6 +104,14 @@ export interface IpostPreview {
   upVoteUserIds: Array<string>;
   downVoteUserIds: Array<string>;
   numberOfComments: number;
+}
+
+export interface IpostPreview extends IpostPreviewSubmission {
+  id: string;
+}
+
+export interface IpostArticleSubmission extends IpostPreviewSubmission {
+  content: string;
 }
 
 export interface IpostArticle extends IpostPreview {
@@ -128,11 +135,10 @@ export interface IpostData {
   numberOfComments: number;
 }
 
-export interface IpostComment {
-  id: string;
+export interface IpostCommentSubmission {
   postId: string;
-  parentCommentId: string;
   depth: number;
+  parentCommentId: string;
   authorUserId: string;
   authorUserName: string;
   authorPublicKey: string;
@@ -140,4 +146,8 @@ export interface IpostComment {
   body: string;
   upVoteUserIds: Array<string>;
   downVoteUserIds: Array<string>;
+}
+
+export interface IpostComment extends IpostCommentSubmission {
+  id: string;
 }

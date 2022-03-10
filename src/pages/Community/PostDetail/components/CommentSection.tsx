@@ -34,10 +34,13 @@ function CommentSection({ postId }: CommentSectionProps): JSX.Element {
       if (element.depth === 0) {
         topLevelComments.push(element);
       }
-      if (commentByParentMap.has(element.parentCommentId)) {
-        commentByParentMap.get(element.parentCommentId)?.push(element);
-      } else {
-        commentByParentMap.set(element.parentCommentId, [element]);
+      const parentCommentId = element?.parentCommentId ?? '';
+      if (parentCommentId !== '') {
+        if (commentByParentMap.has(parentCommentId)) {
+          commentByParentMap.get(parentCommentId)?.push(element);
+        } else {
+          commentByParentMap.set(parentCommentId, [element]);
+        }
       }
     });
 
@@ -79,7 +82,7 @@ function CommentSection({ postId }: CommentSectionProps): JSX.Element {
       {commentsFailedToLoad && <h1>Comments failed to load</h1>}
       {!commentsFailedToLoad && (
         <>
-          <CommentInputContainer />
+          <CommentInputContainer postId={postId} />
           {comments.map((item) => (
             <div key={item.comment.id}>
               <CommentContainer commentNode={item} />
