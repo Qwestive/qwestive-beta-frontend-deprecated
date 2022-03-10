@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
-import populateDb from '../../../../common/services/Firebase/WriteData/populateDb';
 import {
   UpVote,
   DownVote,
@@ -43,8 +42,6 @@ function PostActionsSection({
   const [voteCount, setVoteCount] = useState(0);
 
   const handleSendTip = () => {
-    // TODO: add logic
-    // populateDb();
     const authorUserNameStr = authorUserName ?? '';
     const authorPublicKeyStr = authorPublicKey ?? '';
     if (authorPublicKeyStr === '' || authorUserNameStr === '') {

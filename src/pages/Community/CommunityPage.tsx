@@ -25,21 +25,17 @@ export default function CommunityPage(): JSX.Element {
   const [tokenRegistryHasLoaded, setTokenRegistryHasLoaded] = useState(false);
 
   async function handleLoadPage() {
-    console.log('loading the community');
-
     setLoadingPage(true);
     if (cId !== undefined) {
       try {
         // TODO: check credentials.
         setHasAccess(true);
         setTokenInfo(tokenRegistry.get(cId));
-        console.log('getting community info');
 
         setCommunityInfo(await getCommunityInfo(cId));
 
         /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
       } catch (error: any) {
-        console.log('error is here');
         toast.error(error?.message);
         throw error;
       }

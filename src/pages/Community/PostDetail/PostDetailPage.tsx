@@ -1,14 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import {
-  PublicKey,
-  Connection,
-  SystemProgram,
-  LAMPORTS_PER_SOL,
-  Transaction,
-} from '@solana/web3.js';
-import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
-import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 import RichTextContainer from './components/RichTextContainer';
 import CommentSection from './components/CommentSection';
 import { IpostArticle } from '../../../common/types';

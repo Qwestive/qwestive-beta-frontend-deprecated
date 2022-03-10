@@ -7,7 +7,7 @@ import {
   Transaction,
   LAMPORTS_PER_SOL,
 } from '@solana/web3.js';
-import React, { FC, useCallback } from 'react';
+import React, { useCallback } from 'react';
 
 interface IsendTipButton {
   toPublicKey: string;
@@ -24,7 +24,6 @@ export const SendTipButton: any = ({
 
   const onClick = useCallback(async () => {
     if (!publicKey) throw new WalletNotConnectedError();
-    console.log(solAmmount);
     const transaction = new Transaction().add(
       SystemProgram.transfer({
         fromPubkey: publicKey,
