@@ -4,13 +4,15 @@ import { PlusIcon } from '@heroicons/react/solid';
 import { Link } from 'react-router-dom';
 import PostPreviewCard from './PostPreviewCard';
 import ClassNamesLogic from '../../../common/components/Util/ClassNamesLogic';
-import { Icommunity, IpostArticle, TpostSorting } from '../../../common/types';
+import { Icommunity, IpostPreview, TpostSorting } from '../../../common/types';
 
 type TpostDisplayList = {
   currentPostSorting: TpostSorting;
   setCurrentPostSorting: React.Dispatch<React.SetStateAction<TpostSorting>>;
   communityInfo: Icommunity | undefined;
-  postList: IpostArticle[] | undefined;
+
+  postList: IpostPreview[] | undefined;
+
   postsLoading: boolean;
 };
 
@@ -31,6 +33,7 @@ export default function PostDisplayList({
           <div className="space-x-3 flex overflow-auto hideScrollBar">
             {postSortingTypes.map((sortingType) => (
               <button
+                key={sortingType}
                 type="button"
                 className={ClassNamesLogic(
                   currentPostSorting === sortingType
@@ -55,11 +58,26 @@ export default function PostDisplayList({
           </div>
         </div>
         {/* Post List */}
-        <div>
+        <div className="mt-5 p-2 space-y-2">
           {postsLoading ? (
             <p>Loading</p>
           ) : (
-            postList?.map((post) => <PostPreviewCard post={post} />)
+            <div>
+              <div className="p-3 flex justify-between">
+                <p className="text-sm">Posts</p>
+                <div className=" w-24 grid grid-cols-2 text-center">
+                  <p className="text-sm">Replies</p>
+                  <p className="text-sm">Likes</p>
+                </div>
+              </div>
+              <div className="space-y-3">
+                {postList?.map((post) => (
+                  <div key={post.creationDate}>
+                    <PostPreviewCard post={post} />
+                  </div>
+                ))}
+              </div>
+            </div>
           )}
         </div>
         {/* Small screen post button */}

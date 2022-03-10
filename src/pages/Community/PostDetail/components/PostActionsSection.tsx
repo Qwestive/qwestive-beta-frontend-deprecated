@@ -42,8 +42,8 @@ function PostActionsSection({
 
   const handleSendTip = () => {
     // TODO: add logic
-    // populateDb();
-    tipCallback('some user');
+    populateDb();
+    // tipCallback('some user');
   };
 
   const handleUpvote = () => {

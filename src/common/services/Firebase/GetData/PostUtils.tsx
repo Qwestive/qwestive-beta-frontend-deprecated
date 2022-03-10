@@ -4,13 +4,15 @@ import {
   collection,
   query,
   where,
-  orderBy,
   limit,
   getDocs,
+  orderBy,
 } from 'firebase/firestore';
 import { Firestore } from '../FirebaseConfig';
 import { postConverter } from '../Converters/PostConverter';
-import { IpostArticle, TpostSorting } from '../../../types';
+
+import { IpostArticle, TpostSorting, IpostPreview } from '../../../types';
+import { postPreviewConverter } from '../Converters/PostPreviewConverter';
 
 export async function getPostInfo(postId: string): Promise<IpostArticle> {
   const docRef = doc(Firestore, 'posts', postId).withConverter(postConverter);
@@ -21,52 +23,60 @@ export async function getPostInfo(postId: string): Promise<IpostArticle> {
   throw new Error(`Post with provided ID: ${postId}, does not exist`);
 }
 
-// Do a better query once we have samples of posts
-export async function queryPosts(
+/*
+TODO: add top query type
+*/
+export async function queryPostPreviews(
   cId: string,
   sortingType: TpostSorting,
-  categorie: string
-): Promise<IpostArticle[]> {
-  const postRef = collection(Firestore, 'posts');
+  category: string
+): Promise<IpostPreview[]> {
+  const postRef = collection(Firestore, 'postPreviews');
 
   let postQuery = query(
     postRef,
-    where('cId', '==', cId),
-    where('categorie', '==', categorie),
+    where('accessTokenId', '==', cId),
     orderBy('creationDate', 'desc'),
     limit(10)
   );
-  if (sortingType === 'Top') {
+
+  const sortingTypeQuery = sortingType.toLowerCase();
+
+  if (!(category === 'All Topics')) {
+    if (['poll', 'bounty'].includes(sortingTypeQuery)) {
+      postQuery = query(
+        postRef,
+        where('accessTokenId', '==', cId),
+        where('category', '==', category),
+        where('postType', '==', sortingTypeQuery),
+        orderBy('creationDate', 'desc'),
+        limit(10)
+      );
+    } else {
+      postQuery = query(
+        postRef,
+        where('accessTokenId', '==', cId),
+        where('category', '==', category),
+        orderBy('creationDate', 'desc'),
+        limit(10)
+      );
+    }
+  } else if (['poll', 'bounty'].includes(sortingTypeQuery)) {
     postQuery = query(
       postRef,
-      where('cId', '==', cId),
-      where('categorie', '==', categorie),
-      orderBy('numberOfComments', 'desc'),
-      limit(10)
-    );
-  } else if (sortingType === 'Poll') {
-    postQuery = query(
-      postRef,
-      where('cId', '==', cId),
-      where('postType', '==', 'poll'),
-      orderBy('creationDate', 'desc'),
-      limit(10)
-    );
-  } else if (sortingType === 'Bounty') {
-    postQuery = query(
-      postRef,
-      where('cId', '==', cId),
-      where('postType', '==', 'bounty'),
+      where('accessTokenId', '==', cId),
+      where('postType', '==', sortingTypeQuery),
       orderBy('creationDate', 'desc'),
       limit(10)
     );
   }
-
-  const querySnapshot = await getDocs(postQuery);
-  const result: IpostArticle[] = [];
+  const querySnapshot = await getDocs(
+    postQuery.withConverter(postPreviewConverter)
+  );
+  const result: IpostPreview[] = [];
 
   querySnapshot.forEach((postDoc) => {
-    result.push(postConverter.fromFirestore(postDoc.data()));
+    result.push(postPreviewConverter.fromFirestore(postDoc));
   });
 
   return result;

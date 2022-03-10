@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { TokenInfo } from '@solana/spl-token-registry';
 
 import ClassNamesLogic from '../../../common/components/Util/ClassNamesLogic';
-import { Icategories } from '../../../common/types';
+import { Icategory } from '../../../common/types';
 
 import defaultUserProfileImage from '../../../assets/defaultUserProfileImage.png';
 
 type TcategoriesLarge = {
   tokenInfo: TokenInfo | undefined;
-  categoryList: Array<Icategories> | undefined;
+  categoryList: Array<Icategory> | undefined;
   setCurrentCategory: React.Dispatch<React.SetStateAction<string>>;
   currentCategory: string;
 };

@@ -5,10 +5,14 @@ import { SetterOrUpdater } from 'recoil';
 /* 
   Community types
 */
+export interface Icategory {
+  name: string;
+  count: number;
+}
 
 export interface Icommunity {
   cId: string;
-  memberCount: string;
+  categories: Icategory[];
 }
 
 export interface ItokenOwned {
