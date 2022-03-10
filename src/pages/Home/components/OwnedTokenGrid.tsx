@@ -46,9 +46,7 @@ export default function OwnedTokenGrid({
                   <p className="mt-1 text-gray-500 text-sm truncate">
                     {token.mint}
                   </p>
-                  <p className=" mt-2 text-color-primary text-base truncate">
-                    {token.communityData?.memberCount ?? 0} Members
-                  </p>
+
                   <p className="mt-1 text-gray-500 text-sm truncate">
                     You have {token.amountHeld} {token.name}
                   </p>

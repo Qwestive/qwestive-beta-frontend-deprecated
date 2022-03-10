@@ -1,15 +1,11 @@
 import React from 'react';
 import { TokenInfo } from '@solana/spl-token-registry';
 
-import { Icommunity } from '../../common/types';
-
 type TnonMemberCommunityPage = {
-  communityInfo: Icommunity | undefined;
   tokenInfo: TokenInfo | undefined;
 };
 // TODO: design
 export default function NonMemberCommunityPage({
-  communityInfo,
   tokenInfo,
 }: TnonMemberCommunityPage): JSX.Element {
   return (
@@ -23,11 +19,6 @@ export default function NonMemberCommunityPage({
           <p>{tokenInfo.symbol}</p>
           <img src={tokenInfo.logoURI} className="mx-auto h-32" alt="logoUri" />
           <p>{tokenInfo.address}</p>
-        </div>
-      )}
-      {communityInfo !== undefined && (
-        <div className="mt-3">
-          <p>{communityInfo.memberCount} members</p>
         </div>
       )}
     </div>

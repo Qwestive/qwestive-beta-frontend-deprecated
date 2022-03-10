@@ -4,13 +4,13 @@ import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/solid';
 
 import ClassNamesLogic from '../../../common/components/Util/ClassNamesLogic';
-import { Icategories } from '../../../common/types';
+import { Icategory } from '../../../common/types';
 
 import defaultUserProfileImage from '../../../assets/defaultUserProfileImage.png';
 
 type TcategoriesSmall = {
   tokenInfo: TokenInfo | undefined;
-  categoryList: Array<Icategories> | undefined;
+  categoryList: Array<Icategory> | undefined;
   setCurrentCategory: React.Dispatch<React.SetStateAction<string>>;
   currentCategory: string;
 };
@@ -72,7 +72,7 @@ export default function CategoriesSmall({
                   <button
                     type="button"
                     className={ClassNamesLogic(
-                      currentCategory === 'All'
+                      currentCategory === 'All Topics'
                         ? 'bg-gray-200'
                         : 'hover:bg-gray-100',
                       'py-1 w-full'

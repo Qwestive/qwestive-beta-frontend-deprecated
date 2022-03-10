@@ -5,10 +5,14 @@ import { SetterOrUpdater } from 'recoil';
 /* 
   Community types
 */
+export interface Icategory {
+  name: string;
+  count: number;
+}
 
 export interface Icommunity {
   cId: string;
-  memberCount: string;
+  categories: Icategory[];
 }
 
 export interface ItokenOwned {
@@ -86,11 +90,6 @@ export type TpostSorting = 'New' | 'Top' | 'Poll' | 'Bounty';
 
 export type TpostType = 'article' | 'poll' | 'bounty' | 'vote';
 
-export interface Icategories {
-  name: string;
-  count: number;
-}
-
 export interface IpostPreview {
   id: string;
   postType: TpostType;
@@ -101,7 +100,8 @@ export interface IpostPreview {
   authorPublicKey: string;
   authorProfileImageUrl: string;
   title: string;
-  creationDate: Date;
+  category: string;
+  creationDate: number;
   upVoteUserIds: Array<string>;
   downVoteUserIds: Array<string>;
   numberOfComments: number;
