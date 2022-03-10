@@ -11,7 +11,6 @@ import {
 import { Firestore } from '../FirebaseConfig';
 import { postConverter } from '../Converters/PostConverter';
 import { postPreviewConverter } from '../Converters/PostPreviewConverter';
-
 import { IpostData, TpostSorting, IpostPreview } from '../../../types';
 
 export async function getPostInfo(postId: string): Promise<IpostData> {
