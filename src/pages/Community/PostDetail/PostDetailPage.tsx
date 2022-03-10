@@ -15,6 +15,7 @@ import { IpostArticle } from '../../../common/types';
 import PostActionsSection from './components/PostActionsSection';
 import { getPostInfo } from '../../../common/services/Firebase/GetData/PostUtils';
 import TipModal from './components/TipModal';
+import { SendTipButton } from './components/SendTipButton';
 
 /// Component which shows all of the information inside a post.
 ///
@@ -27,11 +28,9 @@ function PostDetailPage(): JSX.Element {
   const [isLoading, setIsLoading] = useState(true);
   const [postData, setPostData] = useState<IpostArticle | undefined>(undefined);
   const [tipReceiverUserName, setTipReceiverUserName] = useState('');
+  const [tipReceiverPublicKey, setTipReceiverPublicKey] = useState('');
   const [isTipModalOpen, setIsTipModalOpen] = useState(false);
-  const [tipAmmountInput, setTipAmmountInput] = useState('');
-
-  const { publicKey, sendTransaction } = useWallet();
-  const { connection } = useConnection();
+  const [tipAmmountInput, setTipAmmountInput] = useState(0);
 
   async function fetchPostData(
     targetPostId: string | undefined
@@ -43,39 +42,27 @@ function PostDetailPage(): JSX.Element {
     setIsLoading(false);
   }
 
-  function handleOpenTipModal(receiver: string): void {
-    setTipReceiverUserName(receiver);
+  function handleOpenTipModal(
+    receiverPublicKey: string,
+    receiverUserName: string
+  ): void {
+    setTipReceiverUserName(receiverUserName);
+    setTipReceiverPublicKey(receiverUserName);
     setIsTipModalOpen(true);
   }
 
   function handleSetTipAmmountInput(
     event: React.FormEvent<HTMLInputElement>
   ): void {
-    setTipAmmountInput(event?.currentTarget.value);
+    setTipAmmountInput(event?.currentTarget.valueAsNumber);
+
+    // if (!Number.isNaN(parsedTipAmmount)) {
+    //   console.log(parsedTipAmmount);
+    //   setTipAmmount(event?.currentTarget.valueAsNumber);
+    // } else {
+    //   setTipAmmount(0);
+    // }
   }
-
-  const handleSendTip = async () => {
-    const parsedTipAmmount = parseFloat(tipAmmountInput);
-    if (!Number.isNaN(parsedTipAmmount)) {
-      if (!publicKey) throw new WalletNotConnectedError();
-
-      const transaction = new Transaction().add(
-        SystemProgram.transfer({
-          fromPubkey: publicKey,
-          toPubkey: new PublicKey(
-            '3oabmiVFubrBn2hJoRcP8Ko2LvCGb2Z3vB58rgoBFgUV'
-          ),
-          lamports: LAMPORTS_PER_SOL * parsedTipAmmount,
-        })
-      );
-
-      const signature = await sendTransaction(transaction, connection);
-
-      await connection.confirmTransaction(signature, 'processed');
-      return true;
-    }
-    return false;
-  };
 
   useEffect(() => {
     try {
@@ -96,20 +83,21 @@ function PostDetailPage(): JSX.Element {
               <h2>
                 🥳 This is great! <b>{tipReceiverUserName}</b> will be happy to
                 receive your tip!
+                <p className="text-xs text-color-secondary">
+                  Receiver Public Key: {tipReceiverPublicKey}
+                </p>
               </h2>
               <div className="flex flex-row justify-center my-4 mx-auto">
                 <input
                   className="rounded-lg"
-                  type="text"
+                  type="number"
                   value={tipAmmountInput}
                   onChange={handleSetTipAmmountInput}
                 />
-                <button
-                  type="submit"
-                  className="btn-filled m-2"
-                  onClick={() => handleSendTip()}>
-                  Send!
-                </button>
+                <SendTipButton
+                  toPublicKey={tipReceiverPublicKey}
+                  solAmmount={tipAmmountInput}
+                />
               </div>
             </div>
           </TipModal>
@@ -124,7 +112,8 @@ function PostDetailPage(): JSX.Element {
             upVotes={postData?.upVoteUserIds}
             downVotes={postData?.downVoteUserIds}
             numComments={postData?.numberOfComments ?? 0}
-            tipReceivingPublicKey={postData?.authorPublicKey ?? ''}
+            authorUserName={postData?.authorUserName ?? ''}
+            authorPublicKey={postData?.authorPublicKey ?? ''}
             // eslint-disable-next-line react/jsx-no-bind
             tipCallback={handleOpenTipModal}
           />

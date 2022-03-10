@@ -15,8 +15,9 @@ type PostActionsSectioData = {
   upVotes: Array<string> | undefined;
   downVotes: Array<string> | undefined;
   numComments: number | undefined;
-  tipReceivingPublicKey: string | undefined;
-  tipCallback: (arg0: string) => void;
+  authorPublicKey: string | undefined;
+  authorUserName: string | undefined;
+  tipCallback: (arg0: string, arg1: string) => void;
 };
 
 /// Component which allows upvoting/downvoting/tipping a post and viwing data
@@ -30,7 +31,8 @@ function PostActionsSection({
   upVotes,
   downVotes,
   numComments,
-  tipReceivingPublicKey,
+  authorPublicKey,
+  authorUserName,
   tipCallback,
 }: PostActionsSectioData): JSX.Element {
   const [didDownVote, setDidDownVote] = useState(false);
@@ -42,8 +44,13 @@ function PostActionsSection({
 
   const handleSendTip = () => {
     // TODO: add logic
-    populateDb();
-    // tipCallback('some user');
+    // populateDb();
+    const authorUserNameStr = authorUserName ?? '';
+    const authorPublicKeyStr = authorPublicKey ?? '';
+    if (authorPublicKeyStr === '' || authorUserNameStr === '') {
+      throw new Error('Invalid author public key or author username');
+    }
+    tipCallback(authorPublicKeyStr, authorUserNameStr);
   };
 
   const handleUpvote = () => {
