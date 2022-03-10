@@ -31,6 +31,6 @@ export const FirebaseStorage = getStorage();
 
 // Emulators
 // connectFunctionsEmulator(FirebaseFunctions, 'localhost', 5001);
-// connectFirestoreEmulator(Firestore, 'localhost', 8081);
+// connectFirestoreEmulator(Firestore, 'localhost', 8080);
 // connectAuthEmulator(FirebaseAuth, 'http://localhost:9099');
 // connectStorageEmulator(FirebaseStorage, 'localhost', 9199);

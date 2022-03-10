@@ -57,10 +57,7 @@ export default function CommunityPage(): JSX.Element {
     <div className="max-w-5xl mx-auto px-2">
       {loadingPage && <p>Loading ...</p>}
       {!loadingPage && !hasAccess && (
-        <NonMemberCommunityPage
-          communityInfo={communityInfo}
-          tokenInfo={tokenInfo}
-        />
+        <NonMemberCommunityPage tokenInfo={tokenInfo} />
       )}
       {!loadingPage &&
         hasAccess &&
