@@ -100,7 +100,8 @@ export interface IpostPreviewSubmission {
   authorPublicKey: string;
   authorProfileImageUrl: string;
   title: string;
-  creationDate: Date;
+  creationDate: number;
+  category: string;
   upVoteUserIds: Array<string>;
   downVoteUserIds: Array<string>;
   numberOfComments: number;

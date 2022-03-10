@@ -10,7 +10,7 @@ import PostDisplayList from './Feed/PostDisplayList';
 
 import {
   Icommunity,
-  IpostData,
+  IpostArticle,
   Icategories,
   TpostSorting,
 } from '../../common/types';
@@ -58,7 +58,7 @@ export default function MemberCommunityPage({
     Array<Icategories> | undefined
   >();
 
-  const [postList, setPostList] = useState<Array<IpostData> | undefined>();
+  const [postList, setPostList] = useState<Array<IpostArticle> | undefined>();
   const [currentPostSorting, setCurrentPostSorting] =
     useState<TpostSorting>('New');
 

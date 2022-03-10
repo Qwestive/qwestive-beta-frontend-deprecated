@@ -1,25 +1,23 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, ReactNode, Dispatch, SetStateAction } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
 
-import { IimageEditingModal } from '../../../../../types';
-
-interface ItipModal {
+export interface ItipModal {
   open: boolean;
-  setOpen: boolean;
-  children: Array<string>;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  children: ReactNode;
 }
 
 export default function TipModal({
   open,
   setOpen,
   children,
-}: IimageEditingModal): JSX.Element {
+}: ItipModal): JSX.Element {
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
         as="div"
-        className="fixed z-0 inset-0 overflow-y-auto"
+        className="fixed z-0 inset-0 overflow-y-auto w-2/3 mx-auto"
         onClose={setOpen}>
         <div
           className="flex justify-center pt-4 px-4 pb-20 text-center 
@@ -71,7 +69,7 @@ export default function TipModal({
                     as="h3"
                     className="text-lg leading-6 font-medium 
                     text-color-primary">
-                    Edit your image
+                    Send a Tip!
                   </Dialog.Title>
                 </div>
               </div>

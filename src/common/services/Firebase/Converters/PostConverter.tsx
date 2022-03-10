@@ -1,9 +1,9 @@
 import { DocumentData } from 'firebase/firestore';
-import { IpostData } from '../../../types';
+import { IpostArticle } from '../../../types';
 
 // Firestore data converter
 export const postConverter = {
-  toFirestore: (post: IpostData): DocumentData => {
+  toFirestore: (post: IpostArticle): DocumentData => {
     // Note, we don't simply return post because post contains id field which
     // we do not wish DocumentData to contain.
     return {
@@ -15,14 +15,14 @@ export const postConverter = {
       authorPublicKey: post.authorPublicKey,
       authorProfileImageUrl: post.authorProfileImageUrl,
       title: post.title,
-      contents: post.contents,
+      content: post.content,
       creationDate: post.creationDate,
       upVoteUserIds: post.upVoteUserIds,
       downVoteUserIds: post.downVoteUserIds,
       numberOfComments: post.numberOfComments,
     };
   },
-  fromFirestore: (snapshot: DocumentData): IpostData => {
+  fromFirestore: (snapshot: DocumentData): IpostArticle => {
     // Note, we don't simply return data because IpostData requires id field
     // which is missing from snapshot data.
     const data = snapshot.data();
@@ -36,11 +36,11 @@ export const postConverter = {
       authorPublicKey: data.authorPublicKey,
       authorProfileImageUrl: data.authorProfileImageUrl,
       title: data.title,
-      contents: data.contents,
+      content: data.content,
       creationDate: data.creationDate,
       upVoteUserIds: data.upVoteUserIds,
       downVoteUserIds: data.downVoteUserIds,
       numberOfComments: data.numberOfComments,
-    } as IpostData;
+    } as IpostArticle;
   },
 };

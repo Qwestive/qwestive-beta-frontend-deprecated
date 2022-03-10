@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { IpostData } from '../../../common/types';
+import { IpostArticle } from '../../../common/types';
 
 type TpostPreviewCard = {
-  post: IpostData;
+  post: IpostArticle;
 };
 
 export default function PostPreviewCard({

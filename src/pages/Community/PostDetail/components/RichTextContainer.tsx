@@ -6,7 +6,7 @@ import dompurify from 'dompurify';
 type PostContents = {
   title: string | undefined;
   author: string | undefined;
-  creationDate: Date | undefined;
+  creationDate: number | undefined;
   contents: string | undefined;
 };
 

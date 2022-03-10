@@ -4,13 +4,13 @@ import { PlusIcon } from '@heroicons/react/solid';
 import { Link } from 'react-router-dom';
 import PostPreviewCard from './PostPreviewCard';
 import ClassNamesLogic from '../../../common/components/Util/ClassNamesLogic';
-import { Icommunity, IpostData, TpostSorting } from '../../../common/types';
+import { Icommunity, IpostArticle, TpostSorting } from '../../../common/types';
 
 type TpostDisplayList = {
   currentPostSorting: TpostSorting;
   setCurrentPostSorting: React.Dispatch<React.SetStateAction<TpostSorting>>;
   communityInfo: Icommunity | undefined;
-  postList: IpostData[] | undefined;
+  postList: IpostArticle[] | undefined;
   postsLoading: boolean;
 };
 
