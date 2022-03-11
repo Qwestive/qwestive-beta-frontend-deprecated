@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import WriteComment from '../../../../common/services/Firebase/WriteData/WriteComment';
-import { IpostComment, IpostCommentSubmission } from '../../../../common/types';
+import { IpostCommentSubmission } from '../../../../common/types';
 import {
   userNameAtom,
   userProfileImageAtom,
@@ -46,6 +46,7 @@ function CommentInputContainer({
       };
       WriteComment(newComment);
       addComment(newComment);
+      setTextAreaValue('');
     }
   };
 

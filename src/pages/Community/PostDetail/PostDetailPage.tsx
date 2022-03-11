@@ -1,8 +1,8 @@
-import React, { SetStateAction, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import RichTextContainer from './components/RichTextContainer';
 import CommentSection from './components/CommentSection';
-import { IpostArticle, IpostCommentSubmission } from '../../../common/types';
+import { IpostArticle } from '../../../common/types';
 import PostActionsSection from './components/PostActionsSection';
 import { getPostInfo } from '../../../common/services/Firebase/GetData/PostUtils';
 import TipModal from './components/TipModal';
@@ -23,8 +23,6 @@ function PostDetailPage(): JSX.Element {
   const [isTipModalOpen, setIsTipModalOpen] = useState(false);
   const [tipAmmountInput, setTipAmmountInput] = useState(0);
   const [tipSuccess, setTipSuccess] = useState(false);
-  const [postComment, setPostComment] =
-    useState<SetStateAction<IpostCommentSubmission | undefined>>();
 
   async function fetchPostData(
     targetPostId: string | undefined
