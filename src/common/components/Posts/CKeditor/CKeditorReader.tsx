@@ -25,5 +25,7 @@ export default function CKeditorReader({
     };
   };
 
-  return <div dangerouslySetInnerHTML={createMarkup()} />;
+  return (
+    <div dangerouslySetInnerHTML={createMarkup()} className="ck-content" />
+  );
 }
