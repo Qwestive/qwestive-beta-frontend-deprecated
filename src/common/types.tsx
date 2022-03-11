@@ -90,8 +90,12 @@ export type TpostSorting = 'New' | 'Top' | 'Poll' | 'Bounty';
 
 export type TpostType = 'article' | 'poll' | 'bounty' | 'vote';
 
-export interface IpostPreview {
-  id: string;
+export interface Icategories {
+  name: string;
+  count: number;
+}
+
+export interface IpostPreviewSubmission {
   postType: TpostType;
   accessTokenId: string;
   accessMinimumTokenBalance: number;
@@ -100,11 +104,19 @@ export interface IpostPreview {
   authorPublicKey: string;
   authorProfileImageUrl: string;
   title: string;
-  category: string;
   creationDate: number;
+  category: string;
   upVoteUserIds: Array<string>;
   downVoteUserIds: Array<string>;
   numberOfComments: number;
+}
+
+export interface IpostPreview extends IpostPreviewSubmission {
+  id: string;
+}
+
+export interface IpostArticleSubmission extends IpostPreviewSubmission {
+  content: string;
 }
 
 export interface IpostArticle extends IpostPreview {
@@ -128,11 +140,10 @@ export interface IpostData {
   numberOfComments: number;
 }
 
-export interface IpostComment {
-  id: string;
+export interface IpostCommentSubmission {
   postId: string;
-  parentCommentId: string;
   depth: number;
+  parentCommentId: string;
   authorUserId: string;
   authorUserName: string;
   authorPublicKey: string;
@@ -140,4 +151,8 @@ export interface IpostComment {
   body: string;
   upVoteUserIds: Array<string>;
   downVoteUserIds: Array<string>;
+}
+
+export interface IpostComment extends IpostCommentSubmission {
+  id: string;
 }

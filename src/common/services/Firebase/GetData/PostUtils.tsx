@@ -10,10 +10,11 @@ import {
 } from 'firebase/firestore';
 import { Firestore } from '../FirebaseConfig';
 import { postConverter } from '../Converters/PostConverter';
-import { postPreviewConverter } from '../Converters/PostPreviewConverter';
-import { IpostData, TpostSorting, IpostPreview } from '../../../types';
 
-export async function getPostInfo(postId: string): Promise<IpostData> {
+import { IpostArticle, TpostSorting, IpostPreview } from '../../../types';
+import { postPreviewConverter } from '../Converters/PostPreviewConverter';
+
+export async function getPostInfo(postId: string): Promise<IpostArticle> {
   const docRef = doc(Firestore, 'posts', postId).withConverter(postConverter);
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
@@ -69,7 +70,6 @@ export async function queryPostPreviews(
       limit(10)
     );
   }
-
   const querySnapshot = await getDocs(
     postQuery.withConverter(postPreviewConverter)
   );

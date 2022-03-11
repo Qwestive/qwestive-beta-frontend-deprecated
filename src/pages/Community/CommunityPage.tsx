@@ -31,11 +31,13 @@ export default function CommunityPage(): JSX.Element {
         // TODO: check credentials.
         setHasAccess(true);
         setTokenInfo(tokenRegistry.get(cId));
+
         setCommunityInfo(await getCommunityInfo(cId));
 
         /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
       } catch (error: any) {
         toast.error(error?.message);
+        throw error;
       }
     }
     setLoadingPage(false);

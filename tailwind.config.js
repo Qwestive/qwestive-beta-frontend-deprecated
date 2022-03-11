@@ -20,7 +20,7 @@ module.exports = {
         'qwestive-gray': '#A3A171',
         'qwestive-purple': '#6560fb',
         'qwestive-purple-hover': '#4c48c2',
-        'landing-page-card-gray': '#ECEFF1'
+        'landing-page-card-gray': '#ECEFF1',
       },
 
       // that is animation class

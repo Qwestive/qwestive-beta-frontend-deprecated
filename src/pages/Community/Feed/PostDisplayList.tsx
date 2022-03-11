@@ -10,7 +10,9 @@ type TpostDisplayList = {
   currentPostSorting: TpostSorting;
   setCurrentPostSorting: React.Dispatch<React.SetStateAction<TpostSorting>>;
   communityInfo: Icommunity | undefined;
+
   postList: IpostPreview[] | undefined;
+
   postsLoading: boolean;
 };
 

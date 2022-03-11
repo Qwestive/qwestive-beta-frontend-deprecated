@@ -6,7 +6,6 @@ import { queryPostPreviews } from '../../common/services/Firebase/GetData/PostUt
 import CategoriesLarge from './components/CategoriesLarge';
 import CategoriesSmall from './components/CategoriesSmall';
 import PostDisplayList from './Feed/PostDisplayList';
-
 import { Icommunity, IpostPreview, TpostSorting } from '../../common/types';
 
 type TmemberCommunityPage = {
@@ -19,6 +18,7 @@ export default function MemberCommunityPage({
   tokenInfo,
 }: TmemberCommunityPage): JSX.Element {
   const [postList, setPostList] = useState<Array<IpostPreview> | undefined>();
+
   const [currentPostSorting, setCurrentPostSorting] =
     useState<TpostSorting>('New');
 
