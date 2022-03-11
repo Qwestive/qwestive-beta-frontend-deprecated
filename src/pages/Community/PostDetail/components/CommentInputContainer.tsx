@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import WriteComment from '../../../../common/services/Firebase/WriteData/WriteComment';
+import { IpostComment, IpostCommentSubmission } from '../../../../common/types';
 import {
   userNameAtom,
   userProfileImageAtom,
@@ -9,6 +10,7 @@ import {
 
 type TcommentInputContainer = {
   postId: string | undefined;
+  addComment: (arg0: IpostCommentSubmission) => void;
 };
 
 /// Component which allows commenting on a post.
@@ -17,6 +19,7 @@ type TcommentInputContainer = {
 /// the comments section.
 function CommentInputContainer({
   postId,
+  addComment,
 }: TcommentInputContainer): JSX.Element {
   const [textAreaValue, setTextAreaValue] = useState('');
   const username = useRecoilValue(userNameAtom);
@@ -29,7 +32,7 @@ function CommentInputContainer({
 
   const handleSubmit = (): void => {
     if (postId != null) {
-      WriteComment({
+      const newComment = {
         postId,
         depth: 0,
         parentCommentId: '',
@@ -40,7 +43,9 @@ function CommentInputContainer({
         body: textAreaValue,
         upVoteUserIds: [],
         downVoteUserIds: [],
-      });
+      };
+      WriteComment(newComment);
+      addComment(newComment);
     }
   };
 

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { SetStateAction, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import RichTextContainer from './components/RichTextContainer';
 import CommentSection from './components/CommentSection';
-import { IpostArticle } from '../../../common/types';
+import { IpostArticle, IpostCommentSubmission } from '../../../common/types';
 import PostActionsSection from './components/PostActionsSection';
 import { getPostInfo } from '../../../common/services/Firebase/GetData/PostUtils';
 import TipModal from './components/TipModal';
@@ -22,6 +22,9 @@ function PostDetailPage(): JSX.Element {
   const [tipReceiverPublicKey, setTipReceiverPublicKey] = useState('');
   const [isTipModalOpen, setIsTipModalOpen] = useState(false);
   const [tipAmmountInput, setTipAmmountInput] = useState(0);
+  const [tipSuccess, setTipSuccess] = useState(false);
+  const [postComment, setPostComment] =
+    useState<SetStateAction<IpostCommentSubmission | undefined>>();
 
   async function fetchPostData(
     targetPostId: string | undefined
@@ -38,7 +41,7 @@ function PostDetailPage(): JSX.Element {
     receiverUserName: string
   ): void {
     setTipReceiverUserName(receiverUserName);
-    setTipReceiverPublicKey(receiverUserName);
+    setTipReceiverPublicKey(receiverPublicKey);
     setIsTipModalOpen(true);
   }
 
@@ -46,13 +49,6 @@ function PostDetailPage(): JSX.Element {
     event: React.FormEvent<HTMLInputElement>
   ): void {
     setTipAmmountInput(event?.currentTarget.valueAsNumber);
-
-    // if (!Number.isNaN(parsedTipAmmount)) {
-    //   console.log(parsedTipAmmount);
-    //   setTipAmmount(event?.currentTarget.valueAsNumber);
-    // } else {
-    //   setTipAmmount(0);
-    // }
   }
 
   useEffect(() => {
@@ -71,25 +67,39 @@ function PostDetailPage(): JSX.Element {
         <>
           <TipModal open={isTipModalOpen} setOpen={setIsTipModalOpen}>
             <div className="flex flex-col text-center">
-              <h2>
-                🥳 This is great! <b>{tipReceiverUserName}</b> will be happy to
-                receive your tip!
-                <p className="text-xs text-color-secondary">
-                  Receiver Public Key: {tipReceiverPublicKey}
-                </p>
-              </h2>
-              <div className="flex flex-row justify-center my-4 mx-auto">
-                <input
-                  className="rounded-lg"
-                  type="number"
-                  value={tipAmmountInput}
-                  onChange={handleSetTipAmmountInput}
-                />
-                <SendTipButton
-                  toPublicKey={tipReceiverPublicKey}
-                  solAmmount={tipAmmountInput}
-                />
-              </div>
+              {!tipSuccess && (
+                <>
+                  <h2>
+                    🥳 This is great! <b>{tipReceiverUserName}</b> will be happy
+                    to receive your tip!
+                    <p className="text-xs text-color-secondary">
+                      Receiver Public Key: {tipReceiverPublicKey}
+                    </p>
+                  </h2>
+                  <div className="flex flex-row justify-center my-4 mx-auto">
+                    <input
+                      className="rounded-lg"
+                      type="number"
+                      value={tipAmmountInput}
+                      onChange={handleSetTipAmmountInput}
+                    />
+                    <SendTipButton
+                      toPublicKey={tipReceiverPublicKey}
+                      solAmmount={tipAmmountInput}
+                      transactionCompleteCallback={(result: boolean) =>
+                        setTipSuccess(result)
+                      }
+                    />
+                  </div>
+                </>
+              )}
+              {tipSuccess && (
+                <div>
+                  <h1 className="text-green-500	text-3xl">
+                    Transaction success!
+                  </h1>
+                </div>
+              )}
             </div>
           </TipModal>
           <RichTextContainer

@@ -7,8 +7,6 @@ import {
 import { userPublicKeyAtom } from '../../../../recoil/userInfo';
 import ClassNamesLogic from '../../../../common/components/Util/ClassNamesLogic';
 
-// import TipModal from './TipModal';
-
 type PostActionsSectioData = {
   postId: string | undefined;
   upVotes: Array<string> | undefined;

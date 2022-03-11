@@ -12,12 +12,14 @@ import React, { useCallback } from 'react';
 interface IsendTipButton {
   toPublicKey: string;
   solAmmount: number;
+  transactionCompleteCallback: (arg0: boolean) => void;
 }
 
 // eslint-disable-next-line react/function-component-definition
 export const SendTipButton: any = ({
   toPublicKey,
   solAmmount,
+  transactionCompleteCallback,
 }: IsendTipButton) => {
   const { connection } = useConnection();
   const { publicKey, sendTransaction } = useWallet();
@@ -35,6 +37,7 @@ export const SendTipButton: any = ({
     const signature = await sendTransaction(transaction, connection);
 
     await connection.confirmTransaction(signature, 'processed');
+    transactionCompleteCallback(true);
   }, [publicKey, sendTransaction, connection]);
 
   return (
