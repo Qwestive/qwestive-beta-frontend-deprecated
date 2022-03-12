@@ -12,6 +12,7 @@ import React, { useCallback } from 'react';
 interface IsendTipButton {
   toPublicKey: string;
   solAmmount: number;
+  transactionStartedCallback: () => boolean;
   transactionCompleteCallback: (arg0: boolean) => void;
 }
 
@@ -19,6 +20,7 @@ interface IsendTipButton {
 export const SendTipButton: any = ({
   toPublicKey,
   solAmmount,
+  transactionStartedCallback,
   transactionCompleteCallback,
 }: IsendTipButton) => {
   const { connection } = useConnection();
@@ -26,6 +28,8 @@ export const SendTipButton: any = ({
 
   const onClick = useCallback(async () => {
     if (!publicKey) throw new WalletNotConnectedError();
+
+    transactionStartedCallback();
     const transaction = new Transaction().add(
       SystemProgram.transfer({
         fromPubkey: publicKey,
