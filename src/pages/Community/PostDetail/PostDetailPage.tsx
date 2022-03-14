@@ -5,8 +5,6 @@ import CommentSection from './components/CommentSection';
 import { IpostArticle } from '../../../common/types';
 import PostActionsSection from './components/PostActionsSection';
 import { getPostInfo } from '../../../common/services/Firebase/GetData/PostUtils';
-import TipModal from './components/TipModal';
-import { SendTipButton } from './components/SendTipButton';
 import TipModalContainer from './components/TipModalContainer';
 
 /// Component which shows all of the information inside a post.
