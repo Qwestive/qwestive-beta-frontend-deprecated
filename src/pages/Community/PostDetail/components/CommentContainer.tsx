@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import { IpostComment } from '../../../../common/types';
+import React, { useState, useEffect } from 'react';
+import { IpostComment, IpostCommentSubmission } from '../../../../common/types';
+import CommentInputContainer from './CommentInputContainer';
+import WriteComment from '../../../../common/services/Firebase/WriteData/WriteComment';
 
 type Comment = {
   comment: IpostComment;
@@ -17,9 +19,27 @@ type CommentContainerProps = {
 function CommentContainer({ commentNode }: CommentContainerProps): JSX.Element {
   const [downVotes] = useState(commentNode?.comment?.upVoteUserIds ?? []);
   const [upVotes] = useState(commentNode?.comment?.downVoteUserIds ?? []);
+  const [childComments, setChildComments] = useState<Array<Comment>>([]);
+  const [showCommentInput, setShowCommentInput] = useState<boolean>(false);
+
+  async function handleAddSubComment(
+    comment: IpostCommentSubmission
+  ): Promise<void> {
+    const id = await WriteComment(comment);
+    // setComments([newComment, ...comments]);
+    const newComment = {
+      comment: {
+        id,
+        ...comment,
+      },
+      childComments: [],
+    };
+    setChildComments([newComment, ...childComments]);
+    setShowCommentInput(false);
+  }
 
   const handleComment = () => {
-    // TODO: add logic
+    setShowCommentInput(!showCommentInput);
   };
 
   const handleSendTip = () => {
@@ -33,6 +53,11 @@ function CommentContainer({ commentNode }: CommentContainerProps): JSX.Element {
   const handleDownVote = () => {
     // TODO: add logic
   };
+
+  useEffect(() => {
+    console.log('this was called');
+    setChildComments(commentNode?.childComments ?? []);
+  }, []);
 
   return (
     <div className="mt-5">
@@ -89,8 +114,8 @@ function CommentContainer({ commentNode }: CommentContainerProps): JSX.Element {
           <button
             className="mx-6 hover:text-qwestive-purple-hover"
             type="button"
-            onClick={handleComment}>
-            Comment
+            onClick={() => handleComment()}>
+            {showCommentInput ? 'Cancel' : 'Comment'}
           </button>
           <button
             className="mx-6 hover:text-qwestive-purple-hover"
@@ -99,8 +124,16 @@ function CommentContainer({ commentNode }: CommentContainerProps): JSX.Element {
             Send a tip
           </button>
         </div>
+        {showCommentInput && (
+          <CommentInputContainer
+            postId={commentNode.comment.postId}
+            depth={commentNode.comment.depth + 1}
+            parentCommentId={commentNode.comment.id}
+            addComment={(comment) => handleAddSubComment(comment)}
+          />
+        )}
         <div>
-          {(commentNode.childComments ?? []).map((item) => (
+          {childComments.map((item) => (
             <div key={item.comment.id}>
               <CommentContainer commentNode={item} />
             </div>

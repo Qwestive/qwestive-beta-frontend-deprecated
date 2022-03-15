@@ -3,6 +3,7 @@ import { IpostComment, IpostCommentSubmission } from '../../../../common/types';
 import CommentContainer from './CommentContainer';
 import CommentInputContainer from './CommentInputContainer';
 import { getCommentsForPost } from '../../../../common/services/Firebase/GetData/CommentUtils';
+import WriteComment from '../../../../common/services/Firebase/WriteData/WriteComment';
 
 type CommentSectionProps = {
   postId: string | undefined;
@@ -69,16 +70,19 @@ function CommentSection({ postId }: CommentSectionProps): JSX.Element {
     // TODO: add logic to show more comments.
   }
 
-  function handleAddComment(comment: IpostCommentSubmission): void {
+  const handleAddComment = async (
+    comment: IpostCommentSubmission
+  ): Promise<void> => {
+    const id = await WriteComment(comment);
     const newComment = {
       comment: {
+        id,
         ...comment,
-        id: '',
       },
       childComments: [],
     };
     setComments([newComment, ...comments]);
-  }
+  };
 
   useEffect(() => {
     try {
@@ -95,8 +99,9 @@ function CommentSection({ postId }: CommentSectionProps): JSX.Element {
         <>
           <CommentInputContainer
             postId={postId}
-            // eslint-disable-next-line react/jsx-no-bind
-            addComment={handleAddComment}
+            parentCommentId=""
+            depth={0}
+            addComment={(comment) => handleAddComment(comment)}
           />
           {comments.map((item) => (
             <div key={item.comment.id}>

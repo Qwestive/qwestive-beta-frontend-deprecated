@@ -5,10 +5,10 @@ import { IpostCommentSubmission } from '../../../types';
 
 export default async function WriteComment(
   comment: IpostCommentSubmission
-): Promise<void> {
+): Promise<string> {
   if (FirebaseAuth.currentUser != null) {
-    await addDoc(collection(Firestore, 'comments'), comment);
-  } else {
-    throw new Error('User can not be null to write an article');
+    const commentRef = await addDoc(collection(Firestore, 'comments'), comment);
+    return commentRef.id;
   }
+  throw new Error('User can not be null to write an article');
 }

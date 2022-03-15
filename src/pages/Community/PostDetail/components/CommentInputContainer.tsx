@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import WriteComment from '../../../../common/services/Firebase/WriteData/WriteComment';
 import { IpostCommentSubmission } from '../../../../common/types';
 import {
   userNameAtom,
@@ -10,6 +9,8 @@ import {
 
 type TcommentInputContainer = {
   postId: string | undefined;
+  parentCommentId: string | undefined;
+  depth: number | undefined;
   addComment: (arg0: IpostCommentSubmission) => void;
 };
 
@@ -19,6 +20,8 @@ type TcommentInputContainer = {
 /// the comments section.
 function CommentInputContainer({
   postId,
+  parentCommentId,
+  depth,
   addComment,
 }: TcommentInputContainer): JSX.Element {
   const [textAreaValue, setTextAreaValue] = useState('');
@@ -31,13 +34,13 @@ function CommentInputContainer({
     event: React.ChangeEvent<HTMLTextAreaElement>
   ): void => setTextAreaValue(event.target.value);
 
-  const handleSubmit = (): void => {
+  const handleSubmit = async (): Promise<void> => {
     if (postId != null) {
       setIsLoading(true);
       const newComment = {
         postId,
-        depth: 0,
-        parentCommentId: '',
+        depth: depth ?? 0,
+        parentCommentId: parentCommentId ?? '',
         authorUserId: userPublicKey ?? '',
         authorUserName: username ?? '',
         authorPublicKey: userPublicKey ?? '',
@@ -46,10 +49,15 @@ function CommentInputContainer({
         upVoteUserIds: [],
         downVoteUserIds: [],
       };
-      WriteComment(newComment);
-      setTextAreaValue('');
-      setIsLoading(false);
-      addComment(newComment);
+      try {
+        addComment(newComment);
+        setTextAreaValue('');
+        setIsLoading(false);
+      } catch (exception) {
+        setIsLoading(false);
+        // TODO: add snackbar;
+        throw exception;
+      }
     }
   };
 
@@ -72,8 +80,13 @@ function CommentInputContainer({
         <div className="flex-shrink-0">
           <button
             type="submit"
-            className="btn-filled m-2"
-            onClick={handleSubmit}>
+            className={
+              textAreaValue === ''
+                ? 'btn-filled-disabled m-2'
+                : 'btn-filled m-2'
+            }
+            onClick={handleSubmit}
+            disabled={textAreaValue === ''}>
             Comment
           </button>
         </div>
