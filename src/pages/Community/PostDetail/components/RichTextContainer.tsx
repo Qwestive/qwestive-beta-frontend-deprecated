@@ -1,5 +1,3 @@
-/* eslint-disable react/no-danger */
-
 import React, { useState, useEffect } from 'react';
 import CKeditorReader from '../../../../common/components/Posts/CKeditor/CKeditorReader';
 
@@ -13,10 +11,7 @@ type PostContents = {
 /// Components which displays the rich text contents of a post.
 ///
 /// TODO:
-/// - Since Tailwind clears all default styles, rich text is
-/// completely unstyled, this needs to be fixed.
-/// - Add styling.
-/// - Add better date formatting.
+/// - Add better styling.
 function RichTextContainer({
   title,
   author,

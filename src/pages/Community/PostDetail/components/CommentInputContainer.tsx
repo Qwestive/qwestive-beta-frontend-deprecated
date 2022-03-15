@@ -22,6 +22,7 @@ function CommentInputContainer({
   addComment,
 }: TcommentInputContainer): JSX.Element {
   const [textAreaValue, setTextAreaValue] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const username = useRecoilValue(userNameAtom);
   const userPublicKey = useRecoilValue(userPublicKeyAtom);
   const userProfileImage = useRecoilValue(userProfileImageAtom);
@@ -32,6 +33,7 @@ function CommentInputContainer({
 
   const handleSubmit = (): void => {
     if (postId != null) {
+      setIsLoading(true);
       const newComment = {
         postId,
         depth: 0,
@@ -45,8 +47,9 @@ function CommentInputContainer({
         downVoteUserIds: [],
       };
       WriteComment(newComment);
-      addComment(newComment);
       setTextAreaValue('');
+      setIsLoading(false);
+      addComment(newComment);
     }
   };
 
