@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import WriteComment from '../../../../common/services/Firebase/WriteData/WriteComment';
+import { toast } from 'react-toastify';
 import { IpostCommentSubmission } from '../../../../common/types';
 import {
   userNameAtom,
@@ -10,18 +10,23 @@ import {
 
 type TcommentInputContainer = {
   postId: string | undefined;
+  parentCommentId: string | undefined;
+  depth: number | undefined;
   addComment: (arg0: IpostCommentSubmission) => void;
 };
 
 /// Component which allows commenting on a post.
 ///
-/// TODO: add logic to handle posting comments to the DB and including them in
-/// the comments section.
+/// TODO:
+/// - Add loading state logic.
 function CommentInputContainer({
   postId,
+  parentCommentId,
+  depth,
   addComment,
 }: TcommentInputContainer): JSX.Element {
   const [textAreaValue, setTextAreaValue] = useState('');
+  const [, setIsLoading] = useState(false);
   const username = useRecoilValue(userNameAtom);
   const userPublicKey = useRecoilValue(userPublicKeyAtom);
   const userProfileImage = useRecoilValue(userProfileImageAtom);
@@ -30,12 +35,13 @@ function CommentInputContainer({
     event: React.ChangeEvent<HTMLTextAreaElement>
   ): void => setTextAreaValue(event.target.value);
 
-  const handleSubmit = (): void => {
+  const handleSubmit = async (): Promise<void> => {
     if (postId != null) {
+      setIsLoading(true);
       const newComment = {
         postId,
-        depth: 0,
-        parentCommentId: '',
+        depth: depth ?? 0,
+        parentCommentId: parentCommentId ?? '',
         authorUserId: userPublicKey ?? '',
         authorUserName: username ?? '',
         authorPublicKey: userPublicKey ?? '',
@@ -44,9 +50,15 @@ function CommentInputContainer({
         upVoteUserIds: [],
         downVoteUserIds: [],
       };
-      WriteComment(newComment);
-      addComment(newComment);
-      setTextAreaValue('');
+      try {
+        addComment(newComment);
+        setTextAreaValue('');
+        setIsLoading(false);
+      } catch (exception) {
+        setIsLoading(false);
+        toast.error('Failed to add comment.');
+        throw exception;
+      }
     }
   };
 
@@ -69,8 +81,13 @@ function CommentInputContainer({
         <div className="flex-shrink-0">
           <button
             type="submit"
-            className="btn-filled m-2"
-            onClick={handleSubmit}>
+            className={
+              textAreaValue === ''
+                ? 'btn-filled-disabled m-2'
+                : 'btn-filled m-2'
+            }
+            onClick={handleSubmit}
+            disabled={textAreaValue === ''}>
             Comment
           </button>
         </div>

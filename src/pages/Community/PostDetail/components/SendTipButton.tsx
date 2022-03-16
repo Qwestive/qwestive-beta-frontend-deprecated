@@ -6,8 +6,10 @@ import {
   SystemProgram,
   Transaction,
   LAMPORTS_PER_SOL,
+  Commitment,
 } from '@solana/web3.js';
 import React, { useCallback } from 'react';
+import appConfig from '../../../../config.js';
 
 interface IsendTipButton {
   toPublicKey: string;
@@ -40,7 +42,10 @@ export const SendTipButton: any = ({
 
     const signature = await sendTransaction(transaction, connection);
 
-    await connection.confirmTransaction(signature, 'processed');
+    await connection.confirmTransaction(
+      signature,
+      appConfig.SOLANA_NETWORK_COMMITMENT as Commitment
+    );
     transactionCompleteCallback(true);
   }, [publicKey, sendTransaction, connection]);
 
