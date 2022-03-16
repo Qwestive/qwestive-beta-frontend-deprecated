@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { useRecoilValue } from 'recoil';
+import { toast } from 'react-toastify';
 import { IpostComment, IpostCommentSubmission } from '../../../../common/types';
 import CommentInputContainer from './CommentInputContainer';
 import WriteComment from '../../../../common/services/Firebase/WriteData/WriteComment';
+import { userPublicKeyAtom } from '../../../../recoil/userInfo';
+import {
+  UpVoteComment,
+  DownVoteComment,
+} from '../../../../common/services/Firebase/WriteData/WriteCommentVote';
+import ClassNamesLogic from '../../../../common/components/Util/ClassNamesLogic';
 
 type Comment = {
   comment: IpostComment;
@@ -21,10 +29,13 @@ function CommentContainer({
   commentNode,
   tipCallback,
 }: CommentContainerProps): JSX.Element {
-  const [downVotes] = useState(commentNode?.comment?.upVoteUserIds ?? []);
-  const [upVotes] = useState(commentNode?.comment?.downVoteUserIds ?? []);
+  const [downVotes, setDownVotes] = useState<Set<string>>(new Set());
+  const [upVotes, setUpVotes] = useState<Set<string>>(new Set());
   const [childComments, setChildComments] = useState<Array<Comment>>([]);
   const [showCommentInput, setShowCommentInput] = useState<boolean>(false);
+  const userPublicKeyFiller = '_';
+  const userPublicKey =
+    useRecoilValue(userPublicKeyAtom) ?? userPublicKeyFiller;
 
   async function handleAddSubComment(
     comment: IpostCommentSubmission
@@ -54,16 +65,71 @@ function CommentContainer({
     tipCallback(authorPublicKeyStr, authorUserNameStr);
   };
 
-  const handleUpvote = () => {
-    // TODO: add logic
+  const addUpVote = () => setUpVotes(new Set(upVotes).add(userPublicKey));
+
+  const addDownVote = () => setDownVotes(new Set(downVotes).add(userPublicKey));
+
+  const removeDownVote = () => {
+    setDownVotes((votes) => {
+      const downVotesUpdate = new Set(votes);
+
+      downVotesUpdate.delete(userPublicKey);
+
+      return downVotesUpdate;
+    });
   };
 
-  const handleDownVote = () => {
-    // TODO: add logic
+  const removeUpVote = () => {
+    setUpVotes((votes) => {
+      const upVotesUpdate = new Set(votes);
+
+      upVotesUpdate.delete(userPublicKey);
+
+      return upVotesUpdate;
+    });
+  };
+
+  const handleUpvote = async () => {
+    if (!upVotes.has(userPublicKey) && userPublicKey !== userPublicKeyFiller) {
+      const didDownVote = downVotes.has(userPublicKey);
+      addUpVote();
+      removeDownVote();
+      try {
+        await UpVoteComment(commentNode?.comment?.id ?? '');
+      } catch (exception) {
+        if (didDownVote) {
+          addDownVote();
+        }
+        removeUpVote();
+        toast.error('Failed to cast vote');
+      }
+    }
+  };
+
+  const handleDownVote = async () => {
+    if (
+      !downVotes.has(userPublicKey) &&
+      userPublicKey !== userPublicKeyFiller
+    ) {
+      const didUpVote = upVotes.has(userPublicKey);
+      addDownVote();
+      removeUpVote();
+      try {
+        await DownVoteComment(commentNode?.comment?.id ?? '');
+      } catch (exception) {
+        if (didUpVote) {
+          addUpVote();
+        }
+        removeDownVote();
+        toast.error('Failed to cast vote');
+      }
+    }
   };
 
   useEffect(() => {
     setChildComments(commentNode?.childComments ?? []);
+    setUpVotes(new Set(commentNode?.comment?.upVoteUserIds ?? []));
+    setDownVotes(new Set(commentNode?.comment?.downVoteUserIds ?? []));
   }, []);
 
   return (
@@ -83,7 +149,12 @@ function CommentContainer({
         <div className="flex text-xs text-color-secondary">
           <div className="flex mr-6">
             <button
-              className="hover:text-qwestive-purple-hover"
+              className={ClassNamesLogic(
+                upVotes.has(userPublicKey)
+                  ? 'text-qwestive-purple-hover'
+                  : 'hover:text-qwestive-purple-hover',
+                'my-auto'
+              )}
               type="button"
               onClick={handleUpvote}>
               <svg
@@ -99,9 +170,14 @@ function CommentContainer({
                 />
               </svg>
             </button>
-            <div className="mx-1">{upVotes.length - downVotes.length}</div>
+            <div className="mx-1">{upVotes.size - downVotes.size}</div>
             <button
-              className="hover:text-qwestive-purple-hover"
+              className={ClassNamesLogic(
+                downVotes.has(userPublicKey)
+                  ? 'text-qwestive-purple-hover'
+                  : 'hover:text-qwestive-purple-hover',
+                'my-auto'
+              )}
               type="button"
               onClick={handleDownVote}>
               <svg

@@ -7,7 +7,7 @@ import populateDb from '../../services/Firebase/WriteData/populateDb';
 //
 // eslint-disable-next-line react/function-component-definition
 const PopulateDbButton: any = () => {
-  const onClick = (event: any): void => {
+  const onClick = (): void => {
     populateDb();
   };
 
