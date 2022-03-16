@@ -30,7 +30,6 @@ function CommentContainer({
     comment: IpostCommentSubmission
   ): Promise<void> {
     const id = await WriteComment(comment);
-    // setComments([newComment, ...comments]);
     const newComment = {
       comment: {
         id,
@@ -69,14 +68,14 @@ function CommentContainer({
 
   return (
     <div className="mt-5">
-      <div className="flex justify-start content-center">
+      <div className="flex justify-start">
         <img
           className="-ml-3 h-6 w-6 rounded-full"
           src={commentNode.comment.authorProfileImageUrl}
           alt=""
         />
-        <div className="text-xs text-color-secondary mx-4">
-          {commentNode.comment.authorPublicKey}
+        <div className="text-xs text-color-secondary mx-2 my-auto">
+          {commentNode.comment.authorUserName}
         </div>
       </div>
       <div className="border-solid border-l-2 border-gray-300 pl-4">

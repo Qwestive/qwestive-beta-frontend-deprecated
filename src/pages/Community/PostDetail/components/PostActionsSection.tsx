@@ -17,7 +17,7 @@ type PostActionsSectioData = {
   tipCallback: (arg0: string, arg1: string) => void;
 };
 
-/// Component which allows upvoting/downvoting/tipping a post and viwing data
+/// Component which allows upvoting/downvoting/tipping a post and viewing data
 /// about a post.
 function PostActionsSection({
   postId,
