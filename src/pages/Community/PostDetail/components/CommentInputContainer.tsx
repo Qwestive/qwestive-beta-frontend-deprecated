@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useRecoilValue } from 'recoil';
+import { toast } from 'react-toastify';
 import { IpostCommentSubmission } from '../../../../common/types';
 import {
   userNameAtom,
@@ -16,8 +17,8 @@ type TcommentInputContainer = {
 
 /// Component which allows commenting on a post.
 ///
-/// TODO: add logic to handle posting comments to the DB and including them in
-/// the comments section.
+/// TODO:
+/// - Add loading state logic.
 function CommentInputContainer({
   postId,
   parentCommentId,
@@ -55,7 +56,7 @@ function CommentInputContainer({
         setIsLoading(false);
       } catch (exception) {
         setIsLoading(false);
-        // TODO: add snackbar;
+        toast.error('Failed to add comment.');
         throw exception;
       }
     }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
+import { toast } from 'react-toastify';
 import {
   UpVote,
   DownVote,
@@ -58,6 +59,7 @@ function PostActionsSection({
         setDidUpVote(false);
         setDidDownVote(downVoteState);
         setVoteCount(voteCountState);
+        toast.error('Failed to cast vote');
       }
     }
   };
@@ -75,7 +77,8 @@ function PostActionsSection({
       } catch (exception) {
         setDidUpVote(upVoteState);
         setDidDownVote(false);
-        setVoteCount(voteCountState + 1);
+        setVoteCount(voteCountState);
+        toast.error('Failed to cast vote');
       }
     }
   };
