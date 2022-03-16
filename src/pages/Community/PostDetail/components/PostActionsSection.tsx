@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
+import { toast } from 'react-toastify';
 import {
-  UpVote,
-  DownVote,
+  UpVotePost,
+  DownVotePost,
 } from '../../../../common/services/Firebase/WriteData/WriteVote';
 import { userPublicKeyAtom } from '../../../../recoil/userInfo';
 import ClassNamesLogic from '../../../../common/components/Util/ClassNamesLogic';
@@ -17,12 +18,8 @@ type PostActionsSectioData = {
   tipCallback: (arg0: string, arg1: string) => void;
 };
 
-/// Component which allows upvoting/downvoting/tipping a post and viwing data
+/// Component which allows upvoting/downvoting/tipping a post and viewing data
 /// about a post.
-///
-/// TODO:
-/// - Add styling and logic to handle up/downvote.
-/// - Add logic to send tip
 function PostActionsSection({
   postId,
   upVotes,
@@ -32,12 +29,11 @@ function PostActionsSection({
   authorUserName,
   tipCallback,
 }: PostActionsSectioData): JSX.Element {
-  const [didDownVote, setDidDownVote] = useState(false);
-  const [didUpVote, setDidUpVote] = useState(false);
+  const [upVoteSet, setUpVoteSet] = useState<Set<string>>(new Set());
+  const [downVoteSet, setDownVoteSet] = useState<Set<string>>(new Set());
   const userPublicKeyFiller = '_';
   const userPublicKey =
     useRecoilValue(userPublicKeyAtom) ?? userPublicKeyFiller;
-  const [voteCount, setVoteCount] = useState(0);
 
   const handleSendTip = () => {
     const authorUserNameStr = authorUserName ?? '';
@@ -48,24 +44,68 @@ function PostActionsSection({
     tipCallback(authorPublicKeyStr, authorUserNameStr);
   };
 
-  const handleUpvote = () => {
-    if (!didUpVote && userPublicKey !== userPublicKeyFiller) {
-      UpVote(postId ?? '');
-      // TODO: if voting fails, these values should not be updated.
-      setDidUpVote(true);
-      setDidDownVote(false);
-      setVoteCount(voteCount + 1);
+  const addUpVote = () => setUpVoteSet(new Set(upVotes).add(userPublicKey));
+
+  const addDownVote = () =>
+    setDownVoteSet(new Set(downVotes).add(userPublicKey));
+
+  const removeDownVote = () => {
+    setDownVoteSet((votes) => {
+      const downVotesUpdate = new Set(votes);
+
+      downVotesUpdate.delete(userPublicKey);
+
+      return downVotesUpdate;
+    });
+  };
+
+  const removeUpVote = () => {
+    setUpVoteSet((votes) => {
+      const upVotesUpdate = new Set(votes);
+
+      upVotesUpdate.delete(userPublicKey);
+
+      return upVotesUpdate;
+    });
+  };
+
+  const handleUpvote = async () => {
+    if (
+      !upVoteSet.has(userPublicKey) &&
+      userPublicKey !== userPublicKeyFiller
+    ) {
+      const didDownVote = downVoteSet.has(userPublicKey);
+      removeDownVote();
+      addUpVote();
+      try {
+        await UpVotePost(postId ?? '');
+      } catch (exception) {
+        if (didDownVote) {
+          addDownVote();
+        }
+        removeUpVote();
+        toast.error('Failed to cast vote');
+      }
     }
   };
 
-  const handleDownVote = () => {
-    if (!didDownVote && userPublicKey !== userPublicKeyFiller) {
-      DownVote(postId ?? '');
-      // TODO: if voting fails, these values should not be updated.
-      setDidDownVote(true);
-      setDidUpVote(false);
-      downVotes?.push(userPublicKey);
-      setVoteCount(voteCount - 1);
+  const handleDownVote = async () => {
+    if (
+      !downVoteSet.has(userPublicKey) &&
+      userPublicKey !== userPublicKeyFiller
+    ) {
+      const didUpVote = upVoteSet.has(userPublicKey);
+      removeUpVote();
+      addDownVote();
+      try {
+        await DownVotePost(postId ?? '');
+      } catch (exception) {
+        if (didUpVote) {
+          addUpVote();
+        }
+        removeDownVote();
+        toast.error('Failed to cast vote');
+      }
     }
   };
 
@@ -73,9 +113,8 @@ function PostActionsSection({
     // TODO: instead of user public key, this should find the user ID.
     // But since currently they are the same, it is ok to look for public
     // key for now. However, this should be addressed.
-    setDidUpVote(upVotes?.includes(userPublicKey) ?? false);
-    setDidDownVote(downVotes?.includes(userPublicKey) ?? false);
-    setVoteCount((upVotes?.length ?? 0) - (downVotes?.length ?? 0));
+    setUpVoteSet(new Set(upVotes ?? []));
+    setDownVoteSet(new Set(downVotes ?? []));
   }, [postId]);
 
   return (
@@ -85,7 +124,7 @@ function PostActionsSection({
       <div className="flex mr-6">
         <button
           className={ClassNamesLogic(
-            didUpVote
+            upVoteSet.has(userPublicKey)
               ? 'text-qwestive-purple-hover'
               : 'hover:text-qwestive-purple-hover',
             'my-auto'
@@ -105,10 +144,10 @@ function PostActionsSection({
             />
           </svg>
         </button>
-        <div className="mx-1 my-auto">{voteCount}</div>
+        <div className="mx-1 my-auto">{upVoteSet.size - downVoteSet.size}</div>
         <button
           className={ClassNamesLogic(
-            didDownVote
+            downVoteSet.has(userPublicKey)
               ? 'text-qwestive-purple-hover'
               : 'hover:text-qwestive-purple-hover',
             'my-auto'

@@ -6,12 +6,15 @@ import {
   SystemProgram,
   Transaction,
   LAMPORTS_PER_SOL,
+  Commitment,
 } from '@solana/web3.js';
 import React, { useCallback } from 'react';
+import appConfig from '../../../../config.js';
 
 interface IsendTipButton {
   toPublicKey: string;
   solAmmount: number;
+  transactionStartedCallback: () => boolean;
   transactionCompleteCallback: (arg0: boolean) => void;
 }
 
@@ -19,6 +22,7 @@ interface IsendTipButton {
 export const SendTipButton: any = ({
   toPublicKey,
   solAmmount,
+  transactionStartedCallback,
   transactionCompleteCallback,
 }: IsendTipButton) => {
   const { connection } = useConnection();
@@ -26,6 +30,8 @@ export const SendTipButton: any = ({
 
   const onClick = useCallback(async () => {
     if (!publicKey) throw new WalletNotConnectedError();
+
+    transactionStartedCallback();
     const transaction = new Transaction().add(
       SystemProgram.transfer({
         fromPubkey: publicKey,
@@ -36,7 +42,10 @@ export const SendTipButton: any = ({
 
     const signature = await sendTransaction(transaction, connection);
 
-    await connection.confirmTransaction(signature, 'processed');
+    await connection.confirmTransaction(
+      signature,
+      appConfig.SOLANA_NETWORK_COMMITMENT as Commitment
+    );
     transactionCompleteCallback(true);
   }, [publicKey, sendTransaction, connection]);
 

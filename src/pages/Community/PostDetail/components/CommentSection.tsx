@@ -3,9 +3,11 @@ import { IpostComment, IpostCommentSubmission } from '../../../../common/types';
 import CommentContainer from './CommentContainer';
 import CommentInputContainer from './CommentInputContainer';
 import { getCommentsForPost } from '../../../../common/services/Firebase/GetData/CommentUtils';
+import WriteComment from '../../../../common/services/Firebase/WriteData/WriteComment';
 
 type CommentSectionProps = {
   postId: string | undefined;
+  tipCallback: (arg0: string, arg1: string) => void;
 };
 
 type Comment = {
@@ -18,7 +20,10 @@ type Comment = {
 /// TODO:
 /// - Add logic to paginate and sort comments.
 /// - Add styling for the case when comments fail to load.
-function CommentSection({ postId }: CommentSectionProps): JSX.Element {
+function CommentSection({
+  postId,
+  tipCallback,
+}: CommentSectionProps): JSX.Element {
   const [commentsFailedToLoad, setCommentsFailedToLoad] = useState(false);
   const [comments, setComments] = useState<Array<Comment>>([]);
   const [numHiddenComments] = useState<number>(0);
@@ -69,16 +74,19 @@ function CommentSection({ postId }: CommentSectionProps): JSX.Element {
     // TODO: add logic to show more comments.
   }
 
-  function handleAddComment(comment: IpostCommentSubmission): void {
+  const handleAddComment = async (
+    comment: IpostCommentSubmission
+  ): Promise<void> => {
+    const id = await WriteComment(comment);
     const newComment = {
       comment: {
+        id,
         ...comment,
-        id: '',
       },
       childComments: [],
     };
     setComments([newComment, ...comments]);
-  }
+  };
 
   useEffect(() => {
     try {
@@ -95,12 +103,13 @@ function CommentSection({ postId }: CommentSectionProps): JSX.Element {
         <>
           <CommentInputContainer
             postId={postId}
-            // eslint-disable-next-line react/jsx-no-bind
-            addComment={handleAddComment}
+            parentCommentId=""
+            depth={0}
+            addComment={(comment) => handleAddComment(comment)}
           />
           {comments.map((item) => (
             <div key={item.comment.id}>
-              <CommentContainer commentNode={item} />
+              <CommentContainer commentNode={item} tipCallback={tipCallback} />
             </div>
           ))}
           <button

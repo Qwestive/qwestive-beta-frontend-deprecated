@@ -14,6 +14,7 @@ import defaultUserProfileImage from '../../../assets/defaultUserProfileImage.png
 import appConfig from '../../../config.js';
 import WalletButton from '../Solana/SolanaWallet/WalletButton';
 import ClassNamesLogic from '../Util/ClassNamesLogic';
+import PopulateDbButton from './PopulateDbButton';
 
 // Main navigation bar for the app.
 const Navbar = function Navbar(): JSX.Element {
@@ -94,6 +95,11 @@ const Navbar = function Navbar(): JSX.Element {
                 {appConfig.LANDING_PAGE_SIGN_IN_ENABLED && (
                   <div className="flex-shrink-0">
                     <WalletButton />
+                  </div>
+                )}
+                {appConfig.DEV_MODE_ENABLED && (
+                  <div className="flex-shrink-0">
+                    <PopulateDbButton />
                   </div>
                 )}
                 {userPublicKey !== undefined && (

@@ -5,8 +5,7 @@ import CommentSection from './components/CommentSection';
 import { IpostArticle } from '../../../common/types';
 import PostActionsSection from './components/PostActionsSection';
 import { getPostInfo } from '../../../common/services/Firebase/GetData/PostUtils';
-import TipModal from './components/TipModal';
-import { SendTipButton } from './components/SendTipButton';
+import TipModalContainer from './components/TipModalContainer';
 
 /// Component which shows all of the information inside a post.
 ///
@@ -18,11 +17,9 @@ function PostDetailPage(): JSX.Element {
   const [postFailedToLoad, setPostFailedToLoad] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [postData, setPostData] = useState<IpostArticle | undefined>(undefined);
-  const [tipReceiverUserName, setTipReceiverUserName] = useState('');
-  const [tipReceiverPublicKey, setTipReceiverPublicKey] = useState('');
   const [isTipModalOpen, setIsTipModalOpen] = useState(false);
-  const [tipAmmountInput, setTipAmmountInput] = useState(0);
-  const [tipSuccess, setTipSuccess] = useState(false);
+  const [tipReceiverPublicKey, setTipReceiverPublicKey] = useState<string>();
+  const [tipReceiverUserName, setTipReceiverUserName] = useState<string>();
 
   async function fetchPostData(
     targetPostId: string | undefined
@@ -43,12 +40,6 @@ function PostDetailPage(): JSX.Element {
     setIsTipModalOpen(true);
   }
 
-  function handleSetTipAmmountInput(
-    event: React.FormEvent<HTMLInputElement>
-  ): void {
-    setTipAmmountInput(event?.currentTarget.valueAsNumber);
-  }
-
   useEffect(() => {
     try {
       fetchPostData(postId);
@@ -63,43 +54,12 @@ function PostDetailPage(): JSX.Element {
       {!isLoading && postFailedToLoad && <h1>Post failed to load</h1>}
       {!isLoading && !postFailedToLoad && (
         <>
-          <TipModal open={isTipModalOpen} setOpen={setIsTipModalOpen}>
-            <div className="flex flex-col text-center">
-              {!tipSuccess && (
-                <>
-                  <h2>
-                    🥳 This is great! <b>{tipReceiverUserName}</b> will be happy
-                    to receive your tip!
-                    <p className="text-xs text-color-secondary">
-                      Receiver Public Key: {tipReceiverPublicKey}
-                    </p>
-                  </h2>
-                  <div className="flex flex-row justify-center my-4 mx-auto">
-                    <input
-                      className="rounded-lg"
-                      type="number"
-                      value={tipAmmountInput}
-                      onChange={handleSetTipAmmountInput}
-                    />
-                    <SendTipButton
-                      toPublicKey={tipReceiverPublicKey}
-                      solAmmount={tipAmmountInput}
-                      transactionCompleteCallback={(result: boolean) =>
-                        setTipSuccess(result)
-                      }
-                    />
-                  </div>
-                </>
-              )}
-              {tipSuccess && (
-                <div>
-                  <h1 className="text-green-500	text-3xl">
-                    Transaction success!
-                  </h1>
-                </div>
-              )}
-            </div>
-          </TipModal>
+          <TipModalContainer
+            isOpen={isTipModalOpen}
+            setIsOpen={setIsTipModalOpen}
+            tipReceiverPublicKey={tipReceiverPublicKey ?? ''}
+            tipReceiverUserName={tipReceiverUserName ?? ''}
+          />
           <RichTextContainer
             title={postData?.title}
             author={postData?.authorPublicKey}
@@ -113,10 +73,12 @@ function PostDetailPage(): JSX.Element {
             numComments={postData?.numberOfComments ?? 0}
             authorUserName={postData?.authorUserName ?? ''}
             authorPublicKey={postData?.authorPublicKey ?? ''}
-            // eslint-disable-next-line react/jsx-no-bind
-            tipCallback={handleOpenTipModal}
+            tipCallback={(arg1, arg2) => handleOpenTipModal(arg1, arg2)}
           />
-          <CommentSection postId={postId} />
+          <CommentSection
+            postId={postId}
+            tipCallback={(arg1, arg2) => handleOpenTipModal(arg1, arg2)}
+          />
         </>
       )}
     </div>
