@@ -75,7 +75,10 @@ function PostDetailPage(): JSX.Element {
             authorPublicKey={postData?.authorPublicKey ?? ''}
             tipCallback={(arg1, arg2) => handleOpenTipModal(arg1, arg2)}
           />
-          <CommentSection postId={postId} />
+          <CommentSection
+            postId={postId}
+            tipCallback={(arg1, arg2) => handleOpenTipModal(arg1, arg2)}
+          />
         </>
       )}
     </div>

@@ -7,6 +7,7 @@ import WriteComment from '../../../../common/services/Firebase/WriteData/WriteCo
 
 type CommentSectionProps = {
   postId: string | undefined;
+  tipCallback: (arg0: string, arg1: string) => void;
 };
 
 type Comment = {
@@ -19,7 +20,10 @@ type Comment = {
 /// TODO:
 /// - Add logic to paginate and sort comments.
 /// - Add styling for the case when comments fail to load.
-function CommentSection({ postId }: CommentSectionProps): JSX.Element {
+function CommentSection({
+  postId,
+  tipCallback,
+}: CommentSectionProps): JSX.Element {
   const [commentsFailedToLoad, setCommentsFailedToLoad] = useState(false);
   const [comments, setComments] = useState<Array<Comment>>([]);
   const [numHiddenComments] = useState<number>(0);
@@ -105,7 +109,7 @@ function CommentSection({ postId }: CommentSectionProps): JSX.Element {
           />
           {comments.map((item) => (
             <div key={item.comment.id}>
-              <CommentContainer commentNode={item} />
+              <CommentContainer commentNode={item} tipCallback={tipCallback} />
             </div>
           ))}
           <button

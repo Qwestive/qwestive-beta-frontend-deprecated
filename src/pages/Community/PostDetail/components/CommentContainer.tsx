@@ -10,13 +10,17 @@ type Comment = {
 
 type CommentContainerProps = {
   commentNode: Comment;
+  tipCallback: (arg0: string, arg1: string) => void;
 };
 
 /// Component which displays a single comment.
 ///
 /// TODO: add logic to interact with a comment: add sub-comment, send tip,
 /// up/downvote.
-function CommentContainer({ commentNode }: CommentContainerProps): JSX.Element {
+function CommentContainer({
+  commentNode,
+  tipCallback,
+}: CommentContainerProps): JSX.Element {
   const [downVotes] = useState(commentNode?.comment?.upVoteUserIds ?? []);
   const [upVotes] = useState(commentNode?.comment?.downVoteUserIds ?? []);
   const [childComments, setChildComments] = useState<Array<Comment>>([]);
@@ -43,7 +47,12 @@ function CommentContainer({ commentNode }: CommentContainerProps): JSX.Element {
   };
 
   const handleSendTip = () => {
-    // TODO: add logic
+    const authorUserNameStr = commentNode.comment.authorUserName ?? '';
+    const authorPublicKeyStr = commentNode.comment.authorPublicKey ?? '';
+    if (authorPublicKeyStr === '' || authorUserNameStr === '') {
+      throw new Error('Invalid author public key or author username');
+    }
+    tipCallback(authorPublicKeyStr, authorUserNameStr);
   };
 
   const handleUpvote = () => {
@@ -55,7 +64,6 @@ function CommentContainer({ commentNode }: CommentContainerProps): JSX.Element {
   };
 
   useEffect(() => {
-    console.log('this was called');
     setChildComments(commentNode?.childComments ?? []);
   }, []);
 
@@ -135,7 +143,7 @@ function CommentContainer({ commentNode }: CommentContainerProps): JSX.Element {
         <div>
           {childComments.map((item) => (
             <div key={item.comment.id}>
-              <CommentContainer commentNode={item} />
+              <CommentContainer commentNode={item} tipCallback={tipCallback} />
             </div>
           ))}
         </div>

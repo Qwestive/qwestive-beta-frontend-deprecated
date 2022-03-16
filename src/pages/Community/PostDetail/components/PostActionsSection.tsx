@@ -19,10 +19,6 @@ type PostActionsSectioData = {
 
 /// Component which allows upvoting/downvoting/tipping a post and viwing data
 /// about a post.
-///
-/// TODO:
-/// - Add styling and logic to handle up/downvote.
-/// - Add logic to send tip
 function PostActionsSection({
   postId,
   upVotes,
@@ -48,24 +44,39 @@ function PostActionsSection({
     tipCallback(authorPublicKeyStr, authorUserNameStr);
   };
 
-  const handleUpvote = () => {
+  const handleUpvote = async () => {
     if (!didUpVote && userPublicKey !== userPublicKeyFiller) {
-      UpVote(postId ?? '');
-      // TODO: if voting fails, these values should not be updated.
+      const downVoteState = didDownVote;
+      const voteCountState = voteCount;
+
+      setVoteCount(didDownVote ? voteCountState + 2 : voteCountState - 1);
       setDidUpVote(true);
       setDidDownVote(false);
-      setVoteCount(voteCount + 1);
+      try {
+        await UpVote(postId ?? '');
+      } catch (exception) {
+        setDidUpVote(false);
+        setDidDownVote(downVoteState);
+        setVoteCount(voteCountState);
+      }
     }
   };
 
-  const handleDownVote = () => {
+  const handleDownVote = async () => {
     if (!didDownVote && userPublicKey !== userPublicKeyFiller) {
-      DownVote(postId ?? '');
-      // TODO: if voting fails, these values should not be updated.
-      setDidDownVote(true);
+      const upVoteState = didUpVote;
+      const voteCountState = voteCount;
+
+      setVoteCount(didUpVote ? voteCountState - 2 : voteCountState - 1);
       setDidUpVote(false);
-      downVotes?.push(userPublicKey);
-      setVoteCount(voteCount - 1);
+      setDidDownVote(true);
+      try {
+        await DownVote(postId ?? '');
+      } catch (exception) {
+        setDidUpVote(upVoteState);
+        setDidDownVote(false);
+        setVoteCount(voteCountState + 1);
+      }
     }
   };
 
