@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { IpostComment, IpostCommentSubmission } from '../../../../common/types';
 import CommentInputContainer from './CommentInputContainer';
 import WriteComment from '../../../../common/services/Firebase/WriteData/WriteComment';
-import { userIdAtom, userPublicKeyAtom } from '../../../../recoil/userInfo';
+import { userIdAtom } from '../../../../recoil/userInfo';
 import {
   UpVoteComment,
   DownVoteComment,

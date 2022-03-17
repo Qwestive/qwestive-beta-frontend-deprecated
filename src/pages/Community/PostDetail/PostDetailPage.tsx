@@ -3,7 +3,12 @@ import { Link, useParams } from 'react-router-dom';
 import { ArrowLeftIcon } from '@heroicons/react/solid';
 import RichTextContainer from './components/RichTextContainer';
 import CommentSection from './components/CommentSection';
-import { IpostArticle, IpostPoll } from '../../../common/types';
+import {
+  IpostArticle,
+  IpostPoll,
+  ARTICLE_TYPE,
+  POLL_TYPE,
+} from '../../../common/types';
 import PostActionsSection from './components/PostActionsSection';
 import { getPostInfo } from '../../../common/services/Firebase/GetData/PostUtils';
 import TipModalContainer from './components/TipModalContainer';
@@ -75,7 +80,7 @@ function PostDetailPage(): JSX.Element {
             tipReceiverUserName={tipReceiverUserName ?? ''}
           />
           <div className="bg-white rounded-md my-6 pt-6 px-6">
-            {postData?.postType === 'poll' && (
+            {postData?.postType === POLL_TYPE && (
               <PollContainer
                 title={postData?.title}
                 author={postData?.authorPublicKey}
@@ -84,7 +89,7 @@ function PostDetailPage(): JSX.Element {
                 options={(postData as IpostPoll)?.options}
               />
             )}
-            {postData?.postType === 'article' && (
+            {postData?.postType === ARTICLE_TYPE && (
               <RichTextContainer
                 title={postData?.title}
                 author={postData?.authorPublicKey}

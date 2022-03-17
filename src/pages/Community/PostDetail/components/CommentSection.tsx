@@ -15,6 +15,10 @@ type Comment = {
   childComments: Array<Comment>;
 };
 
+/// A sorting constant that makes the weight of an upvote about 1.5 times
+/// the weight of a downvote.
+const UPVOTE_VALUE = 1.5;
+
 /// Section of post detail page which shows all of the comments for a post.
 ///
 /// TODO:
@@ -67,7 +71,15 @@ function CommentSection({
     if (targetPostId === undefined || targetPostId === null) {
       throw new Error('Invalid post ID: null');
     }
-    setComments(buildCommentTree(await getCommentsForPost(targetPostId)));
+    const postComments = await getCommentsForPost(targetPostId);
+    postComments.sort(function compareFn(a, b) {
+      const aTotalComments =
+        a.downVoteUserIds.length + a.upVoteUserIds.length * UPVOTE_VALUE;
+      const bTotalComments =
+        b.downVoteUserIds.length + b.upVoteUserIds.length * UPVOTE_VALUE;
+      return bTotalComments - aTotalComments;
+    });
+    setComments(buildCommentTree(postComments));
   }
 
   function showMoreComments() {
