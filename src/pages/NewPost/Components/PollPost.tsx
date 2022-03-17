@@ -18,6 +18,7 @@ import PostTitleSection from './PostTitleSection';
 import PostPermissionsSection from './PostPermissionsSection';
 import PostCategorySection from './PostCategorySection';
 import ActionButtonSection from './ActionButtonSection';
+import PollOption from './PollOption';
 
 const MAXTITLELENGTH = 100;
 const MINTITLELENGTH = 1;
@@ -27,15 +28,26 @@ const MINARTICLELENGTH = 5;
 
 const MAXCATEGORYLENGTH = 20;
 
-type TarticlePost = {
+type TpollPost = {
   cId: string;
 };
 
-export default function ArticlePost({ cId }: TarticlePost): JSX.Element {
+type TpollOption = {
+  id: string;
+  name: string;
+};
+
+export default function PollPost({ cId }: TpollPost): JSX.Element {
   const navigate = useNavigate();
   const userPublicKey = useRecoilValue(userPublicKeyAtom);
   const userName = useRecoilValue(userNameAtom);
   const userProfileImage = useRecoilValue(userProfileImageAtom);
+  const buildNewOption = (): TpollOption => {
+    return {
+      id: Date.now().toString(),
+      name: '',
+    };
+  };
 
   const [title, setTitle] = useState('');
   const [articleText, setArticleText] = useState('');
@@ -43,6 +55,19 @@ export default function ArticlePost({ cId }: TarticlePost): JSX.Element {
   const [tokenRequirement, setTokenRequirement] = useState(0);
   const [postPublic, setPostPublic] = useState(true);
   const [publishDisabled, setPublishDisabled] = useState(false);
+  const [pollOptions, setPollOptions] = useState<Array<TpollOption>>(() => [
+    buildNewOption(),
+  ]);
+
+  function handleAddOption() {
+    const newOption = buildNewOption();
+    setPollOptions([...pollOptions, newOption]);
+  }
+
+  async function updateOption(id: string, name: string) {
+    console.log(id);
+    console.log(name);
+  }
 
   async function handlePublish() {
     // check data is valid
@@ -113,6 +138,19 @@ export default function ArticlePost({ cId }: TarticlePost): JSX.Element {
           text={articleText}
           setText={setArticleText}
         />
+        {pollOptions.map((item: TpollOption) => (
+          <PollOption
+            key={item.id}
+            optionId={item.id}
+            setOptionName={(id: string, name: string) => updateOption(id, name)}
+          />
+        ))}
+        <button
+          type="button"
+          className="mx-4 mb-3 btn-link"
+          onClick={() => handleAddOption()}>
+          Add Option
+        </button>
       </div>
       {/* Topic */}
       <PostCategorySection category={category} setCategory={setCategory} />
