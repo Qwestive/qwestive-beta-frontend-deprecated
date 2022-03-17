@@ -39,7 +39,7 @@ export default function MemberCommunityPage({
 
         /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
       } catch (error: any) {
-        toast.error('Failed to load posts');
+        toast.error(error?.message);
       }
       setPostsLoading(false);
     }
