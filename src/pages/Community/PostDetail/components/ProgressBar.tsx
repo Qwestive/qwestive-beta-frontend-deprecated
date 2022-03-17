@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ClassNamesLogic from '../../../../common/components/Util/ClassNamesLogic';
 
 type IprogressBar = {
   name: string;
@@ -15,15 +16,23 @@ function ProgressBar({ name, percentProgress }: IprogressBar): JSX.Element {
 
   return (
     <div
-      className="w-full mt-2 bg-gray-200 text-white rounded-md
-        dark:bg-gray-700">
-      <div
-        className="bg-qwestive-purple p-2 rounded-md truncate"
-        style={{ width: `${progress}%`, transitionDuration: '3s' }}>
-        <span className="animate-fadeIn">{`${name}: ${Math.round(
+      className={ClassNamesLogic(
+        Math.round(percentProgress) === 0 && 'p-2',
+        'w-full mt-2 bg-gray-200 rounded-md dark:bg-gray-700'
+      )}>
+      {percentProgress > 0 ? (
+        <div
+          className="bg-qwestive-purple p-3 rounded-md truncate text-sm"
+          style={{ width: `${progress}%`, transitionDuration: '2s' }}>
+          <span className="animate-fadeIn text-white">{`${name}: ${Math.round(
+            percentProgress
+          )}%`}</span>
+        </div>
+      ) : (
+        <span className="p-2 animate-fadeIn text-sm">{`${name}: ${Math.round(
           percentProgress
         )}%`}</span>
-      </div>
+      )}
     </div>
   );
 }

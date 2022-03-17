@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { IpostComment, IpostCommentSubmission } from '../../../../common/types';
 import CommentInputContainer from './CommentInputContainer';
 import WriteComment from '../../../../common/services/Firebase/WriteData/WriteComment';
-import { userPublicKeyAtom } from '../../../../recoil/userInfo';
+import { userIdAtom } from '../../../../recoil/userInfo';
 import {
   UpVoteComment,
   DownVoteComment,
@@ -33,9 +33,8 @@ function CommentContainer({
   const [upVotes, setUpVotes] = useState<Set<string>>(new Set());
   const [childComments, setChildComments] = useState<Array<Comment>>([]);
   const [showCommentInput, setShowCommentInput] = useState<boolean>(false);
-  const userPublicKeyFiller = '_';
-  const userPublicKey =
-    useRecoilValue(userPublicKeyAtom) ?? userPublicKeyFiller;
+  const userIdFiller = '_';
+  const userId = useRecoilValue(userIdAtom) ?? userIdFiller;
 
   async function handleAddSubComment(
     comment: IpostCommentSubmission
@@ -65,15 +64,15 @@ function CommentContainer({
     tipCallback(authorPublicKeyStr, authorUserNameStr);
   };
 
-  const addUpVote = () => setUpVotes(new Set(upVotes).add(userPublicKey));
+  const addUpVote = () => setUpVotes(new Set(upVotes).add(userId));
 
-  const addDownVote = () => setDownVotes(new Set(downVotes).add(userPublicKey));
+  const addDownVote = () => setDownVotes(new Set(downVotes).add(userId));
 
   const removeDownVote = () => {
     setDownVotes((votes) => {
       const downVotesUpdate = new Set(votes);
 
-      downVotesUpdate.delete(userPublicKey);
+      downVotesUpdate.delete(userId);
 
       return downVotesUpdate;
     });
@@ -83,15 +82,15 @@ function CommentContainer({
     setUpVotes((votes) => {
       const upVotesUpdate = new Set(votes);
 
-      upVotesUpdate.delete(userPublicKey);
+      upVotesUpdate.delete(userId);
 
       return upVotesUpdate;
     });
   };
 
   const handleUpvote = async () => {
-    if (!upVotes.has(userPublicKey) && userPublicKey !== userPublicKeyFiller) {
-      const didDownVote = downVotes.has(userPublicKey);
+    if (!upVotes.has(userId) && userId !== userIdFiller) {
+      const didDownVote = downVotes.has(userId);
       addUpVote();
       removeDownVote();
       try {
@@ -107,11 +106,8 @@ function CommentContainer({
   };
 
   const handleDownVote = async () => {
-    if (
-      !downVotes.has(userPublicKey) &&
-      userPublicKey !== userPublicKeyFiller
-    ) {
-      const didUpVote = upVotes.has(userPublicKey);
+    if (!downVotes.has(userId) && userId !== userIdFiller) {
+      const didUpVote = upVotes.has(userId);
       addDownVote();
       removeUpVote();
       try {
@@ -150,7 +146,7 @@ function CommentContainer({
           <div className="flex mr-6">
             <button
               className={ClassNamesLogic(
-                upVotes.has(userPublicKey)
+                upVotes.has(userId)
                   ? 'text-qwestive-purple-hover'
                   : 'hover:text-qwestive-purple-hover',
                 'my-auto'
@@ -173,7 +169,7 @@ function CommentContainer({
             <div className="mx-1">{upVotes.size - downVotes.size}</div>
             <button
               className={ClassNamesLogic(
-                downVotes.has(userPublicKey)
+                downVotes.has(userId)
                   ? 'text-qwestive-purple-hover'
                   : 'hover:text-qwestive-purple-hover',
                 'my-auto'

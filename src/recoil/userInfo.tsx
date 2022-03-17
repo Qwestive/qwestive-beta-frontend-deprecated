@@ -1,5 +1,10 @@
 import { atom } from 'recoil';
 
+export const userIdAtom = atom<string | undefined>({
+  key: 'id',
+  default: undefined,
+});
+
 export const userPublicKeyAtom = atom<string | undefined>({
   key: 'userPublicKey',
   default: undefined,

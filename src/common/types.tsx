@@ -90,6 +90,11 @@ export type TpostSorting = 'New' | 'Top' | 'Poll' | 'Bounty';
 
 export type TpostType = 'article' | 'poll' | 'bounty' | 'vote';
 
+export const ARTICLE_TYPE: TpostType = 'article';
+export const POLL_TYPE: TpostType = 'poll';
+export const BOUNTY_TYPE: TpostType = 'bounty';
+export const VOTE_TYPE: TpostType = 'vote';
+
 export interface Icategories {
   name: string;
   count: number;
