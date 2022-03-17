@@ -48,6 +48,7 @@ const useVotingProgram = async (
   return program;
 };
 
+// TODO (diegoolalde): cleanup - this file is still under construction.
 const initializeVote = async (
   publicKey: PublicKey,
   walletContext: AnchorWallet

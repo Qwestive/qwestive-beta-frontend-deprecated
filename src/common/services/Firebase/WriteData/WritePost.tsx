@@ -1,21 +1,25 @@
 import { doc, setDoc, addDoc, collection } from 'firebase/firestore';
 
 import { FirebaseAuth, Firestore } from '../FirebaseConfig';
-import { IpostPreviewSubmission, IpostArticleSubmission } from '../../../types';
+import {
+  IpostPreviewSubmission,
+  IpostArticleSubmission,
+  IpostPollSubmission,
+} from '../../../types';
 
-export default async function WriteArticlePost(
+export default async function WritePost(
   postPreview: IpostPreviewSubmission,
-  postArticle: IpostArticleSubmission
+  post: IpostArticleSubmission | IpostPollSubmission
 ): Promise<string> {
   if (FirebaseAuth.currentUser != null) {
     const previewPostRef = await addDoc(
       collection(Firestore, 'postPreviews'),
       postPreview
     );
-    const postArticleRef = doc(Firestore, 'posts', previewPostRef.id);
-    await setDoc(postArticleRef, postArticle);
+    const postRef = doc(Firestore, 'posts', previewPostRef.id);
+    await setDoc(postRef, post);
 
     return previewPostRef.id;
   }
-  throw new Error('User can not be null to write an article');
+  throw new Error('User can not be null to write a post');
 }

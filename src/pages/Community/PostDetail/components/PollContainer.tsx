@@ -1,12 +1,4 @@
-import {
-  // useConnection,
-  useAnchorWallet,
-  useWallet,
-  // AnchorWallet,
-} from '@solana/wallet-adapter-react';
-// import { PublicKey, VoteInstruction } from '@solana/web3.js';
 import React, { useState, useEffect } from 'react';
-// import initializeVote from '../../../../common/services/Solana/SmartContracts/AnchorSetup';
 import { useRecoilValue } from 'recoil';
 import CKeditorReader from '../../../../common/components/Posts/CKeditor/CKeditorReader';
 import { IpollOption } from '../../../../common/types';
@@ -36,9 +28,6 @@ function PollContainer({
   const userPublicKeyFiller = '_';
   const userPublicKey =
     useRecoilValue(userPublicKeyAtom) ?? userPublicKeyFiller;
-
-  const { publicKey, sendTransaction } = useWallet();
-  const wallet = useAnchorWallet();
 
   useEffect(() => {
     let voteFound = false;

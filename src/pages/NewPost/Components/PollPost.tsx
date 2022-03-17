@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useRecoilValue } from 'recoil';
 
-import WriteArticlePost from '../../../common/services/Firebase/WriteData/WriteArticlePost';
+import WritePost from '../../../common/services/Firebase/WriteData/WritePost';
 import {
   userPublicKeyAtom,
   userProfileImageAtom,
@@ -11,7 +11,7 @@ import {
 } from '../../../recoil/userInfo';
 import {
   IpostPreviewSubmission,
-  IpostArticleSubmission,
+  IpostPollSubmission,
 } from '../../../common/types';
 import CKeditorMaker from '../../../common/components/Posts/CKeditor/CKeditorMaker';
 import PostTitleSection from './PostTitleSection';
@@ -42,12 +42,11 @@ export default function PollPost({ cId }: TpollPost): JSX.Element {
   const userPublicKey = useRecoilValue(userPublicKeyAtom);
   const userName = useRecoilValue(userNameAtom);
   const userProfileImage = useRecoilValue(userProfileImageAtom);
-  const buildNewOption = (): TpollOption => {
-    return {
-      id: Date.now().toString(),
-      name: '',
-    };
-  };
+  /// Creates a new empty option.
+  const buildNewOption = (): TpollOption => ({
+    id: Date.now().toString(),
+    name: '',
+  });
 
   const [title, setTitle] = useState('');
   const [articleText, setArticleText] = useState('');
@@ -59,18 +58,40 @@ export default function PollPost({ cId }: TpollPost): JSX.Element {
     buildNewOption(),
   ]);
 
+  function handleRemoveOption(id: string) {
+    setPollOptions((currentPollOptions) => {
+      const filteredOptions = currentPollOptions?.filter(
+        (item) => item.id !== id
+      );
+      return filteredOptions;
+    });
+  }
+
   function handleAddOption() {
     const newOption = buildNewOption();
     setPollOptions([...pollOptions, newOption]);
   }
 
-  async function updateOption(id: string, name: string) {
-    console.log(id);
-    console.log(name);
-  }
+  const updateOption = (id: string, name: string) => {
+    setPollOptions((currentPollOptions) => {
+      const idx = currentPollOptions?.findIndex(
+        (item: TpollOption) => item.id === id
+      );
 
+      const filteredOptions = currentPollOptions?.filter(
+        (item) => item.id !== id
+      );
+
+      filteredOptions?.splice(idx, 0, {
+        id,
+        name,
+      });
+      return filteredOptions;
+    });
+  };
+
+  /// TODO: add checks to prevent that empty options are sent to DB.
   async function handlePublish() {
-    // check data is valid
     setPublishDisabled(true);
     try {
       if (title.length > MAXTITLELENGTH) {
@@ -95,7 +116,7 @@ export default function PollPost({ cId }: TpollPost): JSX.Element {
 
       if (userPublicKey !== undefined) {
         const postPreview: IpostPreviewSubmission = {
-          postType: 'article',
+          postType: 'poll',
           accessTokenId: cId,
           accessMinimumTokenBalance: tokenRequirement,
           authorUserId: userPublicKey,
@@ -109,13 +130,14 @@ export default function PollPost({ cId }: TpollPost): JSX.Element {
           downVoteUserIds: [],
           numberOfComments: 0,
         };
-        const postArticle: IpostArticleSubmission = {
+        const post: IpostPollSubmission = {
           ...postPreview,
           content: articleText,
+          options: pollOptions.map((item) => ({ ...item, voteUserIds: [] })),
         };
-        const articleId = await WriteArticlePost(postPreview, postArticle);
+        const articleId = await WritePost(postPreview, post);
 
-        toast.success('post published');
+        toast.success('Post published!');
         navigate(`/post/${articleId}`);
       } else {
         navigate('/');
@@ -143,6 +165,7 @@ export default function PollPost({ cId }: TpollPost): JSX.Element {
             key={item.id}
             optionId={item.id}
             setOptionName={(id: string, name: string) => updateOption(id, name)}
+            removeOption={(id: string) => handleRemoveOption(id)}
           />
         ))}
         <button

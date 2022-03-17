@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useRecoilValue } from 'recoil';
 
-import WriteArticlePost from '../../../common/services/Firebase/WriteData/WriteArticlePost';
+import WritePost from '../../../common/services/Firebase/WriteData/WritePost';
 import {
   userPublicKeyAtom,
   userProfileImageAtom,
@@ -88,7 +88,7 @@ export default function ArticlePost({ cId }: TarticlePost): JSX.Element {
           ...postPreview,
           content: articleText,
         };
-        const articleId = await WriteArticlePost(postPreview, postArticle);
+        const articleId = await WritePost(postPreview, postArticle);
 
         toast.success('post published');
         navigate(`/post/${articleId}`);
