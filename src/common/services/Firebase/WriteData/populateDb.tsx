@@ -27,12 +27,14 @@ export interface IpostCommentWrapper {
   contents: IpostCommentSubmission;
 }
 
+const ACCESS_TOKEN_ID = 'Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr';
+
 const POST_PREVIEWS: Array<IpostPreviewWrapper> = [
   {
     id: '111',
     contents: {
       postType: 'article',
-      accessTokenId: '1',
+      accessTokenId: ACCESS_TOKEN_ID,
       accessMinimumTokenBalance: 1,
       authorUserId: '3oabmiVFubrBn2hJoRcP8Ko2LvCGb2Z3vB58rgoBFgUV',
       authorUserName: 'metadiego',
@@ -50,7 +52,7 @@ const POST_PREVIEWS: Array<IpostPreviewWrapper> = [
     id: '222',
     contents: {
       postType: 'article',
-      accessTokenId: '1',
+      accessTokenId: ACCESS_TOKEN_ID,
       accessMinimumTokenBalance: 10,
       authorUserId: '3oabmiVFubrBn2hJoRcP8Ko2LvCGb2Z3vB58rgoBFgUV',
       authorUserName: 'jisnpe',
@@ -68,7 +70,7 @@ const POST_PREVIEWS: Array<IpostPreviewWrapper> = [
     id: '333',
     contents: {
       postType: 'article',
-      accessTokenId: '2',
+      accessTokenId: ACCESS_TOKEN_ID,
       accessMinimumTokenBalance: 50,
       authorUserId: '3oabmiVFubrBn2hJoRcP8Ko2LvCGb2Z3vB58rgoBFgUV',
       authorUserName: 'seanHCode',
@@ -86,7 +88,7 @@ const POST_PREVIEWS: Array<IpostPreviewWrapper> = [
     id: '444',
     contents: {
       postType: 'article',
-      accessTokenId: '2',
+      accessTokenId: ACCESS_TOKEN_ID,
       accessMinimumTokenBalance: 50,
       authorUserId: '3oabmiVFubrBn2hJoRcP8Ko2LvCGb2Z3vB58rgoBFgUV',
       authorUserName: 'jasonzhu',
@@ -104,7 +106,7 @@ const POST_PREVIEWS: Array<IpostPreviewWrapper> = [
     id: '555',
     contents: {
       postType: 'article',
-      accessTokenId: '2',
+      accessTokenId: ACCESS_TOKEN_ID,
       accessMinimumTokenBalance: 100,
       authorUserId: '3oabmiVFubrBn2hJoRcP8Ko2LvCGb2Z3vB58rgoBFgUV',
       authorUserName: 'pauloalmeida',
@@ -122,7 +124,7 @@ const POST_PREVIEWS: Array<IpostPreviewWrapper> = [
     id: '666',
     contents: {
       postType: 'article',
-      accessTokenId: '3',
+      accessTokenId: ACCESS_TOKEN_ID,
       accessMinimumTokenBalance: 100,
       authorUserId: '3oabmiVFubrBn2hJoRcP8Ko2LvCGb2Z3vB58rgoBFgUV',
       authorUserName: 'metadiego',
@@ -140,7 +142,7 @@ const POST_PREVIEWS: Array<IpostPreviewWrapper> = [
     id: '777',
     contents: {
       postType: 'article',
-      accessTokenId: '3',
+      accessTokenId: ACCESS_TOKEN_ID,
       accessMinimumTokenBalance: 1000,
       authorUserId: '3oabmiVFubrBn2hJoRcP8Ko2LvCGb2Z3vB58rgoBFgUV',
       authorUserName: 'jinspe',
@@ -161,7 +163,7 @@ const POSTS: Array<IpostArticleWrapper> = [
     id: '111',
     contents: {
       postType: 'article',
-      accessTokenId: '1',
+      accessTokenId: ACCESS_TOKEN_ID,
       accessMinimumTokenBalance: 1,
       authorUserId: '3oabmiVFubrBn2hJoRcP8Ko2LvCGb2Z3vB58rgoBFgUV',
       authorUserName: 'metadiego',
@@ -182,7 +184,7 @@ const POSTS: Array<IpostArticleWrapper> = [
     id: '222',
     contents: {
       postType: 'article',
-      accessTokenId: '1',
+      accessTokenId: ACCESS_TOKEN_ID,
       accessMinimumTokenBalance: 10,
       authorUserId: '3oabmiVFubrBn2hJoRcP8Ko2LvCGb2Z3vB58rgoBFgUV',
       authorUserName: 'jisnpe',
@@ -203,7 +205,7 @@ const POSTS: Array<IpostArticleWrapper> = [
     id: '333',
     contents: {
       postType: 'article',
-      accessTokenId: '2',
+      accessTokenId: ACCESS_TOKEN_ID,
       accessMinimumTokenBalance: 50,
       authorUserId: '3oabmiVFubrBn2hJoRcP8Ko2LvCGb2Z3vB58rgoBFgUV',
       authorUserName: 'seanHCode',
@@ -224,7 +226,7 @@ const POSTS: Array<IpostArticleWrapper> = [
     id: '444',
     contents: {
       postType: 'article',
-      accessTokenId: '2',
+      accessTokenId: ACCESS_TOKEN_ID,
       accessMinimumTokenBalance: 50,
       authorUserId: '3oabmiVFubrBn2hJoRcP8Ko2LvCGb2Z3vB58rgoBFgUV',
       authorUserName: 'jasonzhu',
@@ -245,7 +247,7 @@ const POSTS: Array<IpostArticleWrapper> = [
     id: '555',
     contents: {
       postType: 'article',
-      accessTokenId: '2',
+      accessTokenId: ACCESS_TOKEN_ID,
       accessMinimumTokenBalance: 100,
       authorUserId: '3oabmiVFubrBn2hJoRcP8Ko2LvCGb2Z3vB58rgoBFgUV',
       authorUserName: 'pauloalmeida',
@@ -266,7 +268,7 @@ const POSTS: Array<IpostArticleWrapper> = [
     id: '666',
     contents: {
       postType: 'article',
-      accessTokenId: '3',
+      accessTokenId: ACCESS_TOKEN_ID,
       accessMinimumTokenBalance: 100,
       authorUserId: '3oabmiVFubrBn2hJoRcP8Ko2LvCGb2Z3vB58rgoBFgUV',
       authorUserName: 'metadiego',
@@ -287,7 +289,7 @@ const POSTS: Array<IpostArticleWrapper> = [
     id: '777',
     contents: {
       postType: 'article',
-      accessTokenId: '3',
+      accessTokenId: ACCESS_TOKEN_ID,
       accessMinimumTokenBalance: 1000,
       authorUserId: '3oabmiVFubrBn2hJoRcP8Ko2LvCGb2Z3vB58rgoBFgUV',
       authorUserName: 'jinspe',
@@ -311,7 +313,7 @@ const POLLS: Array<IpostPollWrapper> = [
     id: '111',
     contents: {
       postType: 'article',
-      accessTokenId: '1',
+      accessTokenId: ACCESS_TOKEN_ID,
       accessMinimumTokenBalance: 1,
       authorUserId: '3oabmiVFubrBn2hJoRcP8Ko2LvCGb2Z3vB58rgoBFgUV',
       authorUserName: 'metadiego',

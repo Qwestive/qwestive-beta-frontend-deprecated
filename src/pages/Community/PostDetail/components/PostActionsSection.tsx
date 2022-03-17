@@ -120,7 +120,7 @@ function PostActionsSection({
   return (
     <div
       className="flex flex-row content-center justify-around
-      text-sm text-color-secondary my-4">
+      text-sm text-color-secondary my-4 border-t-2 border-top-gray-200 pt-3">
       <div className="flex mr-6">
         <button
           className={ClassNamesLogic(
