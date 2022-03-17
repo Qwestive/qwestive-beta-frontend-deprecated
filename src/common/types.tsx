@@ -15,7 +15,7 @@ export interface Icommunity {
   categories: Icategory[];
 }
 
-export interface ItokenOwned {
+export interface ItokenOwnedCommunity {
   mint: string;
   amountHeld: number;
   name: string | undefined;

@@ -25,6 +25,11 @@ export const userCoverImageAtom = atom<string | undefined>({
   default: undefined,
 });
 
+export const userTokensOwnedAtom = atom<Map<string, number>>({
+  key: 'userTokensOwned',
+  default: new Map(),
+});
+
 export const userBioAtom = atom<string | undefined>({
   key: 'userBio',
   default: undefined,

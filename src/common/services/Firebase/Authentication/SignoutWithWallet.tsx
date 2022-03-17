@@ -14,8 +14,6 @@ export default async function SignoutWithWallet({
     if (!disconnect) throw new Error('Wallet does not support disconnect!');
 
     await disconnect();
-    // eslint-disable-next-line no-console
-    console.log('wallet disconnected');
   }
   await FirebaseAuth.signOut();
 }

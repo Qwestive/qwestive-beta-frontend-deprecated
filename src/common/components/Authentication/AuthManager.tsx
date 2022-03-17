@@ -4,6 +4,9 @@ import { useRecoilState } from 'recoil';
 import { doc, getDoc } from 'firebase/firestore';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { toast } from 'react-toastify';
+import { areMapsTheSame } from '../../functions/Util';
+import ReadTokenWallet from '../../services/Solana/GetData/ReadTokenWallet';
+import UpdateTokenOwned from '../../services/Firebase/UpdateTokenOwned';
 import SigninWithWallet from '../../services/Firebase/Authentication/SigninWithWallet';
 import SignoutWithWallet from '../../services/Firebase/Authentication/SignoutWithWallet';
 import {
@@ -18,6 +21,7 @@ import {
   userCoverImageAtom,
   userBioAtom,
   userPersonalLinkAtom,
+  userTokensOwnedAtom,
 } from '../../../recoil/userInfo';
 
 /* 
@@ -25,6 +29,7 @@ It is used as a component
 TODO:
 - handle errors better ?
 */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 export default function AuthManager({
   children,
@@ -39,6 +44,7 @@ export default function AuthManager({
   const [, setCoverImageAtom] = useRecoilState(userCoverImageAtom);
   const [, setBio] = useRecoilState(userBioAtom);
   const [, setPersonalLink] = useRecoilState(userPersonalLinkAtom);
+  const [, setUserTokensOwned] = useRecoilState(userTokensOwnedAtom);
 
   async function trySigninWithWallet() {
     if (connected && publicKey) {
@@ -48,7 +54,6 @@ export default function AuthManager({
           publicKey,
           signMessage,
         });
-        /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
       } catch (error: any) {
         toast.error(`Couldn't Signin: ${error?.message}`);
       }
@@ -71,6 +76,7 @@ export default function AuthManager({
             // get firestore, set user recoil
             const userRef = doc(Firestore, 'users', user.uid);
             const userDoc = await getDoc(userRef);
+
             if (userDoc.exists()) {
               setUserName(userDoc.data().userName);
               setDisplayName(userDoc.data().displayName);
@@ -78,15 +84,27 @@ export default function AuthManager({
               setCoverImageAtom(userDoc.data().coverImage);
               setBio(userDoc.data().bio);
               setPersonalLink(userDoc.data().personalLink);
+              const tokensOwnedFetchedMap = new Map(
+                Object.entries(userDoc.data().tokensOwned)
+              );
+              const tokensOwnedNow = await ReadTokenWallet(user.uid);
+
+              if (!areMapsTheSame(tokensOwnedNow, tokensOwnedFetchedMap)) {
+                try {
+                  const updateResult = await UpdateTokenOwned();
+                  setUserTokensOwned(updateResult.data.filteredAccountTokens);
+                } catch (error: any) {
+                  toast.error('Failed to update wallet holdings');
+                  setUserTokensOwned(userDoc.data().tokensOwned);
+                }
+              }
             } else {
               throw new Error('User information not found');
             }
-            /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
           } catch (error: any) {
             toast.error(error?.message);
             try {
               await SignoutWithWallet({ disconnect, connected });
-              /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
             } catch (errorSignout: any) {
               toast.error(errorSignout?.message);
             }
