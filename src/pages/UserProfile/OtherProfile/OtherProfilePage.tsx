@@ -23,8 +23,7 @@ export default function OtherProfilePage({ userName }: TuserName): JSX.Element {
     if (userName !== undefined) {
       try {
         setUserData(await getUserInfosByUserName(userName));
-        /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-      } catch (error: any) {
+      } catch (error) {
         setUserData(null);
       }
     } else {

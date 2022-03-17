@@ -1,5 +1,4 @@
 import { TokenInfoMap } from '@solana/spl-token-registry';
-import ReadTokenWallet from './ReadTokenWallet';
 
 import { ItokenOwnedCommunity, Icommunity } from '../../../types';
 import { getCommunityInfo } from '../../Firebase/GetData/CommunityUtil';
@@ -11,9 +10,8 @@ Fetch the community member count
 */
 export default async function GenerateTokenOwnedList(
   tokenRegistry: TokenInfoMap,
-  publicKey: string
+  tokenOwned: Map<string, number>
 ): Promise<ItokenOwnedCommunity[]> {
-  const tokenOwned = await ReadTokenWallet(publicKey);
   const tokenOwnedList = new Array<ItokenOwnedCommunity>();
 
   const communityInfoPromises: Array<Promise<Icommunity | undefined>> = [];
