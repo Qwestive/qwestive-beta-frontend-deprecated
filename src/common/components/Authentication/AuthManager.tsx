@@ -94,7 +94,7 @@ export default function AuthManager({
                   const updateResult = await UpdateTokenOwned();
                   setUserTokensOwned(updateResult.data.filteredAccountTokens);
                 } catch (error: any) {
-                  toast.error(error?.message);
+                  toast.error('Failed to update wallet holdings');
                   setUserTokensOwned(userDoc.data().tokensOwned);
                 }
               }
