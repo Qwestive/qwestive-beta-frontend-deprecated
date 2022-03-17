@@ -26,8 +26,6 @@ export default async function SignMessageForServer(
   const result: any = await userSignin(signatures);
   if (result.data.customToken !== undefined) {
     await signInWithCustomToken(FirebaseAuth, result.data.customToken);
-    // eslint-disable-next-line no-console
-    console.log('user login');
   } else {
     // should never happen
     throw new Error(`Failed to request customToken`);

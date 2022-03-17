@@ -12,14 +12,9 @@ const TOKEN_PROGRAM_ID = new PublicKey(
   'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'
 );
 
-type ItokenOwned = {
-  mint: string;
-  uiAmount: number;
-};
-
 export default async function ReadTokenWallet(
   publickey: string
-): Promise<ItokenOwned[]> {
+): Promise<Map<string, number>> {
   const connection = new Connection(
     clusterApiUrl(appConfig.SOLANA_NETWORK as Cluster),
     appConfig.SOLANA_NETWORK_COMMITMENT as Commitment
@@ -42,7 +37,7 @@ export default async function ReadTokenWallet(
     }
   );
 
-  const filteredAccountTokens = new Array<ItokenOwned>();
+  const filteredAccountTokens = new Map<string, number>();
   for (let i = 0; i < accountTokens.length; i += 1) {
     const parsedAccountToken = accountTokens[i].account
       .data as ParsedAccountData;
@@ -52,10 +47,10 @@ export default async function ReadTokenWallet(
       parsedAccountToken.parsed.info.tokenAmount.uiAmount !== undefined &&
       parsedAccountToken.parsed.info.tokenAmount.uiAmount !== 0
     )
-      filteredAccountTokens.push({
-        mint: parsedAccountToken.parsed.info.mint,
-        uiAmount: parsedAccountToken.parsed.info.tokenAmount.uiAmount,
-      });
+      filteredAccountTokens.set(
+        parsedAccountToken.parsed.info.mint,
+        parsedAccountToken.parsed.info.tokenAmount.uiAmount
+      );
   }
   return filteredAccountTokens;
 }

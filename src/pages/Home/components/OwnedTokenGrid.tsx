@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 
 import ClassNamesLogic from '../../../common/components/Util/ClassNamesLogic';
 
-import { ItokenOwned } from '../../../common/types';
+import { ItokenOwnedCommunity } from '../../../common/types';
 
 type ItokenOwnedList = {
-  tokenOwnedList: ItokenOwned[];
+  tokenOwnedList: ItokenOwnedCommunity[];
 };
 
 export default function OwnedTokenGrid({

@@ -44,18 +44,12 @@ export default async function SigninWithWallet(
     // user is signed in
     if (user.uid !== walletProp.uid) {
       // new wallet connection different from auth one
-      // eslint-disable-next-line no-console
-      console.log('new wallet connection different from auth one');
 
       await FirebaseAuth.signOut();
       await SigninWithWalletProcess(walletProp);
     }
-    // eslint-disable-next-line no-console
-    console.log('wallet already auth');
     // else do nothing account is cached already
   } else {
-    // eslint-disable-next-line no-console
-    console.log('not auth, checkingin');
     await SigninWithWalletProcess(walletProp);
   }
 }

@@ -53,8 +53,6 @@ export default function UserNameSetting({
   );
 
   async function checkUserNameValid(userNameBeingChecked: string | undefined) {
-    // eslint-disable-next-line no-console
-    console.log('checking isUserNameValid');
     setLoadingCheckUserName(true);
     let isUserNameValid = true;
     if (userNameBeingChecked !== userNameRecoil) {
@@ -77,8 +75,6 @@ export default function UserNameSetting({
           );
           /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
         } catch (error: any) {
-          // eslint-disable-next-line no-console
-          console.log('failed to verify if UserName available', error?.message);
           setAvailabilityMessage(unexpectedErrorMessage);
           isUserNameValid = false;
         }
@@ -104,7 +100,6 @@ export default function UserNameSetting({
           toast.success('Your username has been updated!');
           /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
         } catch (error: any) {
-          // eslint-disable-next-line no-console
           toast.error(unexpectedErrorMessage);
           setAvailabilityMessage(unexpectedErrorMessage);
           shouldEndEditing = false;

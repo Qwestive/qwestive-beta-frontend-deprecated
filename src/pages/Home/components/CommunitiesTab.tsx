@@ -8,14 +8,16 @@ import GenerateTokenOwnedList from '../../../common/services/Solana/GetData/Gene
 import { userPublicKeyAtom } from '../../../recoil/userInfo';
 import LoadingDots from '../../../common/components/Util/LoadingDots';
 
-import { ItokenOwned } from '../../../common/types';
+import { ItokenOwnedCommunity } from '../../../common/types';
 
 export default function CommunitiesTab(): JSX.Element {
   const userPublicKey = useRecoilValue(userPublicKeyAtom);
   const tokenRegistry = useTokenRegistry();
-  const [tokenOwnedList, setTokenOwnedList] = useState<ItokenOwned[]>([]);
+  const [tokenOwnedList, setTokenOwnedList] = useState<ItokenOwnedCommunity[]>(
+    []
+  );
   const [tokenOwnedSearchedResults, setTokenOwnedSearchedResults] = useState<
-    ItokenOwned[]
+    ItokenOwnedCommunity[]
   >([]);
 
   const [loading, setLoading] = useState(false);
