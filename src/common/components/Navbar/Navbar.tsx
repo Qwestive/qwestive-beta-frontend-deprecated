@@ -168,54 +168,59 @@ const Navbar = function Navbar(): JSX.Element {
 
           {userPublicKey !== undefined && (
             <Disclosure.Panel className="md:hidden bg-white">
-              <div className="pt-4 pb-3">
-                <div className="flex items-center px-5 sm:px-6">
-                  <div className="flex-shrink-0">
-                    <img
-                      className="h-10 w-10 rounded-full"
-                      src={
-                        userProfileImage && userProfileImage !== ''
-                          ? userProfileImage
-                          : defaultUserProfileImage
-                      }
-                      alt=""
-                    />
-                  </div>
-                  <div className="ml-3 overflow-hidden truncate">
-                    <div
-                      className="text-base font-medium text-primary
+              {({ close }) => (
+                <div className="pt-4 pb-3">
+                  <div className="flex items-center px-5 sm:px-6">
+                    <div className="flex-shrink-0">
+                      <img
+                        className="h-10 w-10 rounded-full"
+                        src={
+                          userProfileImage && userProfileImage !== ''
+                            ? userProfileImage
+                            : defaultUserProfileImage
+                        }
+                        alt=""
+                      />
+                    </div>
+                    <div className="ml-3 overflow-hidden truncate">
+                      <div
+                        className="text-base font-medium text-primary
                      truncate">
-                      {userName ?? userPublicKey}
+                        {userName ?? userPublicKey}
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="mt-3 px-2 space-y-1 sm:px-3">
-                  {userNavigation.map((item) => (
-                    <Link to={item.href} className="w-full">
-                      <Disclosure.Button
-                        key={item.name}
-                        className="block w-full text-left px-3 py-2 
+                  <div className="mt-3 px-2 space-y-1 sm:px-3">
+                    {userNavigation.map((item) => (
+                      <Link to={item.href} key={item.name} className="w-full">
+                        <Disclosure.Button
+                          className="block w-full text-left px-3 py-2 
                       rounded-md text-base font-medium text-primary 
                       hover:text-white hover:bg-gray-700">
-                        {item.name}
-                      </Disclosure.Button>
-                    </Link>
-                  ))}
-                  <Disclosure.Button
-                    key="Sign out"
-                    className="block w-full
-                      rounded-md text-primary 
-                      hover:text-white hover:bg-gray-700">
+                          {item.name}
+                        </Disclosure.Button>
+                      </Link>
+                    ))}
+
                     <button
                       type="button"
-                      className="w-full text-left 
-                      text-base font-medium px-3 py-2"
-                      onClick={disconnectAll}>
-                      Sign out
+                      key="Sign out"
+                      className="block w-full
+                      rounded-md text-primary 
+                      hover:text-white hover:bg-gray-700"
+                      onClick={() => {
+                        disconnectAll();
+                        close();
+                      }}>
+                      <div
+                        className="w-full text-left 
+                      text-base font-medium px-3 py-2">
+                        Sign out
+                      </div>
                     </button>
-                  </Disclosure.Button>
+                  </div>
                 </div>
-              </div>
+              )}
             </Disclosure.Panel>
           )}
         </>

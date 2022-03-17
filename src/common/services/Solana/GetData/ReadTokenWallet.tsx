@@ -6,16 +6,12 @@ import {
   Cluster,
   Commitment,
 } from '@solana/web3.js';
+import { ItokenOwned } from '../../../types.js';
 import appConfig from '../../../../config.js';
 
 const TOKEN_PROGRAM_ID = new PublicKey(
   'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'
 );
-
-type ItokenOwned = {
-  mint: string;
-  uiAmount: number;
-};
 
 export default async function ReadTokenWallet(
   publickey: string
@@ -54,7 +50,7 @@ export default async function ReadTokenWallet(
     )
       filteredAccountTokens.push({
         mint: parsedAccountToken.parsed.info.mint,
-        uiAmount: parsedAccountToken.parsed.info.tokenAmount.uiAmount,
+        amountHeld: parsedAccountToken.parsed.info.tokenAmount.uiAmount,
       });
   }
   return filteredAccountTokens;

@@ -18,6 +18,9 @@ export interface Icommunity {
 export interface ItokenOwned {
   mint: string;
   amountHeld: number;
+}
+
+export interface ItokenOwnedCommunity extends ItokenOwned {
   name: string | undefined;
   imageUrl: string | undefined;
   communityData: Icommunity | undefined;

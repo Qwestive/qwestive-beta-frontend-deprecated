@@ -1,7 +1,7 @@
 import { TokenInfoMap } from '@solana/spl-token-registry';
 import ReadTokenWallet from './ReadTokenWallet';
 
-import { ItokenOwned } from '../../../types';
+import { ItokenOwnedCommunity } from '../../../types';
 import { getCommunityInfo } from '../../Firebase/GetData/CommunityUtil';
 import defaultUserProfileImage from '../../../../assets/defaultUserProfileImage.png';
 
@@ -12,9 +12,9 @@ Fetch the community member count
 export default async function GenerateTokenOwnedList(
   tokenRegistry: TokenInfoMap,
   publicKey: string
-): Promise<ItokenOwned[]> {
+): Promise<ItokenOwnedCommunity[]> {
   const tokenOwned = await ReadTokenWallet(publicKey);
-  const tokenOwnedList = new Array<ItokenOwned>();
+  const tokenOwnedList = new Array<ItokenOwnedCommunity>();
 
   const communityInfoPromises = [];
   for (let i = 0; i < tokenOwned.length; i += 1) {
@@ -28,7 +28,7 @@ export default async function GenerateTokenOwnedList(
       tokenOwnedList.unshift({
         mint: tokenOwned[i].mint,
         name: tokenInfos.symbol,
-        amountHeld: tokenOwned[i].uiAmount,
+        amountHeld: tokenOwned[i].amountHeld,
         imageUrl: tokenInfos.logoURI,
         communityData: communityInfoArray[i],
       });
@@ -36,7 +36,7 @@ export default async function GenerateTokenOwnedList(
       tokenOwnedList.push({
         mint: tokenOwned[i].mint,
         name: 'Unknown',
-        amountHeld: tokenOwned[i].uiAmount,
+        amountHeld: tokenOwned[i].amountHeld,
         imageUrl: defaultUserProfileImage,
         communityData: communityInfoArray[i],
       });

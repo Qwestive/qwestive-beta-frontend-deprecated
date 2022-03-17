@@ -1,4 +1,5 @@
 import { atom } from 'recoil';
+import { ItokenOwned } from '../common/types';
 
 export const userPublicKeyAtom = atom<string | undefined>({
   key: 'userPublicKey',
@@ -23,6 +24,11 @@ export const userProfileImageAtom = atom<string | undefined>({
 export const userCoverImageAtom = atom<string | undefined>({
   key: 'userCoverImage',
   default: undefined,
+});
+
+export const userTokensOwnedAtom = atom<ItokenOwned[]>({
+  key: 'userTokensOwned',
+  default: [],
 });
 
 export const userBioAtom = atom<string | undefined>({
