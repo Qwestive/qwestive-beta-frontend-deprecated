@@ -10,7 +10,6 @@ export default function ProfileSettingPage(): JSX.Element {
 
   return (
     <div className="mx-auto max-w-5xl">
-      <h1>Edit your Profile </h1>
       {isEditingUserName ? (
         <UserNameSetting setIsEditingUserName={setIsEditingUserName} />
       ) : (
