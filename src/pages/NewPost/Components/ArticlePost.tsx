@@ -10,7 +10,10 @@ import {
   userProfileImageAtom,
   userNameAtom,
 } from '../../../recoil/userInfo';
-import { IpostPreview, IpostArticle } from '../../../common/types';
+import {
+  IpostPreviewSubmission,
+  IpostArticleSubmission,
+} from '../../../common/types';
 import ClassNamesLogic from '../../../common/components/Util/ClassNamesLogic';
 import CKeditorMaker from '../../../common/components/Posts/CKeditor/CKeditorMaker';
 
@@ -64,8 +67,7 @@ export default function ArticlePost({ cId }: TarticlePost): JSX.Element {
       }
 
       if (userPublicKey !== undefined) {
-        const postPreview: IpostPreview = {
-          id: '',
+        const postPreview: IpostPreviewSubmission = {
           postType: 'article',
           accessTokenId: cId,
           accessMinimumTokenBalance: tokenRequirement,
@@ -80,7 +82,7 @@ export default function ArticlePost({ cId }: TarticlePost): JSX.Element {
           downVoteUserIds: [],
           numberOfComments: 0,
         };
-        const postArticle: IpostArticle = {
+        const postArticle: IpostArticleSubmission = {
           ...postPreview,
           content: articleText,
         };

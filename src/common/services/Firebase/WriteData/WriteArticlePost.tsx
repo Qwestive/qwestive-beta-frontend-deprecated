@@ -1,11 +1,11 @@
 import { doc, setDoc, addDoc, collection } from 'firebase/firestore';
 
 import { FirebaseAuth, Firestore } from '../FirebaseConfig';
-import { IpostPreview, IpostArticle } from '../../../types';
+import { IpostPreviewSubmission, IpostArticleSubmission } from '../../../types';
 
 export default async function WriteArticlePost(
-  postPreview: IpostPreview,
-  postArticle: IpostArticle
+  postPreview: IpostPreviewSubmission,
+  postArticle: IpostArticleSubmission
 ): Promise<string> {
   if (FirebaseAuth.currentUser != null) {
     const previewPostRef = await addDoc(
