@@ -5,22 +5,28 @@ import {
   IpostPreviewSubmission,
   IpostArticleSubmission,
   IpostCommentSubmission,
+  IpostPollSubmission,
 } from '../../../types';
-
-export interface IpostArticleWrapper {
-  id: string;
-  contents: IpostArticleSubmission;
-}
 
 export interface IpostPreviewWrapper {
   id: string;
   contents: IpostPreviewSubmission;
 }
 
+export interface IpostArticleWrapper {
+  id: string;
+  contents: IpostArticleSubmission;
+}
+export interface IpostPollWrapper {
+  id: string;
+  contents: IpostPollSubmission;
+}
+
 export interface IpostCommentWrapper {
   id: string;
   contents: IpostCommentSubmission;
 }
+
 const POST_PREVIEWS: Array<IpostPreviewWrapper> = [
   {
     id: '111',
@@ -300,10 +306,40 @@ const POSTS: Array<IpostArticleWrapper> = [
   },
 ];
 
+const POLLS: Array<IpostPollWrapper> = [
+  {
+    id: '111',
+    contents: {
+      postType: 'article',
+      accessTokenId: '1',
+      accessMinimumTokenBalance: 1,
+      authorUserId: '3oabmiVFubrBn2hJoRcP8Ko2LvCGb2Z3vB58rgoBFgUV',
+      authorUserName: 'metadiego',
+      authorPublicKey: '3oabmiVFubrBn2hJoRcP8Ko2LvCGb2Z3vB58rgoBFgUV',
+      authorProfileImageUrl: '',
+      title: 'Web 2.5: Where we are truly headed',
+      content: '<h1>What should we invest in?</h1>',
+      options: [
+        { id: '1', name: 'Bitcoin', voteUserIds: ['metadiego', 'john'] },
+        { id: '2', name: 'Ethereum', voteUserIds: ['metadiego', 'john'] },
+        { id: '3', name: 'Solana', voteUserIds: ['metadiego', 'john'] },
+      ],
+      creationDate: 1234,
+      category: 'category-1',
+      upVoteUserIds: [],
+      downVoteUserIds: [],
+      numberOfComments: 10,
+    },
+  },
+];
+
 const COMMENTS: Array<IpostCommentWrapper> = [];
 
 export default async function populateDb(): Promise<void> {
   POSTS.forEach((item: IpostArticleWrapper) => {
+    setDoc(doc(Firestore, 'posts', item.id), item.contents);
+  });
+  POLLS.forEach((item: IpostPollWrapper) => {
     setDoc(doc(Firestore, 'posts', item.id), item.contents);
   });
   POST_PREVIEWS.forEach((item: IpostPreviewWrapper) => {

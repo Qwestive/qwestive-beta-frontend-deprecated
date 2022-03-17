@@ -121,8 +121,7 @@ export interface IpostArticleSubmission extends IpostPreviewSubmission {
 /// A poll that is submitted to the DB as a new post for a community.
 export interface IpostPollSubmission extends IpostPreviewSubmission {
   content: string;
-  options: Array<string>;
-  votes: Map<string, Array<string>>;
+  options: Array<IpollOption>;
 }
 
 /// A post preview that is retrieved from the DB. It differs from
@@ -185,7 +184,7 @@ export interface IpostCommentSubmission {
 }
 
 /// A comment that is submitted to the DB as a new comment for a post. It
-///  differs from IpostCommentSubmission in that it has an ID since it was 
+///  differs from IpostCommentSubmission in that it has an ID since it was
 /// already added to DB.
 export interface IpostComment extends IpostCommentSubmission {
   id: string;

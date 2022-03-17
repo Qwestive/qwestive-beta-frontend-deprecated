@@ -30,6 +30,7 @@ function PollContainer({
   options,
 }: IpollContainer): JSX.Element {
   const [formattedDate, setFormattedDate] = useState('Unknown');
+  const [pollOptions, setPollOptions] = useState<Array<IpollOption>>([]);
   const [hasVoted, setHasVoted] = useState(false);
   const [totalVotes, setTotalVotes] = useState(0);
   const userPublicKeyFiller = '_';
@@ -53,17 +54,39 @@ function PollContainer({
     if (creationDate !== undefined) {
       setFormattedDate(new Date(creationDate ?? 0).toLocaleDateString());
     }
-  }, [options]);
+    setPollOptions(options ?? []);
+  }, []);
 
-  // const handleCastVote = (optionId: string): void => {
-  //   if (publicKey === undefined) {
-  //     throw new Error('Initializer Public Key is undefined');
-  //   }
-  //   if (wallet === undefined) {
-  //     throw new Error('Wallet context is undefined');
-  //   }
-  //   initializeVote(publicKey as PublicKey, wallet as AnchorWallet);
-  // };
+  /// Remove public key of current user from the voter array of all options.
+  const removeVote = () => {
+    setPollOptions((currentPollOptions) => {
+      currentPollOptions.forEach((option) => {
+        option.voteUserIds.filter((id) => id !== userPublicKey);
+      });
+      return currentPollOptions;
+    });
+  };
+
+  /// Add public key of current user to the voter array of the option with
+  /// the provided ID.
+  const addVote = (optionId: string) => {
+    setPollOptions((currentPollOptions) => {
+      const idx = currentPollOptions?.findIndex(
+        (item: IpollOption) => item.id === optionId
+      );
+
+      const filteredOptions = currentPollOptions?.filter(
+        (item) => item.id !== optionId
+      );
+
+      filteredOptions?.splice(idx, 0, {
+        id: currentPollOptions[idx].id,
+        name: currentPollOptions[idx].name,
+        voteUserIds: [userPublicKey, ...currentPollOptions[idx].voteUserIds],
+      });
+      return filteredOptions;
+    });
+  };
 
   const handleCastVote = (optionId: string): void => {
     const option = options?.find((item) => item.id === optionId);
@@ -75,7 +98,11 @@ function PollContainer({
       userPublicKey !== userPublicKeyFiller &&
       voters.indexOf(userPublicKey ?? '') === -1
     ) {
-      option.voteUserIds = [userPublicKey, ...voters];
+      /// TODO(diego): add backend logic and error handling.
+      setTotalVotes(totalVotes + 1);
+      setHasVoted(true);
+      removeVote();
+      addVote(option.id);
     }
   };
 
@@ -108,9 +135,10 @@ function PollContainer({
       )}
       {hasVoted && (
         <div>
-          {options?.map((item) => (
+          {pollOptions?.map((item) => (
             <ProgressBar
               key={item.id}
+              name={item.name}
               percentProgress={
                 ((item?.voteUserIds?.length ?? 0) * 100) / totalVotes
               }
