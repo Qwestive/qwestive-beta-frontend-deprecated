@@ -5,7 +5,7 @@ import {
   UpVotePost,
   DownVotePost,
 } from '../../../../common/services/Firebase/WriteData/WriteVote';
-import { userPublicKeyAtom } from '../../../../recoil/userInfo';
+import { userIdAtom } from '../../../../recoil/userInfo';
 import ClassNamesLogic from '../../../../common/components/Util/ClassNamesLogic';
 
 type PostActionsSectioData = {
@@ -31,9 +31,8 @@ function PostActionsSection({
 }: PostActionsSectioData): JSX.Element {
   const [upVoteSet, setUpVoteSet] = useState<Set<string>>(new Set());
   const [downVoteSet, setDownVoteSet] = useState<Set<string>>(new Set());
-  const userPublicKeyFiller = '_';
-  const userPublicKey =
-    useRecoilValue(userPublicKeyAtom) ?? userPublicKeyFiller;
+  const userIdFiller = '_';
+  const userId = useRecoilValue(userIdAtom) ?? userIdFiller;
 
   const handleSendTip = () => {
     const authorUserNameStr = authorUserName ?? '';
@@ -44,16 +43,15 @@ function PostActionsSection({
     tipCallback(authorPublicKeyStr, authorUserNameStr);
   };
 
-  const addUpVote = () => setUpVoteSet(new Set(upVotes).add(userPublicKey));
+  const addUpVote = () => setUpVoteSet(new Set(upVotes).add(userId));
 
-  const addDownVote = () =>
-    setDownVoteSet(new Set(downVotes).add(userPublicKey));
+  const addDownVote = () => setDownVoteSet(new Set(downVotes).add(userId));
 
   const removeDownVote = () => {
     setDownVoteSet((votes) => {
       const downVotesUpdate = new Set(votes);
 
-      downVotesUpdate.delete(userPublicKey);
+      downVotesUpdate.delete(userId);
 
       return downVotesUpdate;
     });
@@ -63,18 +61,15 @@ function PostActionsSection({
     setUpVoteSet((votes) => {
       const upVotesUpdate = new Set(votes);
 
-      upVotesUpdate.delete(userPublicKey);
+      upVotesUpdate.delete(userId);
 
       return upVotesUpdate;
     });
   };
 
   const handleUpvote = async () => {
-    if (
-      !upVoteSet.has(userPublicKey) &&
-      userPublicKey !== userPublicKeyFiller
-    ) {
-      const didDownVote = downVoteSet.has(userPublicKey);
+    if (!upVoteSet.has(userId) && userId !== userIdFiller) {
+      const didDownVote = downVoteSet.has(userId);
       removeDownVote();
       addUpVote();
       try {
@@ -90,11 +85,8 @@ function PostActionsSection({
   };
 
   const handleDownVote = async () => {
-    if (
-      !downVoteSet.has(userPublicKey) &&
-      userPublicKey !== userPublicKeyFiller
-    ) {
-      const didUpVote = upVoteSet.has(userPublicKey);
+    if (!downVoteSet.has(userId) && userId !== userIdFiller) {
+      const didUpVote = upVoteSet.has(userId);
       removeUpVote();
       addDownVote();
       try {
@@ -120,11 +112,11 @@ function PostActionsSection({
   return (
     <div
       className="flex flex-row content-center justify-around
-      text-sm text-color-secondary my-4">
+      text-sm text-color-secondary my-4 border-t-2 border-top-gray-200 pt-3">
       <div className="flex mr-6">
         <button
           className={ClassNamesLogic(
-            upVoteSet.has(userPublicKey)
+            upVoteSet.has(userId)
               ? 'text-qwestive-purple-hover'
               : 'hover:text-qwestive-purple-hover',
             'my-auto'
@@ -147,7 +139,7 @@ function PostActionsSection({
         <div className="mx-1 my-auto">{upVoteSet.size - downVoteSet.size}</div>
         <button
           className={ClassNamesLogic(
-            downVoteSet.has(userPublicKey)
+            downVoteSet.has(userId)
               ? 'text-qwestive-purple-hover'
               : 'hover:text-qwestive-purple-hover',
             'my-auto'

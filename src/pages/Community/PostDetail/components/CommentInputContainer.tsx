@@ -3,6 +3,7 @@ import { useRecoilValue } from 'recoil';
 import { toast } from 'react-toastify';
 import { IpostCommentSubmission } from '../../../../common/types';
 import {
+  userIdAtom,
   userNameAtom,
   userProfileImageAtom,
   userPublicKeyAtom,
@@ -27,6 +28,7 @@ function CommentInputContainer({
 }: TcommentInputContainer): JSX.Element {
   const [textAreaValue, setTextAreaValue] = useState('');
   const [, setIsLoading] = useState(false);
+  const userId = useRecoilValue(userIdAtom);
   const username = useRecoilValue(userNameAtom);
   const userPublicKey = useRecoilValue(userPublicKeyAtom);
   const userProfileImage = useRecoilValue(userProfileImageAtom);
@@ -42,7 +44,7 @@ function CommentInputContainer({
         postId,
         depth: depth ?? 0,
         parentCommentId: parentCommentId ?? '',
-        authorUserId: userPublicKey ?? '',
+        authorUserId: userId ?? '',
         authorUserName: username ?? '',
         authorPublicKey: userPublicKey ?? '',
         authorProfileImageUrl: userProfileImage ?? '',

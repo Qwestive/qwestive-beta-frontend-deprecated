@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import CKeditorReader from '../../../../common/components/Posts/CKeditor/CKeditorReader';
 import { IpollOption } from '../../../../common/types';
-import { userPublicKeyAtom } from '../../../../recoil/userInfo';
+import { userIdAtom } from '../../../../recoil/userInfo';
 import ProgressBar from './ProgressBar';
 
 type IpollContainer = {
@@ -25,16 +25,15 @@ function PollContainer({
   const [pollOptions, setPollOptions] = useState<Array<IpollOption>>([]);
   const [hasVoted, setHasVoted] = useState(false);
   const [totalVotes, setTotalVotes] = useState(0);
-  const userPublicKeyFiller = '_';
-  const userPublicKey =
-    useRecoilValue(userPublicKeyAtom) ?? userPublicKeyFiller;
+  const userIdFiller = '_';
+  const userId = useRecoilValue(userIdAtom) ?? userIdFiller;
 
   useEffect(() => {
     let voteFound = false;
     let voteCount = 0;
     options?.forEach((option) => {
       if (!voteFound) {
-        voteFound = option?.voteUserIds?.indexOf(userPublicKey) !== -1;
+        voteFound = option?.voteUserIds?.indexOf(userId) !== -1;
       }
       voteCount += option?.voteUserIds?.length ?? 0;
     });
@@ -50,7 +49,7 @@ function PollContainer({
   const removeVote = () => {
     setPollOptions((currentPollOptions) => {
       currentPollOptions.forEach((option) => {
-        option.voteUserIds.filter((id) => id !== userPublicKey);
+        option.voteUserIds.filter((id) => id !== userId);
       });
       return currentPollOptions;
     });
@@ -71,7 +70,7 @@ function PollContainer({
       filteredOptions?.splice(idx, 0, {
         id: currentPollOptions[idx].id,
         name: currentPollOptions[idx].name,
-        voteUserIds: [userPublicKey, ...currentPollOptions[idx].voteUserIds],
+        voteUserIds: [userId, ...currentPollOptions[idx].voteUserIds],
       });
       return filteredOptions;
     });
@@ -83,10 +82,7 @@ function PollContainer({
       throw new Error('Could not cast vote, invalid option ID');
     }
     const voters = option?.voteUserIds ?? [];
-    if (
-      userPublicKey !== userPublicKeyFiller &&
-      voters.indexOf(userPublicKey ?? '') === -1
-    ) {
+    if (userId !== userIdFiller && voters.indexOf(userId ?? '') === -1) {
       /// TODO(diego): add backend logic and error handling.
       setTotalVotes(totalVotes + 1);
       setHasVoted(true);

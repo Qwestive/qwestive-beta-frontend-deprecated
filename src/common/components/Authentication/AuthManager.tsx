@@ -22,6 +22,7 @@ import {
   userBioAtom,
   userPersonalLinkAtom,
   userTokensOwnedAtom,
+  userIdAtom,
 } from '../../../recoil/userInfo';
 
 import { userFinishedLoadingAtom } from '../../../recoil/appState';
@@ -39,6 +40,7 @@ export default function AuthManager({
   children: ReactNode;
 }): JSX.Element {
   const { publicKey, signMessage, disconnect, connected } = useWallet();
+  const [, setUserId] = useRecoilState(userIdAtom);
   const [userPublicKey, setUserPublickey] = useRecoilState(userPublicKeyAtom);
   const [, setUserName] = useRecoilState(userNameAtom);
   const [, setDisplayName] = useRecoilState(userDisplayNameAtom);
@@ -75,6 +77,7 @@ export default function AuthManager({
         // https://firebase.google.com/docs/reference/js/firebase.User
         if (user.uid !== userPublicKey) {
           try {
+            setUserId(user.uid);
             setUserPublickey(user.uid);
 
             // get firestore, set user recoil
@@ -115,6 +118,7 @@ export default function AuthManager({
           }
         }
       } else {
+        setUserId(undefined);
         setUserPublickey(undefined);
         setUserName(undefined);
         setDisplayName(undefined);

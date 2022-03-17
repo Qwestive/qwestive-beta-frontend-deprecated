@@ -12,6 +12,7 @@ import {
 import {
   IpostPreviewSubmission,
   IpostPollSubmission,
+  POLL_TYPE,
 } from '../../../common/types';
 import CKeditorMaker from '../../../common/components/Posts/CKeditor/CKeditorMaker';
 import PostTitleSection from './PostTitleSection';
@@ -116,7 +117,7 @@ export default function PollPost({ cId }: TpollPost): JSX.Element {
 
       if (userPublicKey !== undefined) {
         const postPreview: IpostPreviewSubmission = {
-          postType: 'poll',
+          postType: POLL_TYPE,
           accessTokenId: cId,
           accessMinimumTokenBalance: tokenRequirement,
           authorUserId: userPublicKey,

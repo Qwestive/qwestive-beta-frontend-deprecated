@@ -12,6 +12,7 @@ import {
 import {
   IpostPreviewSubmission,
   IpostArticleSubmission,
+  ARTICLE_TYPE,
 } from '../../../common/types';
 import CKeditorMaker from '../../../common/components/Posts/CKeditor/CKeditorMaker';
 import PostTitleSection from './PostTitleSection';
@@ -70,7 +71,7 @@ export default function ArticlePost({ cId }: TarticlePost): JSX.Element {
 
       if (userPublicKey !== undefined) {
         const postPreview: IpostPreviewSubmission = {
-          postType: 'article',
+          postType: ARTICLE_TYPE,
           accessTokenId: cId,
           accessMinimumTokenBalance: tokenRequirement,
           authorUserId: userPublicKey,
