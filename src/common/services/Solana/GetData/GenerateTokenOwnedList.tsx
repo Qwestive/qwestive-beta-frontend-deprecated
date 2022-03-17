@@ -1,7 +1,7 @@
 import { TokenInfoMap } from '@solana/spl-token-registry';
 import ReadTokenWallet from './ReadTokenWallet';
 
-import { ItokenOwnedCommunity } from '../../../types';
+import { ItokenOwnedCommunity, Icommunity } from '../../../types';
 import { getCommunityInfo } from '../../Firebase/GetData/CommunityUtil';
 import defaultUserProfileImage from '../../../../assets/defaultUserProfileImage.png';
 
@@ -16,32 +16,34 @@ export default async function GenerateTokenOwnedList(
   const tokenOwned = await ReadTokenWallet(publicKey);
   const tokenOwnedList = new Array<ItokenOwnedCommunity>();
 
-  const communityInfoPromises = [];
-  for (let i = 0; i < tokenOwned.length; i += 1) {
-    communityInfoPromises.push(getCommunityInfo(tokenOwned[i].mint));
-  }
-  const communityInfoArray = await Promise.all(communityInfoPromises);
-  for (let i = 0; i < tokenOwned.length; i += 1) {
-    const tokenInfos = tokenRegistry.get(tokenOwned[i].mint);
+  const communityInfoPromises: Array<Promise<Icommunity | undefined>> = [];
+  tokenOwned.forEach((amountHeld, mint) => {
+    communityInfoPromises.push(getCommunityInfo(mint));
+  });
 
+  const communityInfoArray = await Promise.all(communityInfoPromises);
+  let i = 0;
+  tokenOwned.forEach((amountHeld, mint) => {
+    const tokenInfos = tokenRegistry.get(mint);
     if (tokenInfos !== undefined) {
       tokenOwnedList.unshift({
-        mint: tokenOwned[i].mint,
+        mint,
         name: tokenInfos.symbol,
-        amountHeld: tokenOwned[i].amountHeld,
+        amountHeld,
         imageUrl: tokenInfos.logoURI,
         communityData: communityInfoArray[i],
       });
     } else {
       tokenOwnedList.push({
-        mint: tokenOwned[i].mint,
+        mint,
         name: 'Unknown',
-        amountHeld: tokenOwned[i].amountHeld,
+        amountHeld,
         imageUrl: defaultUserProfileImage,
         communityData: communityInfoArray[i],
       });
     }
-  }
+    i += 1;
+  });
 
   return tokenOwnedList;
 }

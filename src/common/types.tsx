@@ -15,12 +15,9 @@ export interface Icommunity {
   categories: Icategory[];
 }
 
-export interface ItokenOwned {
+export interface ItokenOwnedCommunity {
   mint: string;
   amountHeld: number;
-}
-
-export interface ItokenOwnedCommunity extends ItokenOwned {
   name: string | undefined;
   imageUrl: string | undefined;
   communityData: Icommunity | undefined;

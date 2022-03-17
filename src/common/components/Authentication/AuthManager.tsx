@@ -4,7 +4,7 @@ import { useRecoilState } from 'recoil';
 import { doc, getDoc } from 'firebase/firestore';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { toast } from 'react-toastify';
-import { listObjectAreSame } from '../../functions/Util.js';
+import { areMapsTheSame } from '../../functions/Util';
 import ReadTokenWallet from '../../services/Solana/GetData/ReadTokenWallet';
 import UpdateTokenOwned from '../../services/Firebase/UpdateTokenOwned';
 import SigninWithWallet from '../../services/Firebase/Authentication/SigninWithWallet';
@@ -84,10 +84,12 @@ export default function AuthManager({
               setCoverImageAtom(userDoc.data().coverImage);
               setBio(userDoc.data().bio);
               setPersonalLink(userDoc.data().personalLink);
+              const tokensOwnedFetchedMap = new Map(
+                Object.entries(userDoc.data().tokensOwned)
+              );
               const tokensOwnedNow = await ReadTokenWallet(user.uid);
-              if (
-                !listObjectAreSame(tokensOwnedNow, userDoc.data().tokensOwned)
-              ) {
+
+              if (!areMapsTheSame(tokensOwnedNow, tokensOwnedFetchedMap)) {
                 try {
                   const updateResult = await UpdateTokenOwned();
                   setUserTokensOwned(updateResult.data.filteredAccountTokens);

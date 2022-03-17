@@ -8,6 +8,5 @@ export default async function UpdateTokenOwned(): Promise<any> {
     FirebaseFunctions,
     'verifyTokenOwned-verifyTokenOwned'
   );
-  const result: any = await verifyTokenOwned({});
-  return result;
+  return verifyTokenOwned({});
 }
