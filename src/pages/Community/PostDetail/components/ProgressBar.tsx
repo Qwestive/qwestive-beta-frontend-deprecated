@@ -5,7 +5,7 @@ type IprogressBar = {
   percentProgress: number;
 };
 
-/// Components which displays the rich text contents of a post.
+/// Components which displays an animated progress bar.
 function ProgressBar({ name, percentProgress }: IprogressBar): JSX.Element {
   const [progress, setProgress] = useState(0);
 

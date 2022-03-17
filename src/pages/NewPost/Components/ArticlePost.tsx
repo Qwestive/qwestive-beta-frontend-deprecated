@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { EyeIcon } from '@heroicons/react/solid';
 import { toast } from 'react-toastify';
 import { useRecoilValue } from 'recoil';
 
@@ -14,8 +13,11 @@ import {
   IpostPreviewSubmission,
   IpostArticleSubmission,
 } from '../../../common/types';
-import ClassNamesLogic from '../../../common/components/Util/ClassNamesLogic';
 import CKeditorMaker from '../../../common/components/Posts/CKeditor/CKeditorMaker';
+import PostTitleSection from './PostTitleSection';
+import PostPermissionsSection from './PostPermissionsSection';
+import PostCategorySection from './PostCategorySection';
+import ActionButtonSection from './ActionButtonSection';
 
 const MAXTITLELENGTH = 100;
 const MINTITLELENGTH = 1;
@@ -103,21 +105,7 @@ export default function ArticlePost({ cId }: TarticlePost): JSX.Element {
   return (
     <div className="mb-5">
       {/* Title */}
-      <div className="p-px">
-        <input
-          type="text"
-          name="title"
-          id="title"
-          className="border border-transparent 
-          focus:border-qwestive-purple
-           block w-full 
-           text-2xl font-semibold px-3"
-          placeholder="Title"
-          value={title}
-          maxLength={MAXTITLELENGTH}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-      </div>
+      <PostTitleSection title={title} setTitle={setTitle} />
       {/* Content */}
       <div>
         <CKeditorMaker
@@ -127,132 +115,19 @@ export default function ArticlePost({ cId }: TarticlePost): JSX.Element {
         />
       </div>
       {/* Topic */}
-      <div className="p-px border-t">
-        <div className="flex justify-start gap-3 items-center px-3">
-          <p className="text-color-primary text-base font-medium"># Topic</p>
-          <input
-            type="text"
-            name="topic"
-            id="topic"
-            className="border border-transparent 
-           block 
-           focus:ring-0
-           focus:border-transparent 
-           text-color-primary
-           text-base  px-3
-           text-left
-           "
-            placeholder="example: infos"
-            value={category}
-            maxLength={MAXCATEGORYLENGTH}
-            onChange={(e) => setCategory(e.target.value)}
-          />
-        </div>
-      </div>
+      <PostCategorySection category={category} setCategory={setCategory} />
       {/* Exclusive Toggle */}
-      <div className="p-px border-t py-2">
-        <div className="flex justify-between">
-          <div
-            className="px-3 text-color-primary 
-          text-base font-medium flex items-center gap-2">
-            <EyeIcon className="h-4" />
-            Who can see this post ?
-          </div>
-          <div
-            className="flex justify-end gap-4 px-3
-        text-color-primary text-sm  ">
-            {/* Public Button */}
-            <button type="button" onClick={() => setPostPublic(true)}>
-              <div className="flex gap-1 items-center">
-                <div className="transform scale-75">
-                  <div
-                    className="rounded-full border-2 border-gray-900
-                 p-0.5">
-                    <div
-                      className={ClassNamesLogic(
-                        !postPublic ? 'bg-transparant' : 'bg-qwestive-purple',
-                        ' rounded-full p-1.5 m-auto'
-                      )}
-                    />
-                  </div>
-                </div>
-                <p className="font-medium">Public</p>
-              </div>
-            </button>
-            {/* Exclusive Button */}
-            <button
-              type="button"
-              onClick={() => {
-                setPostPublic(false);
-                setTokenRequirement(0);
-              }}>
-              <div className="flex gap-1 items-center">
-                <div className="transform scale-75">
-                  <div
-                    className="rounded-full border-2 border-gray-900
-                 p-0.5">
-                    <div
-                      className={ClassNamesLogic(
-                        postPublic ? 'bg-transparant' : 'bg-qwestive-purple',
-                        ' rounded-full p-1.5 m-auto'
-                      )}
-                    />
-                  </div>
-                </div>
-                <p className="font-medium">Exclusive</p>
-              </div>
-            </button>
-          </div>
-        </div>
-        {!postPublic && (
-          <div className="mt-3 px-3">
-            <div className="flex items-center gap-3">
-              <p
-                className="text-color-primary 
-          text-base font-medium">
-                Only to people who hold at least
-              </p>
-              <input
-                type="number"
-                name="tokenrequirement"
-                id="tokenrequirement"
-                className="border border-gray-300 rounded-md
-                block 
-                focus:ring-0
-                text-color-primary
-                text-sm  px-3
-                text-left
-                w-28
-                h-8
-                "
-                value={tokenRequirement}
-                min={0}
-                step={0.0001}
-                onChange={(e) => setTokenRequirement(e.target.valueAsNumber)}
-              />
-            </div>
-          </div>
-        )}
-      </div>
+      <PostPermissionsSection
+        postPublic={postPublic}
+        setPostPublic={setPostPublic}
+        tokenRequirement={tokenRequirement}
+        setTokenRequirement={setTokenRequirement}
+      />
       {/* Action Buttons */}
-      <div className="bg-gray-100 ">
-        <div className="flex justify-start gap-3 pr-2 pt-4">
-          <button
-            type="button"
-            className="btn-filled rounded-3xl px-6 py-2"
-            onClick={() => handlePublish()}
-            disabled={publishDisabled}>
-            {publishDisabled ? <p>Loading ...</p> : <p>Publish</p>}
-          </button>
-          <button
-            type="button"
-            className="btn-transparent px-6 rounded-3xl py-2"
-            onClick={() => navigate(-1)}
-            disabled={publishDisabled}>
-            Cancel
-          </button>
-        </div>
-      </div>
+      <ActionButtonSection
+        publishDisabled={publishDisabled}
+        handlePublish={() => handlePublish()}
+      />
     </div>
   );
 }
