@@ -81,3 +81,30 @@ export async function queryPostPreviews(
 
   return result;
 }
+
+export async function queryPostFeed(
+  communityList: string[]
+): Promise<IpostPreview[]> {
+  const result: IpostPreview[] = [];
+  if (communityList.length === 0) {
+    return result;
+  }
+  const postRef = collection(Firestore, 'postPreviews');
+
+  const postQuery = query(
+    postRef,
+    where('accessTokenId', 'in', communityList),
+    orderBy('creationDate', 'desc'),
+    limit(10)
+  ).withConverter(postPreviewConverter);
+
+  const querySnapshot = await getDocs(
+    postQuery.withConverter(postPreviewConverter)
+  );
+
+  querySnapshot.forEach((postDoc) => {
+    result.push(postPreviewConverter.fromFirestore(postDoc));
+  });
+
+  return result;
+}

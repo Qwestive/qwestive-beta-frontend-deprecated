@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import ClassNamesLogic from '../../common/components/Util/ClassNamesLogic';
 import CommunitiesTab from './components/CommunitiesTab';
 import { TokenRegistryProvider } from '../../common/components/Solana/TokenRegistry';
+import PostFeedTab from './components/PostFeedTab';
 /*
 ToDo:
 Make two tabs
@@ -43,6 +44,9 @@ export default function HomePageInternal(): JSX.Element {
         <TokenRegistryProvider>
           <CommunitiesTab />
         </TokenRegistryProvider>
+      </div>
+      <div className={ClassNamesLogic(currentTab !== 1 && 'hidden', '')}>
+        <PostFeedTab />
       </div>
     </div>
   );

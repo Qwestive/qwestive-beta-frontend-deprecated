@@ -24,6 +24,8 @@ import {
   userTokensOwnedAtom,
 } from '../../../recoil/userInfo';
 
+import { userFinishedLoadingAtom } from '../../../recoil/appState';
+
 /* 
 It is used as a component
 TODO:
@@ -45,6 +47,8 @@ export default function AuthManager({
   const [, setBio] = useRecoilState(userBioAtom);
   const [, setPersonalLink] = useRecoilState(userPersonalLinkAtom);
   const [, setUserTokensOwned] = useRecoilState(userTokensOwnedAtom);
+
+  const [, setUserFinishLoading] = useRecoilState(userFinishedLoadingAtom);
 
   async function trySigninWithWallet() {
     if (connected && publicKey) {
@@ -88,7 +92,6 @@ export default function AuthManager({
                 Object.entries(userDoc.data().tokensOwned)
               );
               const tokensOwnedNow = await ReadTokenWallet(user.uid);
-
               if (!areMapsTheSame(tokensOwnedNow, tokensOwnedFetchedMap)) {
                 try {
                   const updateResult = await UpdateTokenOwned();
@@ -98,6 +101,7 @@ export default function AuthManager({
                   setUserTokensOwned(userDoc.data().tokensOwned);
                 }
               }
+              setUserFinishLoading(true);
             } else {
               throw new Error('User information not found');
             }
@@ -118,6 +122,7 @@ export default function AuthManager({
         setCoverImageAtom(undefined);
         setBio(undefined);
         setPersonalLink(undefined);
+        setUserFinishLoading(false);
       }
     });
   }, []);
