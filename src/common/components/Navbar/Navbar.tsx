@@ -7,7 +7,6 @@ import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import { useWallet } from '@solana/wallet-adapter-react';
 import SignoutWithWallet from '../../services/Firebase/Authentication/SignoutWithWallet';
-
 import qwestiveLogo from '../../../assets/qwestiveLogo.svg';
 import {
   userPublicKeyAtom,

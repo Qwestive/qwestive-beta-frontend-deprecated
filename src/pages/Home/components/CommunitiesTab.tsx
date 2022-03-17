@@ -6,7 +6,6 @@ import OwnedTokenGrid from './OwnedTokenGrid';
 import { useTokenRegistry } from '../../../common/components/Solana/TokenRegistry';
 import GenerateTokenOwnedList from '../../../common/services/Solana/GetData/GenerateTokenOwnedList';
 import { userPublicKeyAtom } from '../../../recoil/userInfo';
-
 import LoadingDots from '../../../common/components/Util/LoadingDots';
 
 import { ItokenOwned } from '../../../common/types';
