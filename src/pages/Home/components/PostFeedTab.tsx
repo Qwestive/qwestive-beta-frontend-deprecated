@@ -18,8 +18,8 @@ export default function PostFeedTab(): JSX.Element {
   async function getPostFeed() {
     setLoading(true);
     try {
-      const tokenOwnedSlice = Object.keys(ownedTokens).slice(0, 10);
-      console.log(ownedTokens);
+      const tokenOwnedSlice = Array.from(ownedTokens.keys()).slice(0, 10);
+
       const queryPosts = await queryPostFeed(tokenOwnedSlice);
       setPostList(queryPosts);
       /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
@@ -50,12 +50,21 @@ export default function PostFeedTab(): JSX.Element {
         </div>
       )}
       {!loading && postList.length > 0 && (
-        <div className="space-y-3">
-          {postList?.map((post) => (
-            <div key={post.creationDate}>
-              <PostPreviewCard post={post} />
+        <div>
+          <div className="p-3 flex justify-between">
+            <p className="text-sm">Posts</p>
+            <div className=" w-24 grid grid-cols-2 text-center">
+              <p className="text-sm">Replies</p>
+              <p className="text-sm">Likes</p>
             </div>
-          ))}
+          </div>
+          <div className="space-y-3">
+            {postList?.map((post) => (
+              <div key={post.creationDate}>
+                <PostPreviewCard post={post} />
+              </div>
+            ))}
+          </div>
         </div>
       )}
       {!loading && postList.length === 0 && (
