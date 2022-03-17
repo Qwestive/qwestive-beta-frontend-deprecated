@@ -19,7 +19,6 @@ export default function PostFeedTab(): JSX.Element {
     setLoading(true);
     try {
       const tokenOwnedSlice = Array.from(ownedTokens.keys()).slice(0, 10);
-
       const queryPosts = await queryPostFeed(tokenOwnedSlice);
       setPostList(queryPosts);
       /* eslint-disable-next-line @typescript-eslint/no-explicit-any */

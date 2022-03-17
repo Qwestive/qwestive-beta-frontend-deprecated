@@ -49,7 +49,6 @@ export default function AuthManager({
   const [, setBio] = useRecoilState(userBioAtom);
   const [, setPersonalLink] = useRecoilState(userPersonalLinkAtom);
   const [, setUserTokensOwned] = useRecoilState(userTokensOwnedAtom);
-
   const [, setUserFinishLoading] = useRecoilState(userFinishedLoadingAtom);
 
   async function trySigninWithWallet() {
