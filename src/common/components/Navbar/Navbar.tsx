@@ -1,9 +1,13 @@
 /* This example requires Tailwind CSS v2.0+ */
 import React, { Fragment } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
-import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
+import { MenuIcon, XIcon } from '@heroicons/react/outline';
 import { useRecoilValue } from 'recoil';
+import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
+import { useWallet } from '@solana/wallet-adapter-react';
+import SignoutWithWallet from '../../services/Firebase/Authentication/SignoutWithWallet';
+
 import qwestiveLogo from '../../../assets/qwestiveLogo.svg';
 import {
   userPublicKeyAtom,
@@ -22,23 +26,27 @@ const Navbar = function Navbar(): JSX.Element {
   const userName = useRecoilValue(userNameAtom);
   const userProfileImage = useRecoilValue(userProfileImageAtom);
 
-  const navigation = [
-    { name: 'Home', href: '/', current: true },
-    { name: 'Discover', href: '#', current: false },
-    { name: 'My Communities', href: '#', current: false },
-  ];
   const userNavigation = [
-    { name: 'Your Profile', href: `user/${userName}` },
-    { name: 'Settings', href: '#' },
-    { name: 'Sign out', href: '#' },
+    { name: 'Your Profile', href: `/user/${userName}` },
+    { name: 'Settings', href: '/profile/settings' },
   ];
+  const { disconnect, connected } = useWallet();
+
+  async function disconnectAll() {
+    try {
+      await SignoutWithWallet({ disconnect, connected });
+      /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+    } catch (error: any) {
+      toast.error(`Failed to signout: ${error?.message}`);
+    }
+  }
 
   return (
-    <Disclosure as="nav" className="bg-gray-100">
+    <Disclosure as="nav" className="bg-white">
       {({ open }) => (
         <>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between h-16">
+            <div className="flex justify-between h-14">
               <div className="flex">
                 {userPublicKey !== undefined && (
                   <div className="-ml-2 mr-2 flex items-center md:hidden">
@@ -61,35 +69,19 @@ const Navbar = function Navbar(): JSX.Element {
                   </div>
                 )}
                 <div className="flex-shrink-0 flex items-center">
-                  <img
-                    className="block lg:hidden h-8 w-auto"
-                    src={qwestiveLogo}
-                    alt="Qwestive"
-                  />
-                  <img
-                    className="hidden lg:block h-8 w-auto"
-                    src={qwestiveLogo}
-                    alt="Qwestive"
-                  />
+                  <Link to="/">
+                    <img
+                      className="block lg:hidden h-8 w-auto"
+                      src={qwestiveLogo}
+                      alt="Qwestive"
+                    />
+                    <img
+                      className="hidden lg:block h-8 w-auto"
+                      src={qwestiveLogo}
+                      alt="Qwestive"
+                    />
+                  </Link>
                 </div>
-                {userPublicKey !== undefined && (
-                  <div
-                    className="hidden md:ml-6 md:flex md:items-center 
-                  md:space-x-4">
-                    {navigation.map((item) => (
-                      <Link
-                        key={item.name}
-                        to={item.href}
-                        className={ClassNamesLogic(
-                          !item.current && 'text-gray-400 hover:text-gray-600',
-                          'px-3 py-2 rounded-md text-sm font-medium'
-                        )}
-                        aria-current={item.current ? 'page' : undefined}>
-                        {item.name}
-                      </Link>
-                    ))}
-                  </div>
-                )}
               </div>
               <div className="flex items-center">
                 {appConfig.LANDING_PAGE_SIGN_IN_ENABLED && (
@@ -106,16 +98,6 @@ const Navbar = function Navbar(): JSX.Element {
                   <div
                     className="hidden md:ml-4 md:flex-shrink-0 md:flex 
                   md:items-center">
-                    <button
-                      type="button"
-                      className="p-1 rounded-full text-gray-400 
-                      hover:text-gray-600 focus:outline-none focus:ring-2 
-                      focus:ring-offset-2 focus:ring-offset-gray-800 
-                      focus:ring-white">
-                      <span className="sr-only">View notifications</span>
-                      <BellIcon className="h-6 w-6" aria-hidden="true" />
-                    </button>
-
                     {/* Profile dropdown */}
                     <Menu as="div" className="ml-3 relative">
                       <div>
@@ -162,6 +144,20 @@ const Navbar = function Navbar(): JSX.Element {
                               )}
                             </Menu.Item>
                           ))}
+                          <Menu.Item key="Sign out">
+                            {({ active }) => (
+                              <button
+                                type="button"
+                                className={ClassNamesLogic(
+                                  active ? 'bg-gray-100' : '',
+                                  ' block w-full px-4 py-2 text-sm' +
+                                    ' text-gray-700 text-left'
+                                )}
+                                onClick={disconnectAll}>
+                                Sign out
+                              </button>
+                            )}
+                          </Menu.Item>
                         </Menu.Items>
                       </Transition>
                     </Menu>
@@ -172,25 +168,8 @@ const Navbar = function Navbar(): JSX.Element {
           </div>
 
           {userPublicKey !== undefined && (
-            <Disclosure.Panel className="md:hidden">
-              <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                {navigation.map((item) => (
-                  <Disclosure.Button
-                    key={item.name}
-                    // bad practice To change
-                    className={ClassNamesLogic(
-                      item.current
-                        ? 'bg-gray-900 text-white block w-full '
-                        : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                      'text-left px-3 py-2 rounded-md text-base font-medium' +
-                        ' block w-full'
-                    )}
-                    aria-current={item.current ? 'page' : undefined}>
-                    <Link to={item.href}>{item.name}</Link>
-                  </Disclosure.Button>
-                ))}
-              </div>
-              <div className="pt-4 pb-3 border-t border-gray-700">
+            <Disclosure.Panel className="md:hidden bg-white">
+              <div className="pt-4 pb-3">
                 <div className="flex items-center px-5 sm:px-6">
                   <div className="flex-shrink-0">
                     <img
@@ -203,31 +182,39 @@ const Navbar = function Navbar(): JSX.Element {
                       alt=""
                     />
                   </div>
-                  <div className="ml-3">
-                    <div className="text-base font-medium text-white">
+                  <div className="ml-3 overflow-hidden truncate">
+                    <div
+                      className="text-base font-medium text-primary
+                     truncate">
                       {userName ?? userPublicKey}
                     </div>
                   </div>
-                  <button
-                    type="button"
-                    className="ml-auto flex-shrink-0 bg-gray-800 p-1 
-                    rounded-full text-gray-400 hover:text-white 
-                    focus:outline-none focus:ring-2 focus:ring-offset-2 
-                    focus:ring-offset-gray-800 focus:ring-white">
-                    <span className="sr-only">View notifications</span>
-                    <BellIcon className="h-6 w-6" aria-hidden="true" />
-                  </button>
                 </div>
                 <div className="mt-3 px-2 space-y-1 sm:px-3">
                   {userNavigation.map((item) => (
-                    <Disclosure.Button
-                      key={item.name}
-                      className="block w-full text-left px-3 py-2 
-                      rounded-md text-base font-medium text-gray-400 
+                    <Link to={item.href} className="w-full">
+                      <Disclosure.Button
+                        key={item.name}
+                        className="block w-full text-left px-3 py-2 
+                      rounded-md text-base font-medium text-primary 
                       hover:text-white hover:bg-gray-700">
-                      <Link to={item.href}>{item.name}</Link>
-                    </Disclosure.Button>
+                        {item.name}
+                      </Disclosure.Button>
+                    </Link>
                   ))}
+                  <Disclosure.Button
+                    key="Sign out"
+                    className="block w-full
+                      rounded-md text-primary 
+                      hover:text-white hover:bg-gray-700">
+                    <button
+                      type="button"
+                      className="w-full text-left 
+                      text-base font-medium px-3 py-2"
+                      onClick={disconnectAll}>
+                      Sign out
+                    </button>
+                  </Disclosure.Button>
                 </div>
               </div>
             </Disclosure.Panel>
