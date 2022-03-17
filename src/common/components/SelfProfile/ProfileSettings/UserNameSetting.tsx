@@ -113,35 +113,35 @@ export default function UserNameSetting({
   }
 
   return (
-    <div>
-      <button
-        type="button"
-        className="btn-filled"
-        onClick={() => setIsEditingUserName(false)}>
-        Back
-      </button>
+    <div className="mt-10 px-1">
       <form onSubmit={handleSubmit}>
-        <div>
-          <p>edit username between 4 and 20 characters</p>
+        <div className=" max-w-lg">
+          <p className="block text-sm font-medium text-color-primary px-1">
+            edit username between 4 and 20 characters
+          </p>
+          <div>
+            <input
+              type="text"
+              name="username"
+              id="username"
+              autoComplete="off"
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+              className="text-field-input rounded-xl"
+            />
+          </div>
         </div>
-        <div>
-          <input
-            type="text"
-            name="username"
-            id="username"
-            autoComplete="off"
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)}
-            className="text-field-input"
-          />
-        </div>
+
         <div>
           {loadingCheckUserName ? (
             <p>Loading</p>
           ) : (
             <button
               type="button"
-              className="btn-filled"
+              className="text-qwestive-purple 
+              hover:text-qwestive-purple-hover 
+              hover:underline
+              font-semibold px-1"
               onClick={() => {
                 checkUserNameValid(userName);
               }}>
@@ -149,23 +149,21 @@ export default function UserNameSetting({
             </button>
           )}
         </div>
-        <div>{availabilityMessage}</div>
-        <div>
-          <button
-            type="button"
-            className="btn-filled"
-            onClick={() => setIsEditingUserName(false)}>
-            Cancel
-          </button>
-        </div>
-        <div>
+        <div className="px-1">{availabilityMessage}</div>
+        <div className="flex gap-3 mt-8">
           {loadingSubmit ? (
             <p>loading...</p>
           ) : (
-            <button type="submit" className="btn-filled">
+            <button type="submit" className="btn-filled rounded-3xl w-28">
               Save
             </button>
           )}
+          <button
+            type="button"
+            className="btn-transparent bg-white rounded-3xl w-28 "
+            onClick={() => setIsEditingUserName(false)}>
+            Cancel
+          </button>
         </div>
       </form>
     </div>
