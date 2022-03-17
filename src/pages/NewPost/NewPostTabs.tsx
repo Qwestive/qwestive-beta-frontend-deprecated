@@ -5,6 +5,7 @@ import { CheckIcon, ChevronDownIcon } from '@heroicons/react/solid';
 import ClassNamesLogic from '../../common/components/Util/ClassNamesLogic';
 
 import ArticlePost from './Components/ArticlePost';
+import PollPost from './Components/PollPost';
 
 type TnewPostTabs = {
   cId: string;
@@ -139,7 +140,7 @@ export default function NewPostTabs({ cId }: TnewPostTabs): JSX.Element {
             <ArticlePost cId={cId} />
           </div>
           <div className={currentTab === 1 ? 'block' : 'hidden'}>
-            <p>Tab 1</p>
+            <PollPost cId={cId} />
           </div>
           <div className={currentTab === 2 ? 'block' : 'hidden'}>
             <p>Tab 2</p>

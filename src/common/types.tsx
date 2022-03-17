@@ -95,6 +95,8 @@ export interface Icategories {
   count: number;
 }
 
+/// The preview of a post that is submitted to the DB as a new post for a
+/// community.
 export interface IpostPreviewSubmission {
   postType: TpostType;
   accessTokenId: string;
@@ -111,16 +113,43 @@ export interface IpostPreviewSubmission {
   numberOfComments: number;
 }
 
-export interface IpostPreview extends IpostPreviewSubmission {
-  id: string;
-}
-
+/// An article that is submitted to the DB as a new post for a community.
 export interface IpostArticleSubmission extends IpostPreviewSubmission {
   content: string;
 }
 
+/// A poll that is submitted to the DB as a new post for a community.
+export interface IpostPollSubmission extends IpostPreviewSubmission {
+  content: string;
+  options: Array<IpollOption>;
+}
+
+/// A post preview that is retrieved from the DB. It differs from
+/// IpostPreviewSubmission in that it has an ID since it was already added
+/// to DB.
+export interface IpostPreview extends IpostPreviewSubmission {
+  id: string;
+}
+
+/// An article that is retrieved from the DB. It differs from
+/// IpostArticleSubmission in that it has an ID since it was already added
+/// to DB.
 export interface IpostArticle extends IpostPreview {
   content: string;
+}
+
+export interface IpollOption {
+  id: string;
+  name: string;
+  voteUserIds: Array<string>;
+}
+
+/// A post that is retrieved from the DB. It differs from
+/// IpostPollSubmission in that it has an ID since it was already added
+/// to DB.
+export interface IpostPoll extends IpostPreview {
+  content: string;
+  options: Array<IpollOption>;
 }
 
 export interface IpostData {
@@ -140,6 +169,7 @@ export interface IpostData {
   numberOfComments: number;
 }
 
+/// A comment that is submitted to the DB as a new comment for a post.
 export interface IpostCommentSubmission {
   postId: string;
   depth: number;
@@ -153,6 +183,9 @@ export interface IpostCommentSubmission {
   downVoteUserIds: Array<string>;
 }
 
+/// A comment that is submitted to the DB as a new comment for a post. It
+///  differs from IpostCommentSubmission in that it has an ID since it was
+/// already added to DB.
 export interface IpostComment extends IpostCommentSubmission {
   id: string;
 }

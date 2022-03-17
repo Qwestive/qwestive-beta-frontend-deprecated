@@ -59,6 +59,9 @@ code {
     focus:outline-none focus:ring-2 focus:ring-offset-2 
     focus:ring-qwestive-purple;
   }
+  .btn-link {
+    @apply text-blue-500 underline
+  }
   .text-field-input {
     @apply flex-1 block w-full rounded-none
     rounded-r-md sm:text-sm border-gray-300

@@ -1,5 +1,5 @@
 import { DocumentData } from 'firebase/firestore';
-import { IpostArticle } from '../../../types';
+import { IpostArticle, IpostPoll } from '../../../types';
 
 // Firestore data converter
 export const postConverter = {
@@ -22,11 +22,11 @@ export const postConverter = {
       numberOfComments: post.numberOfComments,
     };
   },
-  fromFirestore: (snapshot: DocumentData): IpostArticle => {
+  fromFirestore: (snapshot: DocumentData): IpostArticle | IpostPoll => {
     // Note, we don't simply return data because IpostData requires id field
     // which is missing from snapshot data.
     const data = snapshot.data();
-    return {
+    const post = {
       id: snapshot.id,
       postType: data.postType,
       accessTokenId: data.accessTokenId,
@@ -41,6 +41,13 @@ export const postConverter = {
       upVoteUserIds: data.upVoteUserIds,
       downVoteUserIds: data.downVoteUserIds,
       numberOfComments: data.numberOfComments,
-    } as IpostArticle;
+    };
+    if (data.postType === 'poll') {
+      return {
+        options: data.options,
+        ...post,
+      } as IpostPoll;
+    }
+    return post as IpostArticle;
   },
 };

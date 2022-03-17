@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import RichTextContainer from './components/RichTextContainer';
 import CommentSection from './components/CommentSection';
-import { IpostArticle } from '../../../common/types';
+import { IpostArticle, IpostPoll } from '../../../common/types';
 import PostActionsSection from './components/PostActionsSection';
 import { getPostInfo } from '../../../common/services/Firebase/GetData/PostUtils';
 import TipModalContainer from './components/TipModalContainer';
+import PollContainer from './components/PollContainer';
 
 /// Component which shows all of the information inside a post.
 ///
@@ -16,7 +17,9 @@ function PostDetailPage(): JSX.Element {
   const { postId } = useParams();
   const [postFailedToLoad, setPostFailedToLoad] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [postData, setPostData] = useState<IpostArticle | undefined>(undefined);
+  const [postData, setPostData] = useState<
+    IpostArticle | IpostPoll | undefined
+  >(undefined);
   const [isTipModalOpen, setIsTipModalOpen] = useState(false);
   const [tipReceiverPublicKey, setTipReceiverPublicKey] = useState<string>();
   const [tipReceiverUserName, setTipReceiverUserName] = useState<string>();
@@ -60,12 +63,23 @@ function PostDetailPage(): JSX.Element {
             tipReceiverPublicKey={tipReceiverPublicKey ?? ''}
             tipReceiverUserName={tipReceiverUserName ?? ''}
           />
-          <RichTextContainer
-            title={postData?.title}
-            author={postData?.authorPublicKey}
-            creationDate={postData?.creationDate}
-            contents={postData?.content}
-          />
+          {postData?.postType === 'poll' && (
+            <PollContainer
+              title={postData?.title}
+              author={postData?.authorPublicKey}
+              creationDate={postData?.creationDate}
+              contents={postData?.content}
+              options={(postData as IpostPoll)?.options}
+            />
+          )}
+          {postData?.postType === 'article' && (
+            <RichTextContainer
+              title={postData?.title}
+              author={postData?.authorPublicKey}
+              creationDate={postData?.creationDate}
+              contents={(postData as IpostArticle)?.content}
+            />
+          )}
           <PostActionsSection
             postId={postData?.id}
             upVotes={postData?.upVoteUserIds}
