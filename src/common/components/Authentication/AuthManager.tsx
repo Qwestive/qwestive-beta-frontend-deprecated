@@ -103,6 +103,8 @@ export default function AuthManager({
                   toast.error('Failed to update wallet holdings');
                   setUserTokensOwned(userDoc.data().tokensOwned);
                 }
+              } else {
+                setUserTokensOwned(tokensOwnedNow);
               }
               setUserFinishLoading(true);
             } else {
