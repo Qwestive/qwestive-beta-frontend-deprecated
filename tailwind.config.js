@@ -27,6 +27,9 @@ module.exports = {
       animation: {
         fadeIn: 'fadeIn 1.5s ease-in',
         fadeInSlide: 'fadeInSlide 1.5s ease-in',
+        bounce0: 'bounce 1s infinite 0ms',
+        bounce200: 'bounce 1s infinite 200ms',
+        bounce400: 'bounce 1s infinite 400ms',
       },
 
       // that is actual animation

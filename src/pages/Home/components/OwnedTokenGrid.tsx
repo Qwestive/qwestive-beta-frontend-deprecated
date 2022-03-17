@@ -25,6 +25,11 @@ export default function OwnedTokenGrid({
               <div
                 className="w-full flex items-center justify-between 
             p-6 space-x-6">
+                <img
+                  className="w-16 h-16 bg-gray-300 rounded-full flex-shrink-0"
+                  src={token.imageUrl}
+                  alt=""
+                />
                 <div className="flex-1 truncate">
                   <div className="flex items-center space-x-3">
                     <h3
@@ -51,11 +56,6 @@ export default function OwnedTokenGrid({
                     You have {token.amountHeld} {token.name}
                   </p>
                 </div>
-                <img
-                  className="w-16 h-16 bg-gray-300 rounded-full flex-shrink-0"
-                  src={token.imageUrl}
-                  alt=""
-                />
               </div>
             </li>
           </Link>

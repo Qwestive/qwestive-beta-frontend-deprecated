@@ -6,6 +6,7 @@ import OwnedTokenGrid from './OwnedTokenGrid';
 import { useTokenRegistry } from '../../../common/components/Solana/TokenRegistry';
 import GenerateTokenOwnedList from '../../../common/services/Solana/GetData/GenerateTokenOwnedList';
 import { userPublicKeyAtom } from '../../../recoil/userInfo';
+import LoadingDots from '../../../common/components/Util/LoadingDots';
 
 import { ItokenOwned } from '../../../common/types';
 
@@ -74,6 +75,7 @@ export default function CommunitiesTab(): JSX.Element {
               focus:placeholder-gray-400 focus:ring-2 focus:ring-gray-500 
               focus:border-gray-500 "
             placeholder="Search"
+            autoComplete="off"
             value={searchPredicate}
             onChange={(e) => updateTokenOwnedSearchResults(e)}
             type="search"
@@ -82,7 +84,16 @@ export default function CommunitiesTab(): JSX.Element {
       </div>
       {/* Token Grid  */}
       {loading ? (
-        <p>Loading...</p>
+        <div>
+          <div
+            className="text-primary gap-2 items-baseline 
+          flex justify-center mt-10">
+            <div className="text-center text-2xl font-semibold ">
+              Scanning your wallet
+            </div>
+            <LoadingDots classNameExtend="h-2 w-2" />
+          </div>
+        </div>
       ) : (
         <OwnedTokenGrid tokenOwnedList={tokenOwnedSearchedResults} />
       )}
