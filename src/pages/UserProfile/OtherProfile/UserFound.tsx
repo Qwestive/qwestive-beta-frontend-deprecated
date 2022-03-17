@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
 import { DocumentData } from 'firebase/firestore';
+
+import defaultUserProfileImage from '../../../assets/defaultUserProfileImage.png';
 
 /*
 TODO:
@@ -21,7 +22,7 @@ export default function UserFound({ userData }: DocumentData): JSX.Element {
         <div className="flex">
           <img
             className="h-24 w-24 rounded-full ring-4 ring-gray-100"
-            src={userData.profileImage ?? ''}
+            src={userData.profileImage ?? defaultUserProfileImage}
             alt=""
           />
         </div>
