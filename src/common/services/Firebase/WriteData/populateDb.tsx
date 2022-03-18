@@ -29,7 +29,6 @@ export interface IpostCommentWrapper {
 
 const ACCESS_TOKEN_ID = 'Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr';
 const AUTHORID = 'FRvXcz7BLbc8KMyuZ9F5kgMCwuF4DJzCQSsGHc6WBLzJ';
-// '3oabmiVFubrBn2hJoRcP8Ko2LvCGb2Z3vB58rgoBFgUV'
 
 const POST_PREVIEWS: Array<IpostPreviewWrapper> = [
   {
