@@ -40,12 +40,12 @@ export default function HomePageInternal(): JSX.Element {
           ))}
         </nav>
       </div>
-      <div className={ClassNamesLogic(currentTab !== 0 && 'hidden', '')}>
+      <div className={currentTab !== 0 ? 'hidden' : ''}>
         <TokenRegistryProvider>
           <CommunitiesTab />
         </TokenRegistryProvider>
       </div>
-      <div className={ClassNamesLogic(currentTab !== 1 && 'hidden', '')}>
+      <div className={currentTab !== 1 ? 'hidden' : ''}>
         <PostFeedTab />
       </div>
     </div>
