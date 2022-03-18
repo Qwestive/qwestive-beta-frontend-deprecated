@@ -4,7 +4,7 @@ import { useRecoilState } from 'recoil';
 import { doc, getDoc } from 'firebase/firestore';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { toast } from 'react-toastify';
-import { areMapsTheSame } from '../../functions/Util';
+import { areMapsTheSame, objectToMap } from '../../functions/Util';
 import ReadTokenWallet from '../../services/Solana/GetData/ReadTokenWallet';
 import UpdateTokenOwned from '../../services/Firebase/UpdateTokenOwned';
 import SigninWithWallet from '../../services/Firebase/Authentication/SigninWithWallet';
@@ -90,17 +90,22 @@ export default function AuthManager({
               setCoverImageAtom(userDoc.data().coverImage);
               setBio(userDoc.data().bio);
               setPersonalLink(userDoc.data().personalLink);
-              const tokensOwnedFetchedMap = new Map(
-                Object.entries(userDoc.data()?.tokensOwned ?? {})
+              const tokensOwnedFetchedMap = objectToMap(
+                userDoc.data()?.tokensOwned ?? {}
               );
+
               const tokensOwnedNow = await ReadTokenWallet(user.uid);
               if (!areMapsTheSame(tokensOwnedNow, tokensOwnedFetchedMap)) {
                 try {
                   const updateResult = await UpdateTokenOwned();
-                  setUserTokensOwned(updateResult.data.filteredAccountTokens);
+                  const newUpdate = objectToMap(
+                    updateResult.data?.filteredAccountTokens ?? {}
+                  );
+
+                  setUserTokensOwned(newUpdate);
                 } catch (error: any) {
                   toast.error('Failed to update wallet holdings');
-                  setUserTokensOwned(userDoc.data().tokensOwned);
+                  setUserTokensOwned(tokensOwnedFetchedMap);
                 }
               } else {
                 setUserTokensOwned(tokensOwnedNow);

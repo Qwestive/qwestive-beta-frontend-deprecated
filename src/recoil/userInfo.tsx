@@ -32,7 +32,7 @@ export const userCoverImageAtom = atom<string | undefined>({
 
 export const userTokensOwnedAtom = atom<Map<string, number>>({
   key: 'userTokensOwned',
-  default: new Map(),
+  default: new Map<string, number>(),
 });
 
 export const userBioAtom = atom<string | undefined>({
