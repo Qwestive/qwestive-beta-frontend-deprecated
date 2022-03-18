@@ -5,13 +5,20 @@ import { SearchIcon } from '@heroicons/react/solid';
 import OwnedTokenGrid from './OwnedTokenGrid';
 import { useTokenRegistry } from '../../../common/components/Solana/TokenRegistry';
 import GenerateTokenOwnedList from '../../../common/services/Solana/GetData/GenerateTokenOwnedList';
-import { userPublicKeyAtom } from '../../../recoil/userInfo';
+import { userFinishedLoadingAtom } from '../../../recoil/appState';
+import {
+  userPublicKeyAtom,
+  userTokensOwnedAtom,
+} from '../../../recoil/userInfo';
 import LoadingDots from '../../../common/components/Util/LoadingDots';
 
 import { ItokenOwnedCommunity } from '../../../common/types';
 
 export default function CommunitiesTab(): JSX.Element {
   const userPublicKey = useRecoilValue(userPublicKeyAtom);
+  const userFinishedLoading = useRecoilValue(userFinishedLoadingAtom);
+  const userTokensOwned = useRecoilValue(userTokensOwnedAtom);
+
   const tokenRegistry = useTokenRegistry();
   const [tokenOwnedList, setTokenOwnedList] = useState<ItokenOwnedCommunity[]>(
     []
@@ -20,7 +27,7 @@ export default function CommunitiesTab(): JSX.Element {
     ItokenOwnedCommunity[]
   >([]);
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [searchPredicate, setSearchPredicate] = useState('');
 
   function updateTokenOwnedSearchResults(event: ChangeEvent<HTMLInputElement>) {
@@ -41,7 +48,7 @@ export default function CommunitiesTab(): JSX.Element {
       try {
         const tokenList = await GenerateTokenOwnedList(
           tokenRegistry,
-          userPublicKey
+          userTokensOwned
         );
         setTokenOwnedList(tokenList);
         setTokenOwnedSearchedResults(tokenList);
@@ -54,10 +61,10 @@ export default function CommunitiesTab(): JSX.Element {
     setLoading(false);
   }
   useEffect(() => {
-    if (tokenRegistry.size !== 0) {
+    if (tokenRegistry.size !== 0 && userFinishedLoading) {
       generateTokenOwnedList();
     }
-  }, [tokenRegistry]);
+  }, [tokenRegistry, userFinishedLoading, userTokensOwned]);
 
   return (
     <div>
@@ -88,7 +95,7 @@ export default function CommunitiesTab(): JSX.Element {
       {loading ? (
         <div>
           <div
-            className="text-primary gap-2 items-baseline 
+            className="text-color-primary gap-2 items-baseline 
           flex justify-center mt-10">
             <div className="text-center text-2xl font-semibold ">
               Scanning your wallet

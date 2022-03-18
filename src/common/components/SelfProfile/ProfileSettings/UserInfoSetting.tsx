@@ -1,6 +1,5 @@
 import React, { SetStateAction, Dispatch } from 'react';
 import { useRecoilValue } from 'recoil';
-import { Link } from 'react-router-dom';
 
 import CoverImageSetting from './UserInfoSetting/CoverImageSetting';
 import ProfileImageSetting from './UserInfoSetting/ProfileImageSetting';
@@ -23,19 +22,16 @@ export default function UserInfoSetting({
 }: TsetUserNameEditing): JSX.Element {
   const userName = useRecoilValue(userNameAtom);
   return (
-    <div>
-      <button type="button" className="btn-filled">
-        <Link to={`/user/${userName}`}>Back</Link>
-      </button>
+    <div className="max-w-5xl">
       <CoverImageSetting />
       <ProfileImageSetting />
       <div className="mt-2 flex items-center gap-2">
         <p className="text-color-primary">@{userName}</p>
         <button
           type="button"
-          className="btn-filled"
+          className="btn-filled rounded-3xl"
           onClick={() => setIsEditingUserName(true)}>
-          Edit Username
+          Edit username
         </button>
       </div>
       <UserInfoForm />

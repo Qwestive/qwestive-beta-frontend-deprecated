@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 import SaveUserInfo from '../../../../services/Firebase/UserSettings/SaveUserInfo';
 import {
   userDisplayNameAtom,
   userBioAtom,
   userPersonalLinkAtom,
+  userNameAtom,
 } from '../../../../../recoil/userInfo';
 
 const DISPLAYNAMEMAXLENGTH = 50;
@@ -19,6 +21,7 @@ export default function UserInfoForm(): JSX.Element {
   const [personalLinkRecoil, setPersonalLinkRecoil] =
     useRecoilState(userPersonalLinkAtom);
 
+  const userName = useRecoilValue(userNameAtom);
   const [displayName, setDisplayName] = useState(
     displayNameRecoil !== undefined ? displayNameRecoil : ''
   );
@@ -58,8 +61,8 @@ export default function UserInfoForm(): JSX.Element {
       <div className="space-y-8 divide-y divide-gray-200">
         <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
           <div className="sm:col-span-4">
-            <p className="block text-sm font-medium text-color-primary">
-              Display Name
+            <p className="block text-sm font-medium text-color-primary px-1">
+              Display name
             </p>
             <div className="mt-1 ">
               <input
@@ -67,7 +70,7 @@ export default function UserInfoForm(): JSX.Element {
                 name="username"
                 id="displayname"
                 autoComplete="off"
-                className="text-field-input"
+                className="text-field-input rounded-xl"
                 maxLength={DISPLAYNAMEMAXLENGTH}
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
@@ -76,7 +79,7 @@ export default function UserInfoForm(): JSX.Element {
           </div>
 
           <div className="sm:col-span-6">
-            <p className="block text-sm font-medium text-color-primary">
+            <p className="block text-sm font-medium text-color-primary px-1">
               About
             </p>
             <div className="mt-1">
@@ -84,27 +87,27 @@ export default function UserInfoForm(): JSX.Element {
                 id="about"
                 name="about"
                 rows={3}
-                className="text-field-input"
+                className="text-field-input rounded-xl"
                 autoComplete="off"
                 maxLength={BIOMAXLENGTH}
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
+                placeholder="Write a few sentences about yourself."
               />
             </div>
-            <p className="mt-2 text-sm text-color-secondary">
-              Write a few sentences about yourself.
-            </p>
           </div>
 
           <div className="sm:col-span-6">
-            <p className="block text-sm font-medium text-color-primary">Link</p>
+            <p className="block text-sm font-medium text-color-primary px-1">
+              Link
+            </p>
             <div className="mt-1 ">
               <input
                 type="text"
                 name="link"
                 id="link"
                 autoComplete="off"
-                className="text-field-input"
+                className="text-field-input rounded-xl"
                 value={personalLink}
                 onChange={(e) => setPersonalLink(e.target.value)}
               />
@@ -113,10 +116,17 @@ export default function UserInfoForm(): JSX.Element {
         </div>
       </div>
 
-      <div className="pt-5 flex justify-end">
-        <button type="submit" className="btn-filled">
+      <div className="flex gap-3 mt-8">
+        <button type="submit" className="btn-filled rounded-3xl w-28">
           Save
         </button>
+        <Link to={`/user/${userName}`}>
+          <button
+            type="button"
+            className="btn-transparent bg-white rounded-3xl w-28 ">
+            Cancel
+          </button>
+        </Link>
       </div>
     </form>
   );

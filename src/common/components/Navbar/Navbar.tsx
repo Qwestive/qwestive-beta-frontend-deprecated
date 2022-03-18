@@ -195,7 +195,7 @@ const Navbar = function Navbar(): JSX.Element {
                       <Link to={item.href} key={item.name} className="w-full">
                         <Disclosure.Button
                           className="block w-full text-left px-3 py-2 
-                      rounded-md text-base font-medium text-primary 
+                      rounded-md text-base font-medium text-color-primary 
                       hover:text-white hover:bg-gray-700">
                           {item.name}
                         </Disclosure.Button>
@@ -206,7 +206,7 @@ const Navbar = function Navbar(): JSX.Element {
                       type="button"
                       key="Sign out"
                       className="block w-full
-                      rounded-md text-primary 
+                      rounded-md text-color-primary 
                       hover:text-white hover:bg-gray-700"
                       onClick={() => {
                         disconnectAll();
