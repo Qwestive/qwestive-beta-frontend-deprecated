@@ -91,7 +91,7 @@ export default function AuthManager({
               setBio(userDoc.data().bio);
               setPersonalLink(userDoc.data().personalLink);
               const tokensOwnedFetchedMap = new Map(
-                Object.entries(userDoc.data().tokensOwned)
+                Object.entries(userDoc.data()?.tokensOwned ?? {})
               );
               const tokensOwnedNow = await ReadTokenWallet(user.uid);
               if (!areMapsTheSame(tokensOwnedNow, tokensOwnedFetchedMap)) {
