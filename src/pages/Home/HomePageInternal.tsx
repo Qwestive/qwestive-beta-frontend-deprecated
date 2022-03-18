@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import ClassNamesLogic from '../../common/components/Util/ClassNamesLogic';
 import CommunitiesTab from './components/CommunitiesTab';
 import { TokenRegistryProvider } from '../../common/components/Solana/TokenRegistry';
+import PostFeedTab from './components/PostFeedTab';
 /*
 ToDo:
 Make two tabs
@@ -18,7 +19,7 @@ export default function HomePageInternal(): JSX.Element {
     { name: 'Feed', idx: 1 },
   ];
   return (
-    <div className="max-w-2xl mx-auto mt-8 px-1">
+    <div className="max-w-2xl mx-auto mt-8 px-1 mb-5">
       <div className="border-b border-gray-500">
         <nav className="flex justify-center" aria-label="Tabs">
           {tabs.map((tab) => (
@@ -39,10 +40,13 @@ export default function HomePageInternal(): JSX.Element {
           ))}
         </nav>
       </div>
-      <div className={ClassNamesLogic(currentTab !== 0 && 'hidden', '')}>
+      <div className={currentTab !== 0 ? 'hidden' : ''}>
         <TokenRegistryProvider>
           <CommunitiesTab />
         </TokenRegistryProvider>
+      </div>
+      <div className={currentTab !== 1 ? 'hidden' : ''}>
+        <PostFeedTab />
       </div>
     </div>
   );

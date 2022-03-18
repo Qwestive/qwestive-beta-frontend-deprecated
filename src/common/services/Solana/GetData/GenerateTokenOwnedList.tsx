@@ -13,6 +13,9 @@ export default async function GenerateTokenOwnedList(
   tokenOwned: Map<string, number>
 ): Promise<ItokenOwnedCommunity[]> {
   const tokenOwnedList = new Array<ItokenOwnedCommunity>();
+  if (tokenOwned.size === 0) {
+    return tokenOwnedList;
+  }
 
   const communityInfoPromises: Array<Promise<Icommunity | undefined>> = [];
   tokenOwned.forEach((amountHeld, mint) => {

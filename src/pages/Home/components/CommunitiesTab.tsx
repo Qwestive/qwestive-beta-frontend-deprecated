@@ -5,6 +5,7 @@ import { SearchIcon } from '@heroicons/react/solid';
 import OwnedTokenGrid from './OwnedTokenGrid';
 import { useTokenRegistry } from '../../../common/components/Solana/TokenRegistry';
 import GenerateTokenOwnedList from '../../../common/services/Solana/GetData/GenerateTokenOwnedList';
+import { userFinishedLoadingAtom } from '../../../recoil/appState';
 import {
   userPublicKeyAtom,
   userTokensOwnedAtom,
@@ -15,6 +16,7 @@ import { ItokenOwnedCommunity } from '../../../common/types';
 
 export default function CommunitiesTab(): JSX.Element {
   const userPublicKey = useRecoilValue(userPublicKeyAtom);
+  const userFinishedLoading = useRecoilValue(userFinishedLoadingAtom);
   const userTokensOwned = useRecoilValue(userTokensOwnedAtom);
 
   const tokenRegistry = useTokenRegistry();
@@ -25,7 +27,7 @@ export default function CommunitiesTab(): JSX.Element {
     ItokenOwnedCommunity[]
   >([]);
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [searchPredicate, setSearchPredicate] = useState('');
 
   function updateTokenOwnedSearchResults(event: ChangeEvent<HTMLInputElement>) {
@@ -59,10 +61,10 @@ export default function CommunitiesTab(): JSX.Element {
     setLoading(false);
   }
   useEffect(() => {
-    if (tokenRegistry.size !== 0) {
+    if (tokenRegistry.size !== 0 && userFinishedLoading) {
       generateTokenOwnedList();
     }
-  }, [tokenRegistry]);
+  }, [tokenRegistry, userFinishedLoading, userTokensOwned]);
 
   return (
     <div>
