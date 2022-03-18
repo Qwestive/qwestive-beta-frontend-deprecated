@@ -18,7 +18,8 @@ export default function PostFeedTab(): JSX.Element {
   async function getPostFeed() {
     setLoading(true);
     try {
-      const tokenOwnedSlice = Array.from(ownedTokens.keys()).slice(0, 10);
+      const tokenOwnedSlice = Object.keys(ownedTokens).slice(0, 10);
+      // Array.from(ownedTokens.keys()).slice(0, 10);
       const queryPosts = await queryPostFeed(tokenOwnedSlice);
       setPostList(queryPosts);
       /* eslint-disable-next-line @typescript-eslint/no-explicit-any */

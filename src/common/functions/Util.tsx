@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+
 export function areMapsTheSame(
   map1: Map<string, any>,
   map2: Map<string, any>
@@ -18,3 +20,12 @@ export function areMapsTheSame(
   });
   return areTheSame;
 }
+
+export const objectToMap = (obj: any): Map<string, number> => {
+  const keys = Object.keys(obj);
+  const map = new Map();
+  for (let i = 0; i < keys.length; i += 1) {
+    map.set(keys[i], obj[keys[i]]);
+  }
+  return map;
+};
