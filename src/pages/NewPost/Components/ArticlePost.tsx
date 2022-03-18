@@ -80,7 +80,7 @@ export default function ArticlePost({ cId }: TarticlePost): JSX.Element {
           authorProfileImageUrl: userProfileImage ?? '',
           title,
           creationDate: new Date().getTime(),
-          category: '',
+          category,
           upVoteUserIds: [],
           downVoteUserIds: [],
           numberOfComments: 0,
