@@ -67,7 +67,6 @@ export default function PostDisplayList({
                 <p className="text-sm">Posts</p>
                 <div className=" w-24 grid grid-cols-2 text-center">
                   <p className="text-sm">Replies</p>
-                  <p className="text-sm">Likes</p>
                 </div>
               </div>
               <div className="space-y-3">
