@@ -12,14 +12,12 @@ const TOKEN_PROGRAM_ID = new PublicKey(
   'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'
 );
 
-export default async function ReadTokenWallet(
+/// Builds a map of {token_mint_id: balance} for a each SPL token owned by
+/// provided public key.
+async function ReadSplTokenBalances(
+  connection: Connection,
   publickey: string
 ): Promise<Map<string, number>> {
-  const connection = new Connection(
-    clusterApiUrl(appConfig.SOLANA_NETWORK as Cluster),
-    appConfig.SOLANA_NETWORK_COMMITMENT as Commitment
-  );
-
   const accountTokens = await connection.getParsedProgramAccounts(
     TOKEN_PROGRAM_ID,
     {
@@ -42,10 +40,8 @@ export default async function ReadTokenWallet(
     const parsedAccountToken = accountTokens[i].account
       .data as ParsedAccountData;
     if (
-      parsedAccountToken.parsed !== undefined &&
-      parsedAccountToken.parsed.info.mint !== undefined &&
-      parsedAccountToken.parsed.info.tokenAmount.uiAmount !== undefined &&
-      parsedAccountToken.parsed.info.tokenAmount.uiAmount !== 0
+      parsedAccountToken.parsed?.info?.mint &&
+      (parsedAccountToken.parsed.info?.tokenAmount?.uiAmount ?? 0) !== 0
     )
       filteredAccountTokens.set(
         parsedAccountToken.parsed.info.mint,
@@ -53,4 +49,21 @@ export default async function ReadTokenWallet(
       );
   }
   return filteredAccountTokens;
+}
+
+/// Builds a map of {token_mint_id: balance} for a provided public key.
+export default async function ReadUserTokenBalances(
+  publicKey: string
+): Promise<Map<string, number>> {
+  const connection = new Connection(
+    clusterApiUrl(appConfig.SOLANA_NETWORK as Cluster),
+    appConfig.SOLANA_NETWORK_COMMITMENT as Commitment
+  );
+  // Fetch SOL balance
+  const solBalance = await connection.getBalance(new PublicKey(publicKey));
+
+  // Fetch SPL token balances
+  const tokenBalances = await ReadSplTokenBalances(connection, publicKey);
+
+  return tokenBalances.set('SOL', solBalance);
 }

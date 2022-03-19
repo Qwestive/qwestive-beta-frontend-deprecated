@@ -5,8 +5,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { toast } from 'react-toastify';
 import { areMapsTheSame, objectToMap } from '../../functions/Util';
-import ReadTokenWallet from '../../services/Solana/GetData/ReadTokenWallet';
-import UpdateTokenOwned from '../../services/Firebase/UpdateTokenOwned';
+import UpdateTokensOwned from '../../services/Firebase/UpdateTokensOwned';
 import SigninWithWallet from '../../services/Firebase/Authentication/SigninWithWallet';
 import SignoutWithWallet from '../../services/Firebase/Authentication/SignoutWithWallet';
 import {
@@ -26,6 +25,7 @@ import {
 } from '../../../recoil/userInfo';
 
 import { userFinishedLoadingAtom } from '../../../recoil/appState';
+import ReadUserTokenBalances from '../../services/Solana/GetData/ReadUserTokenBalances';
 
 /* 
 It is used as a component
@@ -60,7 +60,7 @@ export default function AuthManager({
           signMessage,
         });
       } catch (error: any) {
-        toast.error(`Couldn't Signin: ${error?.message}`);
+        toast.error(`Couldn't sign in: ${error?.message}`);
       }
     }
   }
@@ -90,22 +90,21 @@ export default function AuthManager({
               setCoverImageAtom(userDoc.data().coverImage);
               setBio(userDoc.data().bio);
               setPersonalLink(userDoc.data().personalLink);
-              const tokensOwnedFetchedMap = objectToMap(
+
+              const tokensOwnedFetched = objectToMap(
                 userDoc.data()?.tokensOwned ?? {}
               );
+              const tokensOwnedNow = await ReadUserTokenBalances(user.uid);
 
-              const tokensOwnedNow = await ReadTokenWallet(user.uid);
-              if (!areMapsTheSame(tokensOwnedNow, tokensOwnedFetchedMap)) {
+              if (!areMapsTheSame(tokensOwnedNow, tokensOwnedFetched)) {
                 try {
-                  const updateResult = await UpdateTokenOwned();
-                  const newUpdate = objectToMap(
-                    updateResult.data?.filteredAccountTokens ?? {}
+                  const updatedTokensOwned = await UpdateTokensOwned();
+                  setUserTokensOwned(
+                    objectToMap(updatedTokensOwned?.data?.tokensOwned ?? {})
                   );
-
-                  setUserTokensOwned(newUpdate);
-                } catch (error: any) {
+                } catch (error) {
                   toast.error('Failed to update wallet holdings');
-                  setUserTokensOwned(tokensOwnedFetchedMap);
+                  setUserTokensOwned(tokensOwnedFetched);
                 }
               } else {
                 setUserTokensOwned(tokensOwnedNow);

@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
-import { TokenInfo } from '@solana/spl-token-registry';
 
 import ClassNamesLogic from '../../../common/components/Util/ClassNamesLogic';
-import { Icategory } from '../../../common/types';
+import { Icategory, IcommunityTokenInfo } from '../../../common/types';
 
 import defaultUserProfileImage from '../../../assets/defaultUserProfileImage.png';
 
 type TcategoriesLarge = {
-  tokenInfo: TokenInfo | undefined;
+  communityTokenInfo: IcommunityTokenInfo | undefined;
   categoryList: Array<Icategory> | undefined;
   setCurrentCategory: React.Dispatch<React.SetStateAction<string>>;
   currentCategory: string;
 };
 export default function CategoriesLarge({
-  tokenInfo,
+  communityTokenInfo,
   categoryList,
   setCurrentCategory,
   currentCategory,
@@ -29,12 +28,12 @@ export default function CategoriesLarge({
       <div>
         <div className="flex items-center py-2 gap-2 justify-left">
           <img
-            src={tokenInfo?.logoURI ?? defaultUserProfileImage}
+            src={communityTokenInfo?.logoUrl ?? defaultUserProfileImage}
             className="h-12"
             alt="tokenImage"
           />
           <p className="text-color-primary text-xl font-extrabold truncate">
-            {tokenInfo?.name ?? 'Unknown'}
+            {communityTokenInfo?.name ?? 'Unknown'}
           </p>
         </div>
       </div>

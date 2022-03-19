@@ -1,32 +1,32 @@
 import React from 'react';
 import { PlusIcon } from '@heroicons/react/solid';
-import { TokenInfo } from '@solana/spl-token-registry';
 import { Link } from 'react-router-dom';
+import { IcommunityTokenInfo } from '../../common/types';
 
 import defaultUserProfileImage from '../../assets/defaultUserProfileImage.png';
 
 type TnewCommunityPage = {
   cId: string;
-  tokenInfo: TokenInfo | undefined;
+  communityTokenInfo: IcommunityTokenInfo | undefined;
 };
 
 export default function NewCommunityPage({
   cId,
-  tokenInfo,
+  communityTokenInfo,
 }: TnewCommunityPage): JSX.Element {
   return (
     <div className="mt-10">
       <div className="flex justify-center">
         <div className="py-2 gap-2 text-center">
           <img
-            src={tokenInfo?.logoURI ?? defaultUserProfileImage}
+            src={communityTokenInfo?.logoUrl ?? defaultUserProfileImage}
             className="h-24 mx-auto"
             alt="tokenImage"
           />
           <p
             className="text-color-primary  text-center 
           text-xl font-extrabold truncate mt-2">
-            {tokenInfo?.name ?? 'Unknown'}
+            {communityTokenInfo?.name ?? 'Unknown'}
           </p>
           <p
             className="text-color-secondary  text-center 
