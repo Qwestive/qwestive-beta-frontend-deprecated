@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { TokenInfo } from '@solana/spl-token-registry';
 import { toast } from 'react-toastify';
 
 import { queryPostPreviews } from '../../common/services/Firebase/GetData/PostUtils';
 import CategoriesLarge from './components/CategoriesLarge';
 import CategoriesSmall from './components/CategoriesSmall';
 import PostDisplayList from './Feed/PostDisplayList';
-import { Icommunity, IpostPreview, TpostSorting } from '../../common/types';
+import {
+  Icommunity,
+  IpostPreview,
+  TpostSorting,
+  IcommunityTokenInfo,
+} from '../../common/types';
 
 type TmemberCommunityPage = {
   communityInfo: Icommunity | undefined;
-  tokenInfo: TokenInfo | undefined;
+  communityTokenInfo: IcommunityTokenInfo | undefined;
 };
 
 export default function MemberCommunityPage({
   communityInfo,
-  tokenInfo,
+  communityTokenInfo,
 }: TmemberCommunityPage): JSX.Element {
   const [postList, setPostList] = useState<Array<IpostPreview> | undefined>();
 
@@ -53,7 +57,7 @@ export default function MemberCommunityPage({
     <div>
       <div className="items-center w-full block md:hidden">
         <CategoriesSmall
-          tokenInfo={tokenInfo}
+          communityTokenInfo={communityTokenInfo}
           categoryList={communityInfo?.categories}
           setCurrentCategory={setCurrentCategory}
           currentCategory={currentCategory}
@@ -62,7 +66,7 @@ export default function MemberCommunityPage({
       <div className="flex mx-auto gap-5 mt-2 mb-2 ">
         <div className="items-center w-56 hidden md:block">
           <CategoriesLarge
-            tokenInfo={tokenInfo}
+            communityTokenInfo={communityTokenInfo}
             categoryList={communityInfo?.categories}
             setCurrentCategory={setCurrentCategory}
             currentCategory={currentCategory}

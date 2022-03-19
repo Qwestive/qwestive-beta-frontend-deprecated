@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { TokenInfo } from '@solana/spl-token-registry';
 
 import NonMemberCommunityPage from './NonMemberCommunityPage';
 import NewCommunityPage from './NewCommunityPage';
 import MemberCommunityPage from './MemberCommunityPage';
-import { Icommunity } from '../../common/types';
+import { Icommunity, IcommunityTokenInfo } from '../../common/types';
 import { useTokenRegistry } from '../../common/components/Solana/TokenRegistry';
 import { getCommunityInfo } from '../../common/services/Firebase/GetData/CommunityUtil';
+import solanaLogo from '../../assets/solanaLogo.svg';
 
 /*
 TODO: check credentials
 */
-
 export default function CommunityPage(): JSX.Element {
   const { cId } = useParams<'cId'>();
   const tokenRegistry = useTokenRegistry();
@@ -21,8 +20,28 @@ export default function CommunityPage(): JSX.Element {
   const [hasAccess, setHasAccess] = useState(false);
   const [loadingPage, setLoadingPage] = useState(true);
   const [communityInfo, setCommunityInfo] = useState<Icommunity | undefined>();
-  const [tokenInfo, setTokenInfo] = useState<TokenInfo | undefined>();
+  const [communityTokenInfo, setCommunityTokenInfo] = useState<
+    IcommunityTokenInfo | undefined
+  >();
   const [tokenRegistryHasLoaded, setTokenRegistryHasLoaded] = useState(false);
+
+  function getCommunityTokenInfo(tokenId: string) {
+    if (tokenId === 'SOL') {
+      return {
+        name: 'Solana',
+        symbol: 'SOL',
+        logoUrl: solanaLogo,
+        address: '',
+      };
+    }
+    const tokenInfo = tokenRegistry.get(tokenId);
+    return {
+      name: tokenInfo?.name,
+      symbol: tokenInfo?.symbol,
+      logoUrl: tokenInfo?.logoURI,
+      address: tokenInfo?.address,
+    };
+  }
 
   async function handleLoadPage() {
     setLoadingPage(true);
@@ -30,7 +49,8 @@ export default function CommunityPage(): JSX.Element {
       try {
         // TODO: check credentials.
         setHasAccess(true);
-        setTokenInfo(tokenRegistry.get(cId));
+
+        setCommunityTokenInfo(getCommunityTokenInfo(cId));
 
         setCommunityInfo(await getCommunityInfo(cId));
 
@@ -59,7 +79,7 @@ export default function CommunityPage(): JSX.Element {
     <div className="max-w-5xl mx-auto px-2">
       {loadingPage && <p>Loading ...</p>}
       {!loadingPage && !hasAccess && (
-        <NonMemberCommunityPage tokenInfo={tokenInfo} />
+        <NonMemberCommunityPage communityTokenInfo={communityTokenInfo} />
       )}
       {!loadingPage &&
         hasAccess &&
@@ -67,14 +87,14 @@ export default function CommunityPage(): JSX.Element {
         communityInfo !== undefined && (
           <MemberCommunityPage
             communityInfo={communityInfo}
-            tokenInfo={tokenInfo}
+            communityTokenInfo={communityTokenInfo}
           />
         )}
       {!loadingPage &&
         hasAccess &&
         cId !== undefined &&
         communityInfo === undefined && (
-          <NewCommunityPage cId={cId} tokenInfo={tokenInfo} />
+          <NewCommunityPage cId={cId} communityTokenInfo={communityTokenInfo} />
         )}
     </div>
   );

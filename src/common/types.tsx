@@ -15,6 +15,13 @@ export interface Icommunity {
   categories: Icategory[];
 }
 
+export interface IcommunityTokenInfo {
+  name: string | undefined;
+  symbol: string | undefined;
+  logoUrl: string | undefined;
+  address: string | undefined;
+}
+
 export interface ItokenOwnedCommunity {
   mint: string;
   amountHeld: number;
