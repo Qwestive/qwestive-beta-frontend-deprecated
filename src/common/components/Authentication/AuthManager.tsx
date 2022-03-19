@@ -4,7 +4,7 @@ import { useRecoilState } from 'recoil';
 import { doc, getDoc } from 'firebase/firestore';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { toast } from 'react-toastify';
-import { objectToMap } from '../../functions/Util';
+import { areMapsTheSame, objectToMap } from '../../functions/Util';
 import UpdateTokensOwned from '../../services/Firebase/UpdateTokensOwned';
 import SigninWithWallet from '../../services/Firebase/Authentication/SigninWithWallet';
 import SignoutWithWallet from '../../services/Firebase/Authentication/SignoutWithWallet';
@@ -25,6 +25,7 @@ import {
 } from '../../../recoil/userInfo';
 
 import { userFinishedLoadingAtom } from '../../../recoil/appState';
+import ReadUserTokenBalances from '../../services/Solana/GetData/ReadUserTokenBalances';
 
 /* 
 It is used as a component
@@ -90,44 +91,25 @@ export default function AuthManager({
               setBio(userDoc.data().bio);
               setPersonalLink(userDoc.data().personalLink);
 
-              /// Try fetching most up to date token balance from server, and,
-              /// if this fails, fetch most recent token balance from DB.
-              try {
-                const tokensOwned = await UpdateTokensOwned();
-                setUserTokensOwned(
-                  objectToMap(tokensOwned?.data?.tokensOwned ?? {})
-                );
-              } catch (error) {
-                setUserTokensOwned(
-                  objectToMap(userDoc.data()?.tokensOwned ?? {})
-                );
+              const tokensOwnedFetched = objectToMap(
+                userDoc.data()?.tokensOwned ?? {}
+              );
+              const tokensOwnedNow = await ReadUserTokenBalances(user.uid);
+
+              if (!areMapsTheSame(tokensOwnedNow, tokensOwnedFetched)) {
+                try {
+                  const updatedTokensOwned = await UpdateTokensOwned();
+                  setUserTokensOwned(
+                    objectToMap(updatedTokensOwned?.data?.tokensOwned ?? {})
+                  );
+                } catch (error) {
+                  toast.error('Failed to update wallet holdings');
+                  setUserTokensOwned(tokensOwnedFetched);
+                }
+              } else {
+                setUserTokensOwned(tokensOwnedNow);
               }
               setUserFinishLoading(true);
-              // console.log('DB tokens owned are:');
-              // console.log(tokensOwnedFetchedMap);
-
-              // const tokensOwnedNow = await ReadUserTokenBalances(user.uid);
-              // console.log('Wallet tokens owned are:');
-              // console.log(tokensOwnedNow);
-              // if (!areMapsTheSame(tokensOwnedNow, tokensOwnedFetchedMap)) {
-              //   console.log('Maps are not the same');
-              //   try {
-              //     const updateResult = await UpdateTokensOwned();
-              //     const newUpdate = objectToMap(
-              //       updateResult.data?.filteredAccountTokens ?? {}
-              //     );
-              //     console.log('Updated tokens owned are');
-              //     console.log(updateResult.data?.filteredAccountTokens);
-
-              //     setUserTokensOwned(newUpdate);
-              //   } catch (error) {
-              //     toast.error('Failed to update wallet holdings');
-              //     setUserTokensOwned(tokensOwnedFetchedMap);
-              //   }
-              // } else {
-              //   setUserTokensOwned(tokensOwnedNow);
-              // }
-              // setUserFinishLoading(true);
             } else {
               throw new Error('User information not found');
             }
