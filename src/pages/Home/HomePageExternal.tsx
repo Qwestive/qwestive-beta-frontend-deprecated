@@ -6,6 +6,7 @@ import discordLogo from '../../assets/discordLogo.svg';
 import discussionCardImage from '../../assets/discussionCardImage.svg';
 import pollCardImage from '../../assets/pollCardImage.svg';
 import bountyCardImage from '../../assets/bountyCardImage.svg';
+import tipCardImage from '../../assets/tipCardImage.svg';
 import CommunityCarousel from './components/CommunityCarousel';
 import WalletButton from '../../common/components/Solana/SolanaWallet/WalletButton';
 import FeatureCard from './components/FeatureCard';
@@ -217,7 +218,7 @@ function HomePageExternal(): JSX.Element {
           title="Giveaways, Tips, and more!"
           contents="Communities are empowered with simple, blockchain-enabled
           tools to exchange value among members!"
-          imgUrl={bountyCardImage}
+          imgUrl={tipCardImage}
         />
       </div>
       {appConfig.LANDING_PAGE_SIGN_IN_ENABLED && (
