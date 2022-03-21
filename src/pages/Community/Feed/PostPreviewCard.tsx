@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { timeSince } from '../../../common/functions/TimeFunctions';
-import { IpostPreview } from '../../../common/types';
+import { timeSince } from '../../../functions/TimeFunctions';
+import { IpostPreview } from '../../../types/types';
 import PostVoteButtons from './PostVoteButtons';
 
 type TpostPreviewCard = {

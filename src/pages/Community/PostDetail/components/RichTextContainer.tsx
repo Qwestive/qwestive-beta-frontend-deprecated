@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import CKeditorReader from '../../../../common/components/Posts/CKeditor/CKeditorReader';
+import CKeditorReader from '../../../../components/Posts/CKeditor/CKeditorReader';
 import defaultUserProfileImage from '../../../../assets/defaultUserProfileImage.png';
 
 type PostContents = {

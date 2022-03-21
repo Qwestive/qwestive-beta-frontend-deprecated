@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
-import ClassNamesLogic from '../../common/components/Util/ClassNamesLogic';
+import ClassNamesLogic from '../../components/Util/ClassNamesLogic';
 import CommunitiesTab from './components/CommunitiesTab';
-import { TokenRegistryProvider } from '../../common/components/Solana/TokenRegistry';
+import { TokenRegistryProvider } from '../../components/Solana/TokenRegistry';
 import PostFeedTab from './components/PostFeedTab';
 /*
 ToDo:

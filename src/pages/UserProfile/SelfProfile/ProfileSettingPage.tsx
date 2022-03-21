@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-import UserInfoSetting from '../../../common/components/SelfProfile/ProfileSettings/UserInfoSetting';
-import UserNameSetting from '../../../common/components/SelfProfile/ProfileSettings/UserNameSetting';
+import UserInfoSetting from '../../../components/SelfProfile/ProfileSettings/UserInfoSetting';
+import UserNameSetting from '../../../components/SelfProfile/ProfileSettings/UserNameSetting';
 
 export default function ProfileSettingPage(): JSX.Element {
   // Username seperated because user should

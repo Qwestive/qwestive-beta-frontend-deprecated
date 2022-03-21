@@ -4,9 +4,9 @@ import { toast } from 'react-toastify';
 import {
   UpVotePost,
   DownVotePost,
-} from '../../../common/services/Firebase/WriteData/WriteVote';
-import { userIdAtom } from '../../../recoil/userInfo';
-import ClassNamesLogic from '../../../common/components/Util/ClassNamesLogic';
+} from '../../../services/Firebase/WriteData/WriteVote';
+import { userIdAtom } from '../../../services/recoil/userInfo';
+import ClassNamesLogic from '../../../components/Util/ClassNamesLogic';
 
 type TpostVoteButtons = {
   postId: string | undefined;

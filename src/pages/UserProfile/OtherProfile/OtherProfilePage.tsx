@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { DocumentData } from 'firebase/firestore';
 
-import { getUserInfosByUserName } from '../../../common/services/Firebase/GetData/UserUtils';
+import { getUserInfosByUserName } from '../../../services/Firebase/GetData/UserUtils';
 import LoadingProfile from './LoadingProfile';
 import UserFound from './UserFound';
 import UserNotFound from './UserNotFound';

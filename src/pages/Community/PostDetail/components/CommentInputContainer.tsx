@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { toast } from 'react-toastify';
-import { IpostCommentSubmission } from '../../../../common/types';
+import { IpostCommentSubmission } from '../../../../types/types';
 import {
   userIdAtom,
   userNameAtom,
   userProfileImageAtom,
   userPublicKeyAtom,
-} from '../../../../recoil/userInfo';
+} from '../../../../services/recoil/userInfo';
 
 type TcommentInputContainer = {
   postId: string | undefined;

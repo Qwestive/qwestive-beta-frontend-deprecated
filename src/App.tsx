@@ -3,10 +3,10 @@ import { BrowserRouter, Routes, Navigate, Route } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import { ToastContainer } from 'react-toastify';
 
-import WalletProviders from './common/components/Solana/SolanaWallet/WalletProviders';
-import AuthManager from './common/components/Authentication/AuthManager';
-import OnlyAuthRoute from './common/components/Authentication/OnlyAuthRoute';
-import Navbar from './common/components/Navbar/Navbar';
+import WalletProviders from './components/Solana/SolanaWallet/WalletProviders';
+import AuthManager from './components/Authentication/AuthManager';
+import OnlyAuthRoute from './components/Authentication/OnlyAuthRoute';
+import Navbar from './components/Navbar/Navbar';
 
 import HomePage from './pages/Home/HomePage';
 import UserProfilePage from './pages/UserProfile/UserProfilePage';
@@ -17,7 +17,7 @@ import PostDetailPage from './pages/Community/PostDetail/PostDetailPage';
 import NewPostPage from './pages/NewPost/NewPostPage';
 
 import 'react-toastify/dist/ReactToastify.css';
-import { TokenRegistryProvider } from './common/components/Solana/TokenRegistry';
+import { TokenRegistryProvider } from './components/Solana/TokenRegistry';
 
 function App(): JSX.Element {
   return (

@@ -3,18 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useRecoilValue } from 'recoil';
 
-import WritePost from '../../../common/services/Firebase/WriteData/WritePost';
+import WritePost from '../../../services/Firebase/WriteData/WritePost';
 import {
   userPublicKeyAtom,
   userProfileImageAtom,
   userNameAtom,
-} from '../../../recoil/userInfo';
+} from '../../../services/recoil/userInfo';
 import {
   IpostPreviewSubmission,
   IpostPollSubmission,
   POLL_TYPE,
-} from '../../../common/types';
-import CKeditorMaker from '../../../common/components/Posts/CKeditor/CKeditorMaker';
+} from '../../../types/types';
+import CKeditorMaker from '../../../components/Posts/CKeditor/CKeditorMaker';
 import PostTitleSection from './PostTitleSection';
 import PostPermissionsSection from './PostPermissionsSection';
 import PostCategorySection from './PostCategorySection';

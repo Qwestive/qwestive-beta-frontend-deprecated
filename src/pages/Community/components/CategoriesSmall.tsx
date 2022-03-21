@@ -2,8 +2,8 @@ import React, { Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/solid';
 
-import ClassNamesLogic from '../../../common/components/Util/ClassNamesLogic';
-import { Icategory, IcommunityTokenInfo } from '../../../common/types';
+import ClassNamesLogic from '../../../components/Util/ClassNamesLogic';
+import { Icategory, IcommunityTokenInfo } from '../../../types/types';
 
 import defaultUserProfileImage from '../../../assets/defaultUserProfileImage.png';
 

@@ -8,7 +8,7 @@ import pollCardImage from '../../assets/pollCardImage.svg';
 import bountyCardImage from '../../assets/bountyCardImage.svg';
 import tipCardImage from '../../assets/tipCardImage.svg';
 import CommunityCarousel from './components/CommunityCarousel';
-import WalletButton from '../../common/components/Solana/SolanaWallet/WalletButton';
+import WalletButton from '../../components/Solana/SolanaWallet/WalletButton';
 import FeatureCard from './components/FeatureCard';
 import appConfig from '../../config.js';
 

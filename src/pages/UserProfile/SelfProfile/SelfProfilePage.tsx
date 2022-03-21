@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { toast } from 'react-toastify';
-import SignoutWithWallet from '../../../common/services/Firebase/Authentication/SignoutWithWallet';
+import SignoutWithWallet from '../../../services/Firebase/Authentication/SignoutWithWallet';
 import {
   userPublicKeyAtom,
   userNameAtom,
   userDisplayNameAtom,
   userProfileImageAtom,
   userCoverImageAtom,
-} from '../../../recoil/userInfo';
+} from '../../../services/recoil/userInfo';
 
 /*
 TODO:

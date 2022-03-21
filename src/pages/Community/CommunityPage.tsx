@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+import { Icommunity, IcommunityTokenInfo } from 'types/types';
 import NonMemberCommunityPage from './NonMemberCommunityPage';
 import NewCommunityPage from './NewCommunityPage';
 import MemberCommunityPage from './MemberCommunityPage';
-import { Icommunity, IcommunityTokenInfo } from '../../common/types';
-import { useTokenRegistry } from '../../common/components/Solana/TokenRegistry';
-import { getCommunityInfo } from '../../common/services/Firebase/GetData/CommunityUtil';
+import { useTokenRegistry } from '../../components/Solana/TokenRegistry';
+import { getCommunityInfo } from '../../services/Firebase/GetData/CommunityUtil';
 import solanaLogo from '../../assets/solanaLogo.svg';
 
 /*

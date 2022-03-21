@@ -2,7 +2,7 @@ import React, { Fragment, useState } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronDownIcon } from '@heroicons/react/solid';
 
-import ClassNamesLogic from '../../common/components/Util/ClassNamesLogic';
+import ClassNamesLogic from '../../components/Util/ClassNamesLogic';
 
 import ArticlePost from './Components/ArticlePost';
 import PollPost from './Components/PollPost';

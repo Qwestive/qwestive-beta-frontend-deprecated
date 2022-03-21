@@ -2,7 +2,7 @@ import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { useParams } from 'react-router-dom';
 
-import { userNameAtom } from '../../recoil/userInfo';
+import { userNameAtom } from '../../services/recoil/userInfo';
 import SelfProfilePage from './SelfProfile/SelfProfilePage';
 import OtherProfilePage from './OtherProfile/OtherProfilePage';
 
