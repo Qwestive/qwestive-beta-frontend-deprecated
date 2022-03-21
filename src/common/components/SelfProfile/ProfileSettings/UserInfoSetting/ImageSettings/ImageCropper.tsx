@@ -2,10 +2,8 @@ import React, { useState, useCallback, useEffect } from 'react';
 import Cropper from 'react-easy-crop';
 import { Point, Area } from 'react-easy-crop/types';
 import { toast } from 'react-toastify';
-
-import { IimageCropper } from '../../../../../types';
-
-import CreateCroppedImage from '../../../../../functions/ImageProcessing/CreateCroppedImage';
+import CreateCroppedImage from 'common/functions/ImageProcessing/CreateCroppedImage';
+import { IimageCropper } from 'common/types';
 
 /**
  * @param cropperLgWidth -Width of the cropper when the screen is larger than sm

@@ -2,17 +2,13 @@ import React, { useState, useEffect, ChangeEvent } from 'react';
 import { useRecoilValue } from 'recoil';
 import { toast } from 'react-toastify';
 import { SearchIcon } from '@heroicons/react/solid';
+import { useTokenRegistry } from 'common/components/Solana/TokenRegistry';
+import GenerateTokenOwnedList from 'common/services/Solana/GetData/GenerateTokenOwnedList';
+import LoadingDots from 'common/components/Util/LoadingDots';
+import { ItokenOwnedCommunity } from 'common/types';
+import { userFinishedLoadingAtom } from 'recoil/appState';
+import { userPublicKeyAtom, userTokensOwnedAtom } from 'recoil/userInfo';
 import OwnedTokenGrid from './OwnedTokenGrid';
-import { useTokenRegistry } from '../../../common/components/Solana/TokenRegistry';
-import GenerateTokenOwnedList from '../../../common/services/Solana/GetData/GenerateTokenOwnedList';
-import { userFinishedLoadingAtom } from '../../../recoil/appState';
-import {
-  userPublicKeyAtom,
-  userTokensOwnedAtom,
-} from '../../../recoil/userInfo';
-import LoadingDots from '../../../common/components/Util/LoadingDots';
-
-import { ItokenOwnedCommunity } from '../../../common/types';
 
 export default function CommunitiesTab(): JSX.Element {
   const userPublicKey = useRecoilValue(userPublicKeyAtom);

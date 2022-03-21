@@ -1,5 +1,5 @@
 import React from 'react';
-import defaultUserProfileImage from '../../../assets/defaultUserProfileImage.png';
+import defaultUserProfileImage from 'assets/defaultUserProfileImage.png';
 
 function CommunityCarousel(): JSX.Element {
   const communities = [1, 2, 3, 4];

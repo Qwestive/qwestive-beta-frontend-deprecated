@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
 
-import { IimageEditingModal } from '../../../../../types';
+import { IimageEditingModal } from 'common/types';
 
 export default function ImageCropperModal({
   open,

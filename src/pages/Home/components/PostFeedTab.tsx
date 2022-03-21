@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useRecoilValue } from 'recoil';
 
+import { IpostPreview } from 'common/types';
+import { userTokensOwnedAtom } from 'recoil/userInfo';
+import { userFinishedLoadingAtom } from 'recoil/appState';
+import { queryPostFeed } from 'common/services/Firebase/GetData/PostUtils';
+import LoadingDots from 'common/components/Util/LoadingDots';
 import PostPreviewCard from '../../Community/Feed/PostPreviewCard';
-import { IpostPreview } from '../../../common/types';
-import { userTokensOwnedAtom } from '../../../recoil/userInfo';
-import { userFinishedLoadingAtom } from '../../../recoil/appState';
-import { queryPostFeed } from '../../../common/services/Firebase/GetData/PostUtils';
-import LoadingDots from '../../../common/components/Util/LoadingDots';
 
 export default function PostFeedTab(): JSX.Element {
   const ownedTokens = useRecoilValue(userTokensOwnedAtom);

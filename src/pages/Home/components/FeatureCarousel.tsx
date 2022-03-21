@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import featureImage from '../../../assets/featureImage.svg';
+import featureImage from 'assets/featureImage.svg';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
