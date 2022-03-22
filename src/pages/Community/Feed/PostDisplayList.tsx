@@ -3,8 +3,8 @@ import { PlusIcon } from '@heroicons/react/solid';
 
 import { Link } from 'react-router-dom';
 import PostPreviewCard from './PostPreviewCard';
-import ClassNamesLogic from '../../../common/components/Util/ClassNamesLogic';
-import { Icommunity, IpostPreview, TpostSorting } from '../../../common/types';
+import ClassNamesLogic from '../../../components/Util/ClassNamesLogic';
+import { Icommunity, IpostPreview, TpostSorting } from '../../../types/types';
 
 type TpostDisplayList = {
   currentPostSorting: TpostSorting;

@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import { toast } from 'react-toastify';
-import { IpostComment, IpostCommentSubmission } from '../../../../common/types';
+import { IpostComment, IpostCommentSubmission } from '../../../../types/types';
 import CommentInputContainer from './CommentInputContainer';
-import WriteComment from '../../../../common/services/Firebase/WriteData/WriteComment';
-import { userIdAtom } from '../../../../recoil/userInfo';
+import WriteComment from '../../../../services/Firebase/WriteData/WriteComment';
+import { userIdAtom } from '../../../../services/recoil/userInfo';
 import {
   UpVoteComment,
   DownVoteComment,
-} from '../../../../common/services/Firebase/WriteData/WriteCommentVote';
-import ClassNamesLogic from '../../../../common/components/Util/ClassNamesLogic';
+} from '../../../../services/Firebase/WriteData/WriteCommentVote';
+import ClassNamesLogic from '../../../../components/Util/ClassNamesLogic';
 
 type Comment = {
   comment: IpostComment;

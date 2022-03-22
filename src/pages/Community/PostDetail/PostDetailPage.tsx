@@ -8,9 +8,9 @@ import {
   IpostPoll,
   ARTICLE_TYPE,
   POLL_TYPE,
-} from '../../../common/types';
+} from '../../../types/types';
 import PostActionsSection from './components/PostActionsSection';
-import { getPostInfo } from '../../../common/services/Firebase/GetData/PostUtils';
+import { getPostInfo } from '../../../services/Firebase/GetData/PostUtils';
 import TipModalContainer from './components/TipModalContainer';
 import PollContainer from './components/PollContainer';
 

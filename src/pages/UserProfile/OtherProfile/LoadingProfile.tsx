@@ -1,5 +1,5 @@
 import React from 'react';
-import LoadingDots from '../../../common/components/Util/LoadingDots';
+import LoadingDots from '../../../components/Util/LoadingDots';
 
 /*
 TODO:

@@ -3,7 +3,7 @@ import { useRecoilValue } from 'recoil';
 import HomePageExternal from './HomePageExternal';
 import HomePageInternal from './HomePageInternal';
 
-import { userPublicKeyAtom } from '../../recoil/userInfo';
+import { userPublicKeyAtom } from '../../services/recoil/userInfo';
 
 function HomePage(): JSX.Element {
   const userPublicKey = useRecoilValue(userPublicKeyAtom);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { PlusIcon } from '@heroicons/react/solid';
 import { Link } from 'react-router-dom';
-import { IcommunityTokenInfo } from '../../common/types';
+import { IcommunityTokenInfo } from '../../types/types';
 
 import defaultUserProfileImage from '../../assets/defaultUserProfileImage.png';
 

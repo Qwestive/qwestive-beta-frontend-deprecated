@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ClassNamesLogic from '../../../../common/components/Util/ClassNamesLogic';
+import ClassNamesLogic from '../../../../components/Util/ClassNamesLogic';
 
 type IprogressBar = {
   name: string;

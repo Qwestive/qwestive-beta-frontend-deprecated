@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { IpostComment, IpostCommentSubmission } from '../../../../common/types';
+import { IpostComment, IpostCommentSubmission } from '../../../../types/types';
 import CommentContainer from './CommentContainer';
 import CommentInputContainer from './CommentInputContainer';
-import { getCommentsForPost } from '../../../../common/services/Firebase/GetData/CommentUtils';
-import WriteComment from '../../../../common/services/Firebase/WriteData/WriteComment';
+import { getCommentsForPost } from '../../../../services/Firebase/GetData/CommentUtils';
+import WriteComment from '../../../../services/Firebase/WriteData/WriteComment';
 
 type CommentSectionProps = {
   postId: string | undefined;

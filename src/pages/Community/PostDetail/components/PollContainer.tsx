@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
-import CKeditorReader from '../../../../common/components/Posts/CKeditor/CKeditorReader';
-import { IpollOption } from '../../../../common/types';
-import { userIdAtom } from '../../../../recoil/userInfo';
+import CKeditorReader from '../../../../components/Posts/CKeditor/CKeditorReader';
+import { IpollOption } from '../../../../types/types';
+import { userIdAtom } from '../../../../services/recoil/userInfo';
 import ProgressBar from './ProgressBar';
 
 type IpollContainer = {

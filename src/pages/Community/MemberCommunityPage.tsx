@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { queryPostPreviews } from '../../common/services/Firebase/GetData/PostUtils';
+import { queryPostPreviews } from '../../services/Firebase/GetData/PostUtils';
 import CategoriesLarge from './components/CategoriesLarge';
 import CategoriesSmall from './components/CategoriesSmall';
 import PostDisplayList from './Feed/PostDisplayList';
@@ -10,7 +10,7 @@ import {
   IpostPreview,
   TpostSorting,
   IcommunityTokenInfo,
-} from '../../common/types';
+} from '../../types/types';
 
 type TmemberCommunityPage = {
   communityInfo: Icommunity | undefined;

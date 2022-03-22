@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import ClassNamesLogic from 'common/components/Util/ClassNamesLogic';
+import ClassNamesLogic from 'components/Util/ClassNamesLogic';
 
-import { ItokenOwnedCommunity } from 'common/types';
+import { ItokenOwnedCommunity } from 'types/types';
 
 type ItokenOwnedList = {
   tokenOwnedList: ItokenOwnedCommunity[];
