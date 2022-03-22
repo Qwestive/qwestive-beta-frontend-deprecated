@@ -30,6 +30,33 @@ export interface ItokenOwnedCommunity {
   communityData: Icommunity | undefined;
 }
 
+/**
+ * Token types
+ */
+
+export interface InonFungibleToken {
+  mint: string;
+  imageUrl: string;
+}
+
+export interface InonFungibleTokenOwned {
+  collectionName: string;
+  creatorMints: Array<string>;
+  tokensHeld: Array<InonFungibleToken>;
+}
+
+export interface IfungibleTokenOwned {
+  mint: string;
+  name: string | undefined;
+  imageUrl: string | undefined;
+  amountHeld: number;
+}
+
+export interface ItokenOwned {
+  fungibleTokens: Array<IfungibleTokenOwned>;
+  nonFungibleTokens: Array<InonFungibleTokenOwned>;
+}
+
 /* 
   User setting types
 */

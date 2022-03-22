@@ -19,14 +19,11 @@ export default async function GenerateTokenOwnedList(
     return tokenOwnedList;
   }
 
-  const communityInfoPromises: Array<Promise<Icommunity | undefined>> = [];
-  tokenOwned.forEach((amountHeld, mint) => {
-    communityInfoPromises.push(getCommunityInfo(mint));
-  });
-
-  const communityInfoArray = await Promise.all(communityInfoPromises);
-
-  let i = 0;
+  // const communityInfoPromises: Array<Promise<Icommunity | undefined>> = [];
+  // tokenOwned.forEach((amountHeld, mint) => {
+  //   communityInfoPromises.push(getCommunityInfo(mint));
+  // });
+  // const communityInfoArray = await Promise.all(communityInfoPromises);
   tokenOwned.forEach((amountHeld, mint) => {
     if (mint === 'SOL') {
       tokenOwnedList.push({
@@ -34,7 +31,6 @@ export default async function GenerateTokenOwnedList(
         name: 'Solana',
         amountHeld: amountHeld / LAMPORTS_PER_SOL,
         imageUrl: solanaLogo,
-        communityData: communityInfoArray[i],
       });
     } else {
       const tokenInfos = tokenRegistry.get(mint);
@@ -44,7 +40,6 @@ export default async function GenerateTokenOwnedList(
           name: tokenInfos.symbol,
           amountHeld,
           imageUrl: tokenInfos.logoURI,
-          communityData: communityInfoArray[i],
         });
       } else {
         tokenOwnedList.push({
@@ -52,10 +47,8 @@ export default async function GenerateTokenOwnedList(
           name: 'Unknown',
           amountHeld,
           imageUrl: defaultUserProfileImage,
-          communityData: communityInfoArray[i],
         });
       }
-      i += 1;
     }
   });
 

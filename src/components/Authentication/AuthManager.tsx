@@ -65,6 +65,12 @@ export default function AuthManager({
     }
   }
 
+async function updateUserFungibleTokensOwned() {
+  
+}
+
+async function updateUserNonFungibleTokensOwned() {}
+
   useEffect(() => {
     trySigninWithWallet();
   }, [connected]);
