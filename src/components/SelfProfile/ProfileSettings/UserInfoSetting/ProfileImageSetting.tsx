@@ -2,17 +2,17 @@ import React, { useState, useRef } from 'react';
 import { PencilAltIcon } from '@heroicons/react/outline';
 import { useRecoilState } from 'recoil';
 import { toast } from 'react-toastify';
+
+import { userInfoAtom } from 'services/recoil/userInfo';
+import IsImageBelowMaxSize from 'functions/ImageProcessing/IsImageBelowMaxSize';
+import SaveProfileImage from 'services/Firebase/UserSettings/SaveProfileImage';
 import grayImage from 'assets/grayImage.png';
 
-import { userProfileImageAtom } from '../../../../services/recoil/userInfo';
-import IsImageBelowMaxSize from '../../../../functions/ImageProcessing/IsImageBelowMaxSize';
 import ImageCropperModal from './ImageSettings/ImageCropperModal';
 import ImageCropper from './ImageSettings/ImageCropper';
-import SaveProfileImage from '../../../../services/Firebase/UserSettings/SaveProfileImage';
 
 export default function ProfileImageSetting(): JSX.Element {
-  const [recoilProfileImage, setRecoilProfileImage] =
-    useRecoilState(userProfileImageAtom);
+  const [userInfo, setUserInfo] = useRecoilState(userInfoAtom);
 
   const [tempProfileImage, setTempProfileImage] = useState('');
   const [imageEditingmodalOpen, setImageEditingModalOpen] = useState(false);
@@ -52,7 +52,7 @@ export default function ProfileImageSetting(): JSX.Element {
           />
           <img
             className="h-24 w-24 rounded-full ring-4 ring-white"
-            src={recoilProfileImage}
+            src={userInfo?.profileImage}
             alt=""
           />
           <img
@@ -79,7 +79,13 @@ export default function ProfileImageSetting(): JSX.Element {
         <ImageCropper
           setImageEditingModalOpen={setImageEditingModalOpen}
           image={tempProfileImage}
-          setImage={setRecoilProfileImage}
+          setImage={(im: string) => {
+            setUserInfo((prevState) =>
+              prevState !== undefined
+                ? { ...prevState, profileImage: im }
+                : undefined
+            );
+          }}
           imageSaver={SaveProfileImage}
           cropShape="round"
           successMessage="Profile Image Updated!"

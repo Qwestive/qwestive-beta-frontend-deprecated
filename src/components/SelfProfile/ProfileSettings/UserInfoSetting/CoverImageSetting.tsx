@@ -3,17 +3,16 @@ import { PencilAltIcon } from '@heroicons/react/outline';
 import { useRecoilState } from 'recoil';
 import { toast } from 'react-toastify';
 
+import { userInfoAtom } from 'services/recoil/userInfo';
+import SaveCoverImage from 'services/Firebase/UserSettings/SaveCoverImage';
+import IsImageBelowMaxSize from 'functions/ImageProcessing/IsImageBelowMaxSize';
 import grayImage from 'assets/grayImage.png';
 
-import { userCoverImageAtom } from '../../../../services/recoil/userInfo';
-import IsImageBelowMaxSize from '../../../../functions/ImageProcessing/IsImageBelowMaxSize';
 import ImageCropperModal from './ImageSettings/ImageCropperModal';
 import ImageCropper from './ImageSettings/ImageCropper';
-import SaveCoverImage from '../../../../services/Firebase/UserSettings/SaveCoverImage';
 
 export default function CoverImageSetting(): JSX.Element {
-  const [recoilCoverImage, setRecoilCoverImage] =
-    useRecoilState(userCoverImageAtom);
+  const [userInfo, setUserInfo] = useRecoilState(userInfoAtom);
 
   const [tempCoverImage, setTempCoverImage] = useState('');
   const [imageEditingmodalOpen, setImageEditingModalOpen] = useState(false);
@@ -36,7 +35,7 @@ export default function CoverImageSetting(): JSX.Element {
   }
 
   return (
-    <div>
+    <>
       <div className="relative content-center max-w-5xl mx-auto -z-50">
         <input
           ref={inputFile}
@@ -52,7 +51,7 @@ export default function CoverImageSetting(): JSX.Element {
         />
         <img
           className="h-32 w-full mx-auto object-cover lg:h-48"
-          src={recoilCoverImage}
+          src={userInfo?.coverImage}
           alt=""
         />
         <img
@@ -80,7 +79,13 @@ export default function CoverImageSetting(): JSX.Element {
         <ImageCropper
           setImageEditingModalOpen={setImageEditingModalOpen}
           image={tempCoverImage}
-          setImage={setRecoilCoverImage}
+          setImage={(im: string) => {
+            setUserInfo((prevState) =>
+              prevState !== undefined
+                ? { ...prevState, coverImage: im }
+                : undefined
+            );
+          }}
           imageSaver={SaveCoverImage}
           cropShape="rect"
           successMessage="Cover Image Updated!"
@@ -91,6 +96,6 @@ export default function CoverImageSetting(): JSX.Element {
           maxZoom={6}
         />
       </ImageCropperModal>
-    </div>
+    </>
   );
 }

@@ -7,16 +7,14 @@ import GenerateTokenOwnedList from 'services/Solana/GetData/GenerateTokenOwnedLi
 import LoadingDots from 'components/Util/LoadingDots';
 import { ItokenOwnedCommunity } from 'types/types';
 import { userFinishedLoadingAtom } from 'services/recoil/appState';
-import {
-  userPublicKeyAtom,
-  userTokensOwnedAtom,
-} from 'services/recoil/userInfo';
+import { userInfoAtom } from 'services/recoil/userInfo';
 import OwnedTokenGrid from './OwnedTokenGrid';
 
 export default function CommunitiesTab(): JSX.Element {
-  const userPublicKey = useRecoilValue(userPublicKeyAtom);
+  const userPublicKey = useRecoilValue(userInfoAtom)?.publicKey;
   const userFinishedLoading = useRecoilValue(userFinishedLoadingAtom);
-  const userTokensOwned = useRecoilValue(userTokensOwnedAtom);
+  const userTokensOwned =
+    useRecoilValue(userInfoAtom)?.tokensOwned ?? new Map();
 
   const tokenRegistry = useTokenRegistry();
   const [tokenOwnedList, setTokenOwnedList] = useState<ItokenOwnedCommunity[]>(

@@ -1,6 +1,6 @@
 import React from 'react';
 import { EyeIcon } from '@heroicons/react/solid';
-import ClassNamesLogic from '../../../components/Util/ClassNamesLogic';
+import ClassNamesLogic from 'components/Util/ClassNamesLogic';
 
 type TpostPermissionsSection = {
   postPublic: boolean;

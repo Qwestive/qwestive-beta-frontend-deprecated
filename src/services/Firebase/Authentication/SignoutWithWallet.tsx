@@ -1,11 +1,16 @@
 import { FirebaseAuth } from '../FirebaseConfig';
 
-import { IsignoutWithWallet } from '../../../types/types';
 /*
 A button to logout of your Firebase account and your wallet
 TODO:
 - logs
 */
+
+interface IsignoutWithWallet {
+  disconnect: () => Promise<void>;
+  connected: boolean;
+}
+
 export default async function SignoutWithWallet({
   disconnect,
   connected,

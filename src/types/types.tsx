@@ -1,6 +1,16 @@
 import { PublicKey } from '@solana/web3.js';
-import { ReactNode, Dispatch, SetStateAction } from 'react';
-import { SetterOrUpdater } from 'recoil';
+
+export interface IuserInfo {
+  uid: string;
+  publicKey: string;
+  userName: string; // not editable frontend
+  displayName: string;
+  profileImage: string;
+  coverImage: string;
+  bio: string;
+  personalLink: string;
+  tokensOwned: Map<string, number>; // not editable frontend
+}
 
 /* 
   Community types
@@ -31,62 +41,14 @@ export interface ItokenOwnedCommunity {
 }
 
 /* 
-  User setting types
-*/
-
-export interface IimageCropper {
-  setImageEditingModalOpen: Dispatch<SetStateAction<boolean>>;
-  image: string;
-  setImage: SetterOrUpdater<string | undefined>;
-  imageSaver(fileToUpload: File): Promise<string>;
-  cropShape: 'rect' | 'round' | undefined;
-  successMessage: string;
-  cropperLgWidth: number;
-  cropperLgHeight: number;
-  cropperSmWidth: number;
-  cropperSmHeight: number;
-  maxZoom: number;
-}
-
-export interface IimageEditing {
-  setImageEditingModalOpen: Dispatch<SetStateAction<boolean>>;
-  image: string;
-  setImage: SetterOrUpdater<string | undefined>;
-}
-
-export interface IimageEditingModal {
-  open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  children: ReactNode;
-}
-
-/* 
   Auth types
 */
-
-export interface IsignoutWithWallet {
-  disconnect: () => Promise<void>;
-  connected: boolean;
-}
-
-export interface IwalletPropForSignin {
-  uid: string;
-  publicKey: PublicKey;
-  signMessage: ((message: Uint8Array) => Promise<Uint8Array>) | undefined;
-}
 
 export interface ImessageToSign {
   uid: string;
   message: string;
   publicKey: PublicKey;
   signMessage: ((message: Uint8Array) => Promise<Uint8Array>) | undefined;
-}
-
-export interface IsignedMessage {
-  uid: string;
-  encodedMessage: Uint8Array;
-  signature: Uint8Array | undefined;
-  publicKeyBytes: Uint8Array | undefined;
 }
 
 /* 
@@ -105,6 +67,23 @@ export const VOTE_TYPE: TpostType = 'vote';
 export interface Icategories {
   name: string;
   count: number;
+}
+
+export interface IpostPreview {
+  id: string;
+  postType: TpostType;
+  accessTokenId: string;
+  accessMinimumTokenBalance: number;
+  authorUserId: string;
+  authorUserName: string;
+  authorPublicKey: string;
+  authorProfileImageUrl: string;
+  title: string;
+  creationDate: number;
+  category: string;
+  upVoteUserIds: Array<string>;
+  downVoteUserIds: Array<string>;
+  numberOfComments: number;
 }
 
 /// The preview of a post that is submitted to the DB as a new post for a
@@ -139,9 +118,9 @@ export interface IpostPollSubmission extends IpostPreviewSubmission {
 /// A post preview that is retrieved from the DB. It differs from
 /// IpostPreviewSubmission in that it has an ID since it was already added
 /// to DB.
-export interface IpostPreview extends IpostPreviewSubmission {
+/* export interface IpostPreview extends IpostPreviewSubmission {
   id: string;
-}
+} */
 
 /// An article that is retrieved from the DB. It differs from
 /// IpostArticleSubmission in that it has an ID since it was already added

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import { toast } from 'react-toastify';
+import { userInfoAtom } from 'services/recoil/userInfo';
 import {
   UpVotePost,
   DownVotePost,
-} from '../../../services/Firebase/WriteData/WriteVote';
-import { userIdAtom } from '../../../services/recoil/userInfo';
+} from 'services/Firebase/WriteData/WriteVote';
 import ClassNamesLogic from '../../../components/Util/ClassNamesLogic';
 
 type TpostVoteButtons = {
@@ -24,7 +24,7 @@ function PostVoteButtons({
   const [upVoteSet, setUpVoteSet] = useState<Set<string>>(new Set());
   const [downVoteSet, setDownVoteSet] = useState<Set<string>>(new Set());
   const userIdFiller = '_';
-  const userId = useRecoilValue(userIdAtom) ?? userIdFiller;
+  const userId = useRecoilValue(userInfoAtom)?.uid ?? userIdFiller;
 
   const addUpVote = () => setUpVoteSet(new Set(upVotes).add(userId));
 

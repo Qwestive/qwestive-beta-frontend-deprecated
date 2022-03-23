@@ -1,8 +1,13 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, ReactNode, Dispatch, SetStateAction } from 'react';
+
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
 
-import { IimageEditingModal } from 'types/types';
+interface IimageEditingModal {
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  children: ReactNode;
+}
 
 export default function ImageCropperModal({
   open,

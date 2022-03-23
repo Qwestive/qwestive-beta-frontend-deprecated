@@ -1,11 +1,11 @@
 import React, { SetStateAction, Dispatch } from 'react';
 import { useRecoilValue } from 'recoil';
 
+import { userInfoAtom } from 'services/recoil/userInfo';
+
 import CoverImageSetting from './UserInfoSetting/CoverImageSetting';
 import ProfileImageSetting from './UserInfoSetting/ProfileImageSetting';
 import UserInfoForm from './UserInfoSetting/UserInfoForm';
-
-import { userNameAtom } from '../../../services/recoil/userInfo';
 
 type TsetUserNameEditing = {
   setIsEditingUserName: Dispatch<SetStateAction<boolean>>;
@@ -20,13 +20,13 @@ TODO:
 export default function UserInfoSetting({
   setIsEditingUserName,
 }: TsetUserNameEditing): JSX.Element {
-  const userName = useRecoilValue(userNameAtom);
+  const userInfo = useRecoilValue(userInfoAtom);
   return (
     <div className="max-w-5xl">
       <CoverImageSetting />
       <ProfileImageSetting />
       <div className="mt-2 flex items-center gap-2">
-        <p className="text-color-primary">@{userName}</p>
+        <p className="text-color-primary">@{userInfo?.userName}</p>
         <button
           type="button"
           className="btn-filled rounded-3xl"

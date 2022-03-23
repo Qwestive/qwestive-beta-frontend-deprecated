@@ -1,7 +1,6 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
-
-import { userPublicKeyAtom } from '../../services/recoil/userInfo';
+import { userInfoAtom } from 'services/recoil/userInfo';
 import SigninPrompt from './SigninPrompt';
 
 type TonlyAuthRoute = {
@@ -12,6 +11,6 @@ export default function OnlyAuthRoute({
   element,
 }: TonlyAuthRoute): JSX.Element {
   // The auth manager ensure that userPublicKeyAtom represent auth state
-  const userPublicKey = useRecoilValue(userPublicKeyAtom);
+  const userPublicKey = useRecoilValue(userInfoAtom);
   return userPublicKey !== undefined ? element : <SigninPrompt />;
 }

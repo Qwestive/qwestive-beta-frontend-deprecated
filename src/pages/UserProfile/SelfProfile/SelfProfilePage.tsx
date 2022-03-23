@@ -3,14 +3,8 @@ import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { toast } from 'react-toastify';
-import SignoutWithWallet from '../../../services/Firebase/Authentication/SignoutWithWallet';
-import {
-  userPublicKeyAtom,
-  userNameAtom,
-  userDisplayNameAtom,
-  userProfileImageAtom,
-  userCoverImageAtom,
-} from '../../../services/recoil/userInfo';
+import { userInfoAtom } from 'services/recoil/userInfo';
+import SignoutWithWallet from 'services/Firebase/Authentication/SignoutWithWallet';
 
 /*
 TODO:
@@ -18,11 +12,7 @@ TODO:
 */
 
 export default function SelfProfilePage(): JSX.Element {
-  const userPublicKey = useRecoilValue(userPublicKeyAtom);
-  const userName = useRecoilValue(userNameAtom);
-  const userDisplayName = useRecoilValue(userDisplayNameAtom);
-  const userProfileImage = useRecoilValue(userProfileImageAtom);
-  const userCoverImage = useRecoilValue(userCoverImageAtom);
+  const userInfo = useRecoilValue(userInfoAtom);
 
   const { disconnect, connected } = useWallet();
 
@@ -40,7 +30,7 @@ export default function SelfProfilePage(): JSX.Element {
       <div>
         <img
           className="h-32 w-full mx-auto object-cover lg:h-48"
-          src={userCoverImage}
+          src={userInfo?.coverImage}
           alt=""
         />
       </div>
@@ -48,17 +38,17 @@ export default function SelfProfilePage(): JSX.Element {
         <div className="flex">
           <img
             className="h-24 w-24 rounded-full ring-4 ring-gray-100"
-            src={userProfileImage}
+            src={userInfo?.profileImage}
             alt=""
           />
         </div>
         <div className="space-y-2 px-2">
           <p className="text-2xl font-bold text-color-primary truncate">
-            {userDisplayName}
+            {userInfo?.displayName}
           </p>
-          <p className="text-color-secondary truncate">@{userName}</p>
+          <p className="text-color-secondary truncate">@{userInfo?.userName}</p>
           <p className="text-sm text-color-secondary truncate">
-            {userPublicKey}
+            {userInfo?.publicKey}
           </p>
         </div>
       </div>

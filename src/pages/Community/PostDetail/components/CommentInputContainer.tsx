@@ -1,13 +1,8 @@
 import React, { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { toast } from 'react-toastify';
-import { IpostCommentSubmission } from '../../../../types/types';
-import {
-  userIdAtom,
-  userNameAtom,
-  userProfileImageAtom,
-  userPublicKeyAtom,
-} from '../../../../services/recoil/userInfo';
+import { userInfoAtom } from 'services/recoil/userInfo';
+import { IpostCommentSubmission } from 'types/types';
 
 type TcommentInputContainer = {
   postId: string | undefined;
@@ -28,10 +23,10 @@ function CommentInputContainer({
 }: TcommentInputContainer): JSX.Element {
   const [textAreaValue, setTextAreaValue] = useState('');
   const [, setIsLoading] = useState(false);
-  const userId = useRecoilValue(userIdAtom);
-  const username = useRecoilValue(userNameAtom);
-  const userPublicKey = useRecoilValue(userPublicKeyAtom);
-  const userProfileImage = useRecoilValue(userProfileImageAtom);
+  const userId = useRecoilValue(userInfoAtom)?.uid;
+  const username = useRecoilValue(userInfoAtom)?.userName;
+  const userPublicKey = useRecoilValue(userInfoAtom)?.publicKey;
+  const userProfileImage = useRecoilValue(userInfoAtom)?.profileImage;
 
   const handleTextAreaInput = (
     event: React.ChangeEvent<HTMLTextAreaElement>
