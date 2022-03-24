@@ -1,33 +1,23 @@
 import React, { useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 
-import SaveUserInfo from '../../../../services/Firebase/UserSettings/SaveUserInfo';
-import {
-  userDisplayNameAtom,
-  userBioAtom,
-  userPersonalLinkAtom,
-  userNameAtom,
-} from '../../../../services/recoil/userInfo';
+import SaveUserInfo from 'services/Firebase/UserSettings/SaveUserInfo';
+import { userInfoAtom } from 'services/recoil/userInfo';
 
 const DISPLAYNAMEMAXLENGTH = 50;
 const BIOMAXLENGTH = 160;
 
 export default function UserInfoForm(): JSX.Element {
-  const [displayNameRecoil, setDisplayNameRecoil] =
-    useRecoilState(userDisplayNameAtom);
-  const [bioRecoil, setBioRecoil] = useRecoilState(userBioAtom);
-  const [personalLinkRecoil, setPersonalLinkRecoil] =
-    useRecoilState(userPersonalLinkAtom);
+  const [userInfoRecoil, setUserInfoRecoil] = useRecoilState(userInfoAtom);
 
-  const userName = useRecoilValue(userNameAtom);
   const [displayName, setDisplayName] = useState(
-    displayNameRecoil !== undefined ? displayNameRecoil : ''
+    userInfoRecoil?.displayName ?? userInfoRecoil?.userName ?? ''
   );
-  const [bio, setBio] = useState(bioRecoil !== undefined ? bioRecoil : '');
+  const [bio, setBio] = useState(userInfoRecoil?.bio ?? '');
   const [personalLink, setPersonalLink] = useState(
-    personalLinkRecoil !== undefined ? personalLinkRecoil : ''
+    userInfoRecoil?.personalLink ?? ''
   );
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -40,14 +30,21 @@ export default function UserInfoForm(): JSX.Element {
       if (bio.length > BIOMAXLENGTH)
         throw new Error(`Bio must be smaller than ${BIOMAXLENGTH} characters`);
       if (
-        displayName !== displayNameRecoil ||
-        bio !== bioRecoil ||
-        personalLink !== personalLinkRecoil
+        displayName !== userInfoRecoil?.displayName ||
+        bio !== userInfoRecoil?.bio ||
+        personalLink !== userInfoRecoil?.personalLink
       ) {
         await SaveUserInfo(displayName, bio, personalLink);
-        setDisplayNameRecoil(displayName);
-        setBioRecoil(bio);
-        setPersonalLinkRecoil(personalLink);
+        setUserInfoRecoil((prevState) =>
+          prevState !== undefined
+            ? {
+                ...prevState,
+                displayName,
+                bio,
+                personalLink,
+              }
+            : undefined
+        );
       }
       toast.success('Your profile was updated!');
       /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
@@ -120,7 +117,7 @@ export default function UserInfoForm(): JSX.Element {
         <button type="submit" className="btn-filled rounded-3xl w-28">
           Save
         </button>
-        <Link to={`/user/${userName}`}>
+        <Link to={`/user/${userInfoRecoil?.userName ?? ''}`}>
           <button
             type="button"
             className="btn-transparent bg-white rounded-3xl w-28 ">

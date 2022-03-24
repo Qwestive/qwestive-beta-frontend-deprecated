@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import { toast } from 'react-toastify';
-import { IpostComment, IpostCommentSubmission } from '../../../../types/types';
-import CommentInputContainer from './CommentInputContainer';
-import WriteComment from '../../../../services/Firebase/WriteData/WriteComment';
-import { userIdAtom } from '../../../../services/recoil/userInfo';
+
+import { userInfoAtom } from 'services/recoil/userInfo';
+import { IpostComment, IpostCommentSubmission } from 'types/types';
+import WriteComment from 'services/Firebase/WriteData/WriteComment';
 import {
   UpVoteComment,
   DownVoteComment,
-} from '../../../../services/Firebase/WriteData/WriteCommentVote';
-import ClassNamesLogic from '../../../../components/Util/ClassNamesLogic';
+} from 'services/Firebase/WriteData/WriteCommentVote';
+import ClassNamesLogic from 'components/Util/ClassNamesLogic';
+import CommentInputContainer from './CommentInputContainer';
 
 type Comment = {
   comment: IpostComment;
@@ -34,7 +35,7 @@ function CommentContainer({
   const [childComments, setChildComments] = useState<Array<Comment>>([]);
   const [showCommentInput, setShowCommentInput] = useState<boolean>(false);
   const userIdFiller = '_';
-  const userId = useRecoilValue(userIdAtom) ?? userIdFiller;
+  const userId = useRecoilValue(userInfoAtom)?.uid ?? userIdFiller;
 
   async function handleAddSubComment(
     comment: IpostCommentSubmission

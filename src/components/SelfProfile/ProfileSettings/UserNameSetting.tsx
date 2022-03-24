@@ -1,10 +1,8 @@
 import React, { useState, SetStateAction, Dispatch } from 'react';
-import { useRecoilValue, useRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { toast } from 'react-toastify';
-import {
-  userPublicKeyAtom,
-  userNameAtom,
-} from '../../../services/recoil/userInfo';
+import { userInfoAtom } from 'services/recoil/userInfo';
+
 import { checkUserNameExist } from '../../../services/Firebase/GetData/UserUtils';
 import SaveUserName from '../../../services/Firebase/UserSettings/SaveUserName';
 
@@ -29,10 +27,9 @@ TODO:
 export default function UserNameSetting({
   setIsEditingUserName,
 }: TsetUserNameEditing): JSX.Element {
-  const userPublicKey = useRecoilValue(userPublicKeyAtom);
-  const [userNameRecoil, setUserNameRecoil] = useRecoilState(userNameAtom);
+  const [userInfoRecoil, setUserInfoRecoil] = useRecoilState(userInfoAtom);
 
-  const [userName, setUserName] = useState(userNameRecoil);
+  const [userName, setUserName] = useState(userInfoRecoil?.userName ?? '');
   const [loadingCheckUserName, setLoadingCheckUserName] = useState(false);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
 
@@ -58,13 +55,13 @@ export default function UserNameSetting({
   async function checkUserNameValid(userNameBeingChecked: string | undefined) {
     setLoadingCheckUserName(true);
     let isUserNameValid = true;
-    if (userNameBeingChecked !== userNameRecoil) {
+    if (userNameBeingChecked !== userInfoRecoil?.userName) {
       // userName changed
       if (
         userNameBeingChecked === undefined ||
         userNameBeingChecked?.length < USERNAMEMINLENGTH ||
         (userNameBeingChecked?.length > USERNAMEMAXLENGTH &&
-          userNameBeingChecked !== userPublicKey)
+          userNameBeingChecked !== userInfoRecoil?.publicKey)
       ) {
         setAvailabilityMessage(wrongLengthMessage);
         isUserNameValid = false;
@@ -92,14 +89,21 @@ export default function UserNameSetting({
     const userNameBeingChecked = userName;
     setLoadingSubmit(true);
     let shouldEndEditing = true;
-    if (userNameBeingChecked !== userNameRecoil) {
+    if (userNameBeingChecked !== userInfoRecoil?.userName) {
       if (
         userNameBeingChecked !== undefined &&
         (await checkUserNameValid(userNameBeingChecked))
       ) {
         try {
           await SaveUserName(userNameBeingChecked);
-          setUserNameRecoil(userNameBeingChecked);
+          setUserInfoRecoil((prevState) =>
+            prevState !== undefined
+              ? {
+                  ...prevState,
+                  userName: userNameBeingChecked,
+                }
+              : undefined
+          );
           toast.success('Your username has been updated!');
           /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
         } catch (error: any) {

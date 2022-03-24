@@ -1,46 +1,7 @@
 import { atom } from 'recoil';
+import { IuserInfo } from 'types/types';
 
-export const userIdAtom = atom<string | undefined>({
-  key: 'id',
-  default: undefined,
-});
-
-export const userPublicKeyAtom = atom<string | undefined>({
-  key: 'userPublicKey',
-  default: undefined,
-});
-
-export const userNameAtom = atom<string | undefined>({
-  key: 'userName',
-  default: undefined,
-});
-
-export const userDisplayNameAtom = atom<string | undefined>({
-  key: 'userDisplayName',
-  default: undefined,
-});
-
-export const userProfileImageAtom = atom<string | undefined>({
-  key: 'userProfileImage',
-  default: undefined,
-});
-
-export const userCoverImageAtom = atom<string | undefined>({
-  key: 'userCoverImage',
-  default: undefined,
-});
-
-export const userTokensOwnedAtom = atom<Map<string, number>>({
-  key: 'userTokensOwned',
-  default: new Map<string, number>(),
-});
-
-export const userBioAtom = atom<string | undefined>({
-  key: 'userBio',
-  default: undefined,
-});
-
-export const userPersonalLinkAtom = atom<string | undefined>({
-  key: 'userPersonalLink',
+export const userInfoAtom = atom<IuserInfo | undefined>({
+  key: 'userInfo',
   default: undefined,
 });

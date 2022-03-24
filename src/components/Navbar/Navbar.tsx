@@ -8,23 +8,18 @@ import { Link } from 'react-router-dom';
 import { useWallet } from '@solana/wallet-adapter-react';
 import defaultUserProfileImage from 'assets/defaultUserProfileImage.png';
 import qwestiveLogo from 'assets/qwestiveLogo.svg';
-
-import SignoutWithWallet from '../../services/Firebase/Authentication/SignoutWithWallet';
-import {
-  userPublicKeyAtom,
-  userNameAtom,
-  userProfileImageAtom,
-} from '../../services/recoil/userInfo';
-import appConfig from '../../config.js';
+import { userInfoAtom } from 'services/recoil/userInfo';
+import SignoutWithWallet from 'services/Firebase/Authentication/SignoutWithWallet';
+import appConfig from 'config.js';
 import WalletButton from '../Solana/SolanaWallet/WalletButton';
 import ClassNamesLogic from '../Util/ClassNamesLogic';
 import PopulateDbButton from './PopulateDbButton';
 
 // Main navigation bar for the app.
 const Navbar = function Navbar(): JSX.Element {
-  const userPublicKey = useRecoilValue(userPublicKeyAtom);
-  const userName = useRecoilValue(userNameAtom);
-  const userProfileImage = useRecoilValue(userProfileImageAtom);
+  const userPublicKey = useRecoilValue(userInfoAtom)?.publicKey;
+  const userName = useRecoilValue(userInfoAtom)?.userName;
+  const userProfileImage = useRecoilValue(userInfoAtom)?.profileImage;
 
   const userNavigation = [
     { name: 'Your Profile', href: `/user/${userName}` },

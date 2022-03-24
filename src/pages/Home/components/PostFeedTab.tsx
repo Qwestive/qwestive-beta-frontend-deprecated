@@ -3,14 +3,14 @@ import { toast } from 'react-toastify';
 import { useRecoilValue } from 'recoil';
 
 import { IpostPreview } from 'types/types';
-import { userTokensOwnedAtom } from 'services/recoil/userInfo';
+import { userInfoAtom } from 'services/recoil/userInfo';
 import { userFinishedLoadingAtom } from 'services/recoil/appState';
 import { queryPostFeed } from 'services/Firebase/GetData/PostUtils';
 import LoadingDots from 'components/Util/LoadingDots';
 import PostPreviewCard from '../../Community/Feed/PostPreviewCard';
 
 export default function PostFeedTab(): JSX.Element {
-  const ownedTokens = useRecoilValue(userTokensOwnedAtom);
+  const ownedTokens = useRecoilValue(userInfoAtom)?.tokensOwned ?? new Map();
   const userFinishedLoading = useRecoilValue(userFinishedLoadingAtom);
   const [loading, setLoading] = useState(true);
   const [postList, setPostList] = useState<IpostPreview[]>([]);

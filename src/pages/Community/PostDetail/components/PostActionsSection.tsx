@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import { toast } from 'react-toastify';
+import { userInfoAtom } from 'services/recoil/userInfo';
 import {
   UpVotePost,
   DownVotePost,
 } from '../../../../services/Firebase/WriteData/WriteVote';
-import { userIdAtom } from '../../../../services/recoil/userInfo';
 import ClassNamesLogic from '../../../../components/Util/ClassNamesLogic';
 
 type PostActionsSectioData = {
@@ -32,7 +32,7 @@ function PostActionsSection({
   const [upVoteSet, setUpVoteSet] = useState<Set<string>>(new Set());
   const [downVoteSet, setDownVoteSet] = useState<Set<string>>(new Set());
   const userIdFiller = '_';
-  const userId = useRecoilValue(userIdAtom) ?? userIdFiller;
+  const userId = useRecoilValue(userInfoAtom)?.uid ?? userIdFiller;
 
   const handleSendTip = () => {
     const authorUserNameStr = authorUserName ?? '';
