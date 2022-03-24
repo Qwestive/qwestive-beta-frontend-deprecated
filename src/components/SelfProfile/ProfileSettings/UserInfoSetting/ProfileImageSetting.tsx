@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { userInfoAtom } from 'services/recoil/userInfo';
 import IsImageBelowMaxSize from 'functions/ImageProcessing/IsImageBelowMaxSize';
 import SaveProfileImage from 'services/Firebase/UserSettings/SaveProfileImage';
-import grayImage from 'assets/grayImage.png';
+import { grayImage, defaultUserProfileImage } from 'assets/userImages';
 
 import ImageCropperModal from './ImageSettings/ImageCropperModal';
 import ImageCropper from './ImageSettings/ImageCropper';
@@ -52,7 +52,7 @@ export default function ProfileImageSetting(): JSX.Element {
           />
           <img
             className="h-24 w-24 rounded-full ring-4 ring-white"
-            src={userInfo?.profileImage}
+            src={userInfo?.profileImage ?? defaultUserProfileImage}
             alt=""
           />
           <img

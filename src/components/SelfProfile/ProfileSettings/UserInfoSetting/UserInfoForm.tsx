@@ -13,7 +13,7 @@ export default function UserInfoForm(): JSX.Element {
   const [userInfoRecoil, setUserInfoRecoil] = useRecoilState(userInfoAtom);
 
   const [displayName, setDisplayName] = useState(
-    userInfoRecoil?.displayName ?? ''
+    userInfoRecoil?.displayName ?? userInfoRecoil?.userName ?? ''
   );
   const [bio, setBio] = useState(userInfoRecoil?.bio ?? '');
   const [personalLink, setPersonalLink] = useState(

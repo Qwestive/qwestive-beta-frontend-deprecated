@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { userInfoAtom } from 'services/recoil/userInfo';
 import SaveCoverImage from 'services/Firebase/UserSettings/SaveCoverImage';
 import IsImageBelowMaxSize from 'functions/ImageProcessing/IsImageBelowMaxSize';
-import grayImage from 'assets/grayImage.png';
+import { grayImage, defaultCoverImage } from 'assets/userImages';
 
 import ImageCropperModal from './ImageSettings/ImageCropperModal';
 import ImageCropper from './ImageSettings/ImageCropper';
@@ -51,7 +51,7 @@ export default function CoverImageSetting(): JSX.Element {
         />
         <img
           className="h-32 w-full mx-auto object-cover lg:h-48"
-          src={userInfo?.coverImage}
+          src={userInfo?.coverImage ?? defaultCoverImage}
           alt=""
         />
         <img

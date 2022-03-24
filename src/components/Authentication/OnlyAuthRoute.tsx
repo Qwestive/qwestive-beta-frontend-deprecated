@@ -11,6 +11,6 @@ export default function OnlyAuthRoute({
   element,
 }: TonlyAuthRoute): JSX.Element {
   // The auth manager ensure that userPublicKeyAtom represent auth state
-  const userPublicKey = useRecoilValue(userInfoAtom);
-  return userPublicKey !== undefined ? element : <SigninPrompt />;
+  const userInfo = useRecoilValue(userInfoAtom);
+  return userInfo !== undefined ? element : <SigninPrompt />;
 }
