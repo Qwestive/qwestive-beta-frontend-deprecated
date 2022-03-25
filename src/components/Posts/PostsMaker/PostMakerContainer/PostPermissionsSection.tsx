@@ -1,17 +1,17 @@
 import React, { useState, Dispatch, SetStateAction } from 'react';
 import { EyeIcon } from '@heroicons/react/solid';
 import ClassNamesLogic from 'components/Util/ClassNamesLogic';
-import { IpostPreview } from 'types/types';
+import { IpostPreviewSubmission } from 'types/types';
 
 type TpostPermissionsSection = {
-  postPreview: IpostPreview;
-  setPostPreview: Dispatch<SetStateAction<IpostPreview>>;
+  postPreviewSubmission: IpostPreviewSubmission;
+  setPostPreviewSubmission: Dispatch<SetStateAction<IpostPreviewSubmission>>;
 };
 
 /// Component which allows setting permissions for a post.
-function PostPermissionsSection({
-  postPreview,
-  setPostPreview,
+export default function PostPermissionsSection({
+  postPreviewSubmission,
+  setPostPreviewSubmission,
 }: TpostPermissionsSection): JSX.Element {
   const [postPublic, setPostPublic] = useState(false);
   return (
@@ -49,7 +49,7 @@ function PostPermissionsSection({
             type="button"
             onClick={() => {
               setPostPublic(false);
-              setPostPreview((prevState) => ({
+              setPostPreviewSubmission((prevState) => ({
                 ...prevState,
                 accessMinimumTokenBalance: 0,
               }));
@@ -87,11 +87,11 @@ function PostPermissionsSection({
               className="border border-gray-300 rounded-md block 
               focus:ring-0 text-color-primary text-sm  px-3 text-left 
               w-28 h-8"
-              value={postPreview.accessMinimumTokenBalance}
+              value={postPreviewSubmission.accessMinimumTokenBalance}
               min={0}
               step={0.0001}
               onChange={(e) =>
-                setPostPreview((prevState) => ({
+                setPostPreviewSubmission((prevState) => ({
                   ...prevState,
                   accessMinimumTokenBalance: e.target.valueAsNumber,
                 }))
@@ -103,5 +103,3 @@ function PostPermissionsSection({
     </div>
   );
 }
-
-export default PostPermissionsSection;

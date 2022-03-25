@@ -72,23 +72,6 @@ export interface Icategories {
 /// The preview of a post that is submitted to the DB as a new post for a
 /// community.
 
-export interface IpostPreview {
-  id: string;
-  postType: TpostType;
-  accessTokenId: string;
-  accessMinimumTokenBalance: number;
-  authorUserId: string;
-  authorUserName: string;
-  authorPublicKey: string;
-  authorProfileImageUrl: string;
-  title: string;
-  creationDate: number;
-  category: string;
-  upVoteUserIds: Array<string>;
-  downVoteUserIds: Array<string>;
-  numberOfComments: number;
-}
-
 export interface IpostArticle {
   postType: 'article';
   content: string;
@@ -122,6 +105,10 @@ export interface IpostPreviewSubmission {
   upVoteUserIds: Array<string>;
   downVoteUserIds: Array<string>;
   numberOfComments: number;
+}
+
+export interface IpostPreview extends IpostPreviewSubmission {
+  id: string;
 }
 
 /// An article that is submitted to the DB as a new post for a community.

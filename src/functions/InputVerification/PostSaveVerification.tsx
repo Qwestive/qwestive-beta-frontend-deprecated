@@ -1,7 +1,7 @@
-import { IpostPreview, IpostContentType } from 'types/types';
+import { IpostPreviewSubmission, IpostContentType } from 'types/types';
 
 export default function PostSaveVerification(
-  postPreview: IpostPreview,
+  postPreviewSubmission: IpostPreviewSubmission,
   postContent: IpostContentType,
   MAXTITLELENGTH: number,
   MINTITLELENGTH: number,
@@ -10,19 +10,19 @@ export default function PostSaveVerification(
   MAXCATEGORYLENGTH: number
 ): void {
   // Preview verification
-  if (postPreview.title.length > MAXTITLELENGTH) {
+  if (postPreviewSubmission.title.length > MAXTITLELENGTH) {
     throw new Error('Title too long');
   }
-  if (postPreview.title.length < MINTITLELENGTH) {
+  if (postPreviewSubmission.title.length < MINTITLELENGTH) {
     throw new Error(
       `The title should be at least ${MINTITLELENGTH} characters long`
     );
   }
-  if (postPreview.category.length > MAXCATEGORYLENGTH) {
+  if (postPreviewSubmission.category.length > MAXCATEGORYLENGTH) {
     throw new Error('Topic too long');
   }
   // Article verification
-  if (postPreview.postType === 'article') {
+  if (postPreviewSubmission.postType === 'article') {
     if (postContent.postType !== 'article') {
       throw new Error('This post is not an article');
     }
@@ -36,7 +36,7 @@ export default function PostSaveVerification(
     }
   }
   // Poll verification
-  if (postPreview.postType === 'poll') {
+  if (postPreviewSubmission.postType === 'poll') {
     if (postContent.postType !== 'poll') {
       throw new Error('This post is not an poll');
     }

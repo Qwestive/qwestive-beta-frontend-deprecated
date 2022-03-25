@@ -10,7 +10,7 @@ import PostMakerContainer, {
 import CKeditorMaker from 'components/Posts/PostsMaker/PostMakerContent/CKeditorMaker';
 import PollPostMaker from 'components/Posts/PostsMaker/PostMakerContent/PollPostMaker';
 import {
-  IpostPreview,
+  IpostPreviewSubmission,
   IpostContentType,
   IpostArticle,
   IpollOption,
@@ -32,22 +32,22 @@ export default function NewPostTabs({ cId }: TnewPostTabs): JSX.Element {
   const userInfo = useRecoilValue(userInfoAtom);
   const [currentTab, setCurrentTab] = useState(0);
 
-  const [postPreview, setPostPreview] = useState<IpostPreview>({
-    id: '',
-    postType: 'article',
-    accessTokenId: cId,
-    accessMinimumTokenBalance: 0,
-    authorUserId: userInfo?.uid ?? '',
-    authorUserName: userInfo?.uid ?? '',
-    authorPublicKey: userInfo?.uid ?? '',
-    authorProfileImageUrl: userInfo?.uid ?? '',
-    title: '',
-    creationDate: new Date().getTime(),
-    category: '',
-    upVoteUserIds: [],
-    downVoteUserIds: [],
-    numberOfComments: 0,
-  });
+  const [postPreviewSubmission, setPostPreviewSubmission] =
+    useState<IpostPreviewSubmission>({
+      postType: 'article',
+      accessTokenId: cId,
+      accessMinimumTokenBalance: 0,
+      authorUserId: userInfo?.uid ?? '',
+      authorUserName: userInfo?.uid ?? '',
+      authorPublicKey: userInfo?.uid ?? '',
+      authorProfileImageUrl: userInfo?.uid ?? '',
+      title: '',
+      creationDate: new Date().getTime(),
+      category: '',
+      upVoteUserIds: [],
+      downVoteUserIds: [],
+      numberOfComments: 0,
+    });
 
   // Post content states
   const [richTextContent, setRichTextContent] = useState('');
@@ -85,7 +85,7 @@ export default function NewPostTabs({ cId }: TnewPostTabs): JSX.Element {
   }, [richTextContent]);
 
   function getPostContent(): IpostContentType {
-    switch (postPreview.postType) {
+    switch (postPreviewSubmission.postType) {
       case 'poll':
         return pollContent;
       default:
@@ -97,13 +97,13 @@ export default function NewPostTabs({ cId }: TnewPostTabs): JSX.Element {
     setCurrentTab(tabId);
 
     if (tabs[tabId].name === 'post') {
-      setPostPreview((prevState) => ({
+      setPostPreviewSubmission((prevState) => ({
         ...prevState,
         postType: 'article',
       }));
     }
     if (tabs[tabId].name === 'poll') {
-      setPostPreview((prevState) => ({
+      setPostPreviewSubmission((prevState) => ({
         ...prevState,
         postType: 'poll',
       }));
@@ -235,8 +235,8 @@ export default function NewPostTabs({ cId }: TnewPostTabs): JSX.Element {
         {/* Tab Content */}
         <div className="mt-0.5">
           <PostMakerContainer
-            postPreview={postPreview}
-            setPostPreview={setPostPreview}
+            postPreviewSubmission={postPreviewSubmission}
+            setPostPreviewSubmission={setPostPreviewSubmission}
             getPostContent={() => getPostContent()}>
             <div>
               {/* Article */}
