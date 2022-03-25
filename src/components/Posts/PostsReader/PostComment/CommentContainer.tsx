@@ -142,7 +142,9 @@ function CommentContainer({
         </div>
       </div>
       <div className="border-solid border-l-2 border-gray-300 pl-4">
-        <div className="text-sm my-2">{commentNode.comment.body}</div>
+        <div className="text-sm my-2 whitespace-pre-wrap ">
+          {commentNode.comment.body}
+        </div>
         <div className="flex text-xs text-color-secondary">
           <div className="flex mr-6">
             <button

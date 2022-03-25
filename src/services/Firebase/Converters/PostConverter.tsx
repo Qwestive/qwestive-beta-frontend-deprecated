@@ -17,6 +17,7 @@ export const postConverter = {
     const data = snapshot.data();
     const post = {
       postType: data.postType,
+      content: data.content,
     };
     if (data.postType === 'poll') {
       return {
