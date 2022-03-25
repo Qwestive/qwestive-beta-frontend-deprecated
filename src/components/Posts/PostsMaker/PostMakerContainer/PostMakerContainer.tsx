@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import WritePost from 'services/Firebase/WriteData/WritePost';
 import PostSaveVerification from 'functions/InputVerification/PostSaveVerification';
-import { IpostPreview, IpostArticle, IpostPoll } from 'types/types';
+import { IpostPreview, IpostContentType } from 'types/types';
 import PostPermissionsSection from './PostPermissionsSection';
 import ActionButtonSection from './ActionButtonSection';
 
@@ -25,14 +25,14 @@ type TpostContainer = {
   children: ReactChildren | ReactChild;
   postPreview: IpostPreview;
   setPostPreview: Dispatch<SetStateAction<IpostPreview>>;
-  postContent: IpostArticle | IpostPoll;
+  getPostContent: () => IpostContentType;
 };
 
 export default function PostMakerContainer({
   children,
   postPreview,
   setPostPreview,
-  postContent,
+  getPostContent,
 }: TpostContainer): JSX.Element {
   const navigate = useNavigate();
   const [disableEdit, setDisableEdit] = useState(false);
@@ -40,6 +40,7 @@ export default function PostMakerContainer({
   async function handleSave() {
     setDisableEdit(true);
     try {
+      const postContent = getPostContent();
       PostSaveVerification(
         postPreview,
         postContent,

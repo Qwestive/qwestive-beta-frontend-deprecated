@@ -23,7 +23,6 @@ export default function PostSaveVerification(
   }
   // Article verification
   if (postPreview.postType === 'article') {
-    console.log(postContent);
     if (postContent.postType !== 'article') {
       throw new Error('This post is not an article');
     }

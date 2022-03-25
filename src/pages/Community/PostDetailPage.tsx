@@ -19,7 +19,7 @@ import {
 import TipModalContainer from 'components/Posts/PostsReader/PostReaderAction/Tipping/TipModalContainer';
 import PollContainer from 'components/Posts/PostsReader/PostReaderContent/PollContainer';
 import RichTextContainer from 'components/Posts/PostsReader/PostReaderContent/RichTextContainer';
-import CommentSection from 'components/Posts/PostsReader/PostReaderAction/Comment/CommentSection';
+import CommentSection from 'components/Posts/PostsReader/PostComment/CommentSection';
 
 /// Component which shows all of the information inside a post.
 ///
@@ -51,7 +51,6 @@ export default function PostDetailPage(): JSX.Element {
       }
       const postPreviewFetched = await getPostPreview(targetPostId);
       if (postPreviewFetched === undefined) throw new Error('Post not found');
-      console.log(postPreviewFetched);
       setPostPreview(postPreviewFetched);
       const postContentFetched = await getPostContent(targetPostId);
       if (postContentFetched === undefined) throw new Error('Post not found');

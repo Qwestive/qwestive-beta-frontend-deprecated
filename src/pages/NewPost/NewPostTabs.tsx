@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronDownIcon } from '@heroicons/react/solid';
@@ -11,7 +11,6 @@ import CKeditorMaker from 'components/Posts/PostsMaker/PostMakerContent/CKeditor
 import PollPostMaker from 'components/Posts/PostsMaker/PostMakerContent/PollPostMaker';
 import {
   IpostPreview,
-  TpostType,
   IpostContentType,
   IpostArticle,
   IpollOption,
@@ -63,27 +62,47 @@ export default function NewPostTabs({ cId }: TnewPostTabs): JSX.Element {
   ]);
   const [pollContent, setPollContent] = useState<IpostPoll>({
     postType: 'poll',
-    content: richTextContent,
+    content: '',
     options: pollOptions,
   });
 
-  const [postContent, setPostContent] = useState<IpostContentType>({
-    postType: 'article',
-    content: richTextContent,
-  } as IpostArticle);
+  useEffect(() => {
+    setPollContent((prevState) => ({
+      ...prevState,
+      options: pollOptions,
+    }));
+  }, [pollOptions]);
+
+  useEffect(() => {
+    setPollContent((prevState) => ({
+      ...prevState,
+      content: richTextContent,
+    }));
+    setArticleContent((prevState) => ({
+      ...prevState,
+      content: richTextContent,
+    }));
+  }, [richTextContent]);
+
+  function getPostContent(): IpostContentType {
+    switch (postPreview.postType) {
+      case 'poll':
+        return pollContent;
+      default:
+        return articleContent;
+    }
+  }
 
   function switchPostContentType(tabId: number) {
     setCurrentTab(tabId);
 
     if (tabs[tabId].name === 'post') {
-      setPostContent(articleContent);
       setPostPreview((prevState) => ({
         ...prevState,
         postType: 'article',
       }));
     }
     if (tabs[tabId].name === 'poll') {
-      setPostContent(pollContent);
       setPostPreview((prevState) => ({
         ...prevState,
         postType: 'poll',
@@ -218,7 +237,7 @@ export default function NewPostTabs({ cId }: TnewPostTabs): JSX.Element {
           <PostMakerContainer
             postPreview={postPreview}
             setPostPreview={setPostPreview}
-            postContent={postContent}>
+            getPostContent={() => getPostContent()}>
             <div>
               {/* Article */}
               <div className={currentTab === 0 ? 'block' : 'hidden'}>
