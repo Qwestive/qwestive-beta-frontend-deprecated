@@ -1,27 +1,98 @@
 import React, { Fragment, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronDownIcon } from '@heroicons/react/solid';
-
-import ClassNamesLogic from '../../components/Util/ClassNamesLogic';
-
-import ArticlePost from './Components/ArticlePost';
-import PollPost from './Components/PollPost';
+import { userInfoAtom } from 'services/recoil/userInfo';
+import ClassNamesLogic from 'components/Util/ClassNamesLogic';
+import PostMakerContainer, {
+  MAXARTICLELENGTH,
+} from 'components/Posts/PostsMaker/PostMakerContainer/PostMakerContainer';
+import CKeditorMaker from 'components/Posts/PostsMaker/PostMakerContent/CKeditorMaker';
+import PollPostMaker from 'components/Posts/PostsMaker/PostMakerContent/PollPostMaker';
+import {
+  IpostPreview,
+  TpostType,
+  IpostContentType,
+  IpostArticle,
+  IpollOption,
+  IpostPoll,
+} from 'types/types';
 
 type TnewPostTabs = {
   cId: string;
 };
 
 export default function NewPostTabs({ cId }: TnewPostTabs): JSX.Element {
+  const tabs = [
+    { name: 'post' },
+    { name: 'poll' },
+    { name: 'bounty' },
+    { name: 'vote' },
+  ];
+
+  const userInfo = useRecoilValue(userInfoAtom);
   const [currentTab, setCurrentTab] = useState(0);
 
-  const tabs = [
-    { name: 'Post' },
-    { name: 'Poll' },
-    { name: 'Bounty' },
-    { name: 'Vote' },
-  ];
+  const [postPreview, setPostPreview] = useState<IpostPreview>({
+    id: '',
+    postType: 'article',
+    accessTokenId: cId,
+    accessMinimumTokenBalance: 0,
+    authorUserId: userInfo?.uid ?? '',
+    authorUserName: userInfo?.uid ?? '',
+    authorPublicKey: userInfo?.uid ?? '',
+    authorProfileImageUrl: userInfo?.uid ?? '',
+    title: '',
+    creationDate: new Date().getTime(),
+    category: '',
+    upVoteUserIds: [],
+    downVoteUserIds: [],
+    numberOfComments: 0,
+  });
+
+  // Post content states
+  const [richTextContent, setRichTextContent] = useState('');
+
+  const [articleContent, setArticleContent] = useState<IpostArticle>({
+    postType: 'article',
+    content: richTextContent,
+  });
+
+  const [pollOptions, setPollOptions] = useState<Array<IpollOption>>(() => [
+    { id: Date.now().toString(), name: '', voteUserIds: [] },
+  ]);
+  const [pollContent, setPollContent] = useState<IpostPoll>({
+    postType: 'poll',
+    content: richTextContent,
+    options: pollOptions,
+  });
+
+  const [postContent, setPostContent] = useState<IpostContentType>({
+    postType: 'article',
+    content: richTextContent,
+  } as IpostArticle);
+
+  function switchPostContentType(tabId: number) {
+    setCurrentTab(tabId);
+
+    if (tabs[tabId].name === 'post') {
+      setPostContent(articleContent);
+      setPostPreview((prevState) => ({
+        ...prevState,
+        postType: 'article',
+      }));
+    }
+    if (tabs[tabId].name === 'poll') {
+      setPostContent(pollContent);
+      setPostPreview((prevState) => ({
+        ...prevState,
+        postType: 'poll',
+      }));
+    }
+  }
+
   return (
-    <div className="">
+    <div>
       <div
         className="text-xl mt-1 
       font-bold 
@@ -31,7 +102,11 @@ export default function NewPostTabs({ cId }: TnewPostTabs): JSX.Element {
       <div className="bg-white">
         {/* Small tabs dropdown */}
         <div className="mt-4 sm:hidden">
-          <Listbox value={currentTab} onChange={setCurrentTab}>
+          <Listbox
+            value={currentTab}
+            onChange={(idx) => {
+              switchPostContentType(idx);
+            }}>
             {({ open }) => (
               <div className="relative">
                 <Listbox.Button
@@ -43,7 +118,7 @@ export default function NewPostTabs({ cId }: TnewPostTabs): JSX.Element {
                  shadow-sm pl-3 pr-10 py-2 
                 text-left 
                 font-medium text-sm">
-                  <span className="block truncate">
+                  <span className="block truncate capitalize">
                     {tabs[currentTab].name}
                   </span>
                   <span
@@ -87,7 +162,9 @@ export default function NewPostTabs({ cId }: TnewPostTabs): JSX.Element {
                         value={idx}>
                         {({ selected }) => (
                           <>
-                            <span className="block truncate">{tab.name}</span>
+                            <span className="block truncate capitalize">
+                              {tab.name}
+                            </span>
                             {selected ? (
                               <span
                                 className="absolute inset-y-0 
@@ -127,8 +204,10 @@ export default function NewPostTabs({ cId }: TnewPostTabs): JSX.Element {
                     'w-full py-4 px-1 text-center border-b-2 ' +
                       'font-bold text-base'
                   )}
-                  onClick={() => setCurrentTab(idx)}>
-                  {tab.name}
+                  onClick={() => {
+                    switchPostContentType(idx);
+                  }}>
+                  <p className="capitalize">{tab.name}</p>
                 </button>
               ))}
             </nav>
@@ -136,18 +215,37 @@ export default function NewPostTabs({ cId }: TnewPostTabs): JSX.Element {
         </div>
         {/* Tab Content */}
         <div className="mt-0.5">
-          <div className={currentTab === 0 ? 'block' : 'hidden'}>
-            <ArticlePost cId={cId} />
-          </div>
-          <div className={currentTab === 1 ? 'block' : 'hidden'}>
-            <PollPost cId={cId} />
-          </div>
-          <div className={currentTab === 2 ? 'block' : 'hidden'}>
-            <p>Tab 2</p>
-          </div>
-          <div className={currentTab === 3 ? 'block' : 'hidden'}>
-            <p>Tab 3</p>
-          </div>
+          <PostMakerContainer
+            postPreview={postPreview}
+            setPostPreview={setPostPreview}
+            postContent={postContent}>
+            <div>
+              {/* Article */}
+              <div className={currentTab === 0 ? 'block' : 'hidden'}>
+                <CKeditorMaker
+                  maxLength={MAXARTICLELENGTH}
+                  text={richTextContent}
+                  setText={setRichTextContent}
+                />
+              </div>
+              {/* Poll */}
+              <div className={currentTab === 1 ? 'block' : 'hidden'}>
+                <PollPostMaker
+                  MAXARTICLELENGTH={MAXARTICLELENGTH}
+                  richTextContent={richTextContent}
+                  setRichTextContent={setRichTextContent}
+                  pollOptions={pollOptions}
+                  setPollOptions={setPollOptions}
+                />
+              </div>
+              <div className={currentTab === 2 ? 'block' : 'hidden'}>
+                <p>Tab 2</p>
+              </div>
+              <div className={currentTab === 3 ? 'block' : 'hidden'}>
+                <p>Tab 3</p>
+              </div>
+            </div>
+          </PostMakerContainer>
         </div>
       </div>
     </div>

@@ -1,21 +1,19 @@
-import React from 'react';
+import React, { useState, Dispatch, SetStateAction } from 'react';
 import { EyeIcon } from '@heroicons/react/solid';
 import ClassNamesLogic from 'components/Util/ClassNamesLogic';
+import { IpostPreview } from 'types/types';
 
 type TpostPermissionsSection = {
-  postPublic: boolean;
-  setPostPublic: (arg0: boolean) => void;
-  tokenRequirement: number;
-  setTokenRequirement: (arg0: number) => void;
+  postPreview: IpostPreview;
+  setPostPreview: Dispatch<SetStateAction<IpostPreview>>;
 };
 
 /// Component which allows setting permissions for a post.
 function PostPermissionsSection({
-  postPublic,
-  setPostPublic,
-  tokenRequirement,
-  setTokenRequirement,
+  postPreview,
+  setPostPreview,
 }: TpostPermissionsSection): JSX.Element {
+  const [postPublic, setPostPublic] = useState(false);
   return (
     <div className="p-px border-t py-2">
       <div className="flex justify-between">
@@ -51,7 +49,10 @@ function PostPermissionsSection({
             type="button"
             onClick={() => {
               setPostPublic(false);
-              setTokenRequirement(0);
+              setPostPreview((prevState) => ({
+                ...prevState,
+                accessMinimumTokenBalance: 0,
+              }));
             }}>
             <div className="flex gap-1 items-center">
               <div className="transform scale-75">
@@ -86,10 +87,15 @@ function PostPermissionsSection({
               className="border border-gray-300 rounded-md block 
               focus:ring-0 text-color-primary text-sm  px-3 text-left 
               w-28 h-8"
-              value={tokenRequirement}
+              value={postPreview.accessMinimumTokenBalance}
               min={0}
               step={0.0001}
-              onChange={(e) => setTokenRequirement(e.target.valueAsNumber)}
+              onChange={(e) =>
+                setPostPreview((prevState) => ({
+                  ...prevState,
+                  accessMinimumTokenBalance: e.target.valueAsNumber,
+                }))
+              }
             />
           </div>
         </div>

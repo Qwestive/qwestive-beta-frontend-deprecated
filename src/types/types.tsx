@@ -71,6 +71,43 @@ export interface Icategories {
 
 /// The preview of a post that is submitted to the DB as a new post for a
 /// community.
+
+export interface IpostPreview {
+  id: string;
+  postType: TpostType;
+  accessTokenId: string;
+  accessMinimumTokenBalance: number;
+  authorUserId: string;
+  authorUserName: string;
+  authorPublicKey: string;
+  authorProfileImageUrl: string;
+  title: string;
+  creationDate: number;
+  category: string;
+  upVoteUserIds: Array<string>;
+  downVoteUserIds: Array<string>;
+  numberOfComments: number;
+}
+
+export interface IpostArticle {
+  postType: 'article';
+  content: string;
+}
+
+export interface IpollOption {
+  id: string;
+  name: string;
+  voteUserIds: Array<string>;
+}
+
+export interface IpostPoll {
+  postType: 'poll';
+  content: string;
+  options: Array<IpollOption>;
+}
+
+export type IpostContentType = IpostPoll | IpostArticle;
+
 export interface IpostPreviewSubmission {
   postType: TpostType;
   accessTokenId: string;
@@ -101,30 +138,30 @@ export interface IpostPollSubmission extends IpostPreviewSubmission {
 /// A post preview that is retrieved from the DB. It differs from
 /// IpostPreviewSubmission in that it has an ID since it was already added
 /// to DB.
-export interface IpostPreview extends IpostPreviewSubmission {
+/* export interface IpostPreview extends IpostPreviewSubmission {
   id: string;
-}
+} */
 
 /// An article that is retrieved from the DB. It differs from
 /// IpostArticleSubmission in that it has an ID since it was already added
 /// to DB.
-export interface IpostArticle extends IpostPreview {
+/* export interface IpostArticle extends IpostPreview {
   content: string;
-}
+} */
 
-export interface IpollOption {
+/* export interface IpollOption {
   id: string;
   name: string;
   voteUserIds: Array<string>;
-}
+} */
 
 /// A post that is retrieved from the DB. It differs from
 /// IpostPollSubmission in that it has an ID since it was already added
 /// to DB.
-export interface IpostPoll extends IpostPreview {
+/* export interface IpostPoll extends IpostPreview {
   content: string;
   options: Array<IpollOption>;
-}
+} */
 
 export interface IpostData {
   id: string;
