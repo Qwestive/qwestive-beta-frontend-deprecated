@@ -135,51 +135,6 @@ export interface IpostPollSubmission extends IpostPreviewSubmission {
   options: Array<IpollOption>;
 }
 
-/// A post preview that is retrieved from the DB. It differs from
-/// IpostPreviewSubmission in that it has an ID since it was already added
-/// to DB.
-/* export interface IpostPreview extends IpostPreviewSubmission {
-  id: string;
-} */
-
-/// An article that is retrieved from the DB. It differs from
-/// IpostArticleSubmission in that it has an ID since it was already added
-/// to DB.
-/* export interface IpostArticle extends IpostPreview {
-  content: string;
-} */
-
-/* export interface IpollOption {
-  id: string;
-  name: string;
-  voteUserIds: Array<string>;
-} */
-
-/// A post that is retrieved from the DB. It differs from
-/// IpostPollSubmission in that it has an ID since it was already added
-/// to DB.
-/* export interface IpostPoll extends IpostPreview {
-  content: string;
-  options: Array<IpollOption>;
-} */
-
-export interface IpostData {
-  id: string;
-  postType: string;
-  accessTokenId: string;
-  accessMinimumTokenBalance: number;
-  authorUserId: string;
-  authorUserName: string;
-  authorPublicKey: string;
-  authorProfileImageUrl: string;
-  title: string;
-  contents: string;
-  creationDate: Date;
-  upVoteUserIds: Array<string>;
-  downVoteUserIds: Array<string>;
-  numberOfComments: number;
-}
-
 /// A comment that is submitted to the DB as a new comment for a post.
 export interface IpostCommentSubmission {
   postId: string;
