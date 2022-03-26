@@ -3,14 +3,14 @@ import { toast } from 'react-toastify';
 import { useRecoilValue } from 'recoil';
 
 import { IpostPreview } from 'types/types';
-import { userTokensOwnedAtom } from 'services/recoil/userInfo';
+import { userAccountTokensAtom } from 'services/recoil/userInfo';
 import { userFinishedLoadingAtom } from 'services/recoil/appState';
 import { queryPostFeed } from 'services/Firebase/GetData/PostUtils';
 import LoadingDots from 'components/Util/LoadingDots';
 import PostPreviewCard from '../../Community/Feed/PostPreviewCard';
 
 export default function PostFeedTab(): JSX.Element {
-  const ownedTokens = useRecoilValue(userTokensOwnedAtom);
+  const accountTokens = useRecoilValue(userAccountTokensAtom);
   const userFinishedLoading = useRecoilValue(userFinishedLoadingAtom);
   const [loading, setLoading] = useState(true);
   const [postList, setPostList] = useState<IpostPreview[]>([]);
@@ -18,10 +18,14 @@ export default function PostFeedTab(): JSX.Element {
   async function getPostFeed() {
     setLoading(true);
     try {
-      const tokenOwnedSlice = Object.keys(ownedTokens).slice(0, 10);
-      // Array.from(ownedTokens.keys()).slice(0, 10);
-      const queryPosts = await queryPostFeed(tokenOwnedSlice);
-      setPostList(queryPosts);
+      const feedCommunityIds: string[] = [];
+      accountTokens.fungibleAccountTokensByMint.forEach((value) =>
+        feedCommunityIds.push(value.mint)
+      );
+      accountTokens.nonFungibleAccountTokensByCollection.forEach((value) =>
+        feedCommunityIds.push(value.id)
+      );
+      setPostList(await queryPostFeed(feedCommunityIds.slice(0, 10)));
       /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     } catch (error: any) {
       toast.error(error?.message);
@@ -33,7 +37,7 @@ export default function PostFeedTab(): JSX.Element {
     if (userFinishedLoading) {
       getPostFeed();
     }
-  }, [ownedTokens, userFinishedLoading]);
+  }, [accountTokens, userFinishedLoading]);
 
   return (
     <div>

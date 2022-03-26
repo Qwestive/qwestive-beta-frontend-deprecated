@@ -1,4 +1,10 @@
 import { atom } from 'recoil';
+import {
+  InonFungibleTokenCollection,
+  AccountTokensByMintOrCollection,
+  Itoken,
+  IfungibleToken,
+} from 'types/types';
 
 export const userIdAtom = atom<string | undefined>({
   key: 'id',
@@ -30,9 +36,15 @@ export const userCoverImageAtom = atom<string | undefined>({
   default: undefined,
 });
 
-export const userTokensOwnedAtom = atom<Map<string, number>>({
+export const userAccountTokensAtom = atom<AccountTokensByMintOrCollection>({
   key: 'userTokensOwned',
-  default: new Map<string, number>(),
+  default: {
+    fungibleAccountTokensByMint: new Map<string, IfungibleToken>(),
+    nonFungibleAccountTokensByCollection: new Map<
+      string,
+      InonFungibleTokenCollection
+    >(),
+  },
 });
 
 export const userBioAtom = atom<string | undefined>({

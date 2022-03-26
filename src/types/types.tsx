@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { PublicKey } from '@solana/web3.js';
 import { ReactNode, Dispatch, SetStateAction } from 'react';
 import { SetterOrUpdater } from 'recoil';
@@ -22,39 +23,92 @@ export interface IcommunityTokenInfo {
   address: string | undefined;
 }
 
-export interface ItokenOwnedCommunity {
+/**
+ * Types for a token
+ */
+
+export interface Itoken {
+  isFungible: boolean;
   mint: string;
-  amountHeld: number;
-  name: string | undefined;
-  imageUrl: string | undefined;
-  communityData: Icommunity | undefined;
+  ammountOwned: number;
+}
+
+export interface IfungibleToken extends Itoken {
+  isFungible: true;
+}
+
+export interface InonFungibleToken extends Itoken {
+  isFungible: false;
+  ammountOwned: 1;
+}
+
+export interface InonFungibleTokenMetadata {
+  name: string;
+  symbol: string;
+  creators: Array<string>;
+  uri: string;
+}
+
+export interface InonFungibleTokenCollectionMetadata {
+  symbol: string;
+  creators: Array<string>;
+}
+
+export function areTokensEqual(objA: Itoken, objB: Itoken): boolean {
+  return (
+    objA.isFungible === objB.isFungible &&
+    objA.mint === objB.mint &&
+    objA.ammountOwned === objB.ammountOwned
+  );
 }
 
 /**
- * Token types
+ * Types for user owned tokens
  */
 
-export interface InonFungibleToken {
-  mint: string;
-  imageUrl: string;
+export interface AccountTokens {
+  fungibleAccountTokens: Map<string, IfungibleToken>;
+  nonFungibleAccountTokens: Map<string, InonFungibleToken>;
 }
 
-export interface InonFungibleTokenOwned {
-  collectionName: string;
-  creatorMints: Array<string>;
-  tokensHeld: Array<InonFungibleToken>;
+export interface InonFungibleTokenCollection {
+  id: string;
+  metadata: InonFungibleTokenCollectionMetadata;
+  tokensOwned: Array<InonFungibleToken>;
 }
 
-export interface IfungibleTokenOwned {
-  mint: string;
-  name: string | undefined;
+export interface AccountTokensByMintOrCollection {
+  fungibleAccountTokensByMint: Map<string, IfungibleToken>;
+  nonFungibleAccountTokensByCollection: Map<
+    string,
+    InonFungibleTokenCollection
+  >;
+}
+
+/* 
+  Community Types:
+*/
+export type TcommunityType = 'fungible' | 'nonfungible';
+
+export type TtokenCommunity =
+  | IfungibleTokenCommunity
+  | InonFungibleTokenCommunity;
+
+export interface ItokenCommunity {
+  cid: string;
+  name: string;
   imageUrl: string | undefined;
-  amountHeld: number;
+  isActive: boolean;
+  communityType: TcommunityType;
 }
 
-export interface ItokenOwned {
-  fungibleTokens: Array<IfungibleTokenOwned>;
-  nonFungibleTokens: Array<InonFungibleTokenOwned>;
+export interface IfungibleTokenCommunity extends ItokenCommunity {
+  tokenData: IfungibleToken;
+}
+
+export interface InonFungibleTokenCommunity extends ItokenCommunity {
+  metadata: InonFungibleTokenCollectionMetadata;
+  tokensOwned: Array<InonFungibleToken>;
 }
 
 /* 

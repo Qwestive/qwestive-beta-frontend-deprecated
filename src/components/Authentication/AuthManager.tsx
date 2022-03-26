@@ -4,8 +4,19 @@ import { useRecoilState } from 'recoil';
 import { doc, getDoc } from 'firebase/firestore';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { toast } from 'react-toastify';
+import {
+  AccountTokensByMintOrCollection,
+  areTokensEqual,
+  InonFungibleTokenCollection,
+  IfungibleToken,
+  InonFungibleToken,
+} from 'types/types';
+import { dbToNonFungibleTokenCollection } from 'services/Firebase/Converters/TokensOwnedConverter';
 import { areMapsTheSame, objectToMap } from '../../functions/Util';
-import UpdateTokensOwned from '../../services/Firebase/UpdateTokensOwned';
+import {
+  UpdateAccountFungibleTokens,
+  UpdateAccountNonFungibleTokens,
+} from '../../services/Firebase/UpdateAccountTokens';
 import SigninWithWallet from '../../services/Firebase/Authentication/SigninWithWallet';
 import SignoutWithWallet from '../../services/Firebase/Authentication/SignoutWithWallet';
 import {
@@ -20,14 +31,14 @@ import {
   userCoverImageAtom,
   userBioAtom,
   userPersonalLinkAtom,
-  userTokensOwnedAtom,
+  userAccountTokensAtom,
   userIdAtom,
 } from '../../services/recoil/userInfo';
 
 import { userFinishedLoadingAtom } from '../../services/recoil/appState';
-import ReadUserTokenBalances from '../../services/Solana/GetData/ReadUserTokenBalances';
+import ReadUserAccountTokens from '../../services/Solana/GetData/ReadUserAccountTokens';
 
-/* 
+/*
 It is used as a component
 TODO:
 - handle errors better ?
@@ -48,7 +59,7 @@ export default function AuthManager({
   const [, setCoverImageAtom] = useRecoilState(userCoverImageAtom);
   const [, setBio] = useRecoilState(userBioAtom);
   const [, setPersonalLink] = useRecoilState(userPersonalLinkAtom);
-  const [, setUserTokensOwned] = useRecoilState(userTokensOwnedAtom);
+  const [, setUserAccountTokens] = useRecoilState(userAccountTokensAtom);
   const [, setUserFinishLoading] = useRecoilState(userFinishedLoadingAtom);
 
   async function trySigninWithWallet() {
@@ -65,11 +76,67 @@ export default function AuthManager({
     }
   }
 
-async function updateUserFungibleTokensOwned() {
-  
-}
+  async function updateUserAccountFungibleTokens(
+    dbTokens: Map<string, IfungibleToken>,
+    walletTokens: Map<string, IfungibleToken>
+  ): Promise<Map<string, IfungibleToken>> {
+    if (!areMapsTheSame(dbTokens, walletTokens, areTokensEqual)) {
+      try {
+        const updatedTokensOwned = await UpdateAccountFungibleTokens();
+        return objectToMap(updatedTokensOwned?.data?.tokensOwnedByMint ?? {});
+      } catch (error) {
+        toast.error('Failed to update wallet holdings');
+      }
+    }
+    return dbTokens;
+  }
 
-async function updateUserNonFungibleTokensOwned() {}
+  async function updateUserAccountNonFungibleTokens(
+    dbTokenCollection: Map<string, InonFungibleTokenCollection>,
+    walletTokens: Map<string, InonFungibleToken>
+  ): Promise<Map<string, InonFungibleTokenCollection>> {
+    const dbTokens = new Map<string, InonFungibleToken>();
+    dbTokenCollection.forEach((element) => {
+      element.tokensOwned.forEach((token: InonFungibleToken) => {
+        dbTokens.set(token.mint, token);
+      });
+    });
+    if (!areMapsTheSame(dbTokens, walletTokens, areTokensEqual)) {
+      try {
+        const updatedTokensOwned = await UpdateAccountNonFungibleTokens();
+        return dbToNonFungibleTokenCollection(
+          updatedTokensOwned?.data?.tokensOwnedByCollection ?? {}
+        );
+      } catch (error) {
+        toast.error('Failed to update wallet holdings');
+      }
+    }
+    return dbTokenCollection;
+  }
+
+  async function getUserAccountTokens(
+    targetPublicKey: string,
+    tokensOwnedByMint: any,
+    tokensOwnedByCollection: Map<string, InonFungibleTokenCollection>
+  ): Promise<AccountTokensByMintOrCollection> {
+    const { fungibleAccountTokens, nonFungibleAccountTokens } =
+      await ReadUserAccountTokens(targetPublicKey);
+
+    const fungibleAccountTokensByMint = await updateUserAccountFungibleTokens(
+      objectToMap(tokensOwnedByMint ?? {}),
+      fungibleAccountTokens
+    );
+    const nonFungibleAccountTokensByCollection =
+      await updateUserAccountNonFungibleTokens(
+        tokensOwnedByCollection,
+        nonFungibleAccountTokens
+      );
+
+    return {
+      fungibleAccountTokensByMint,
+      nonFungibleAccountTokensByCollection,
+    };
+  }
 
   useEffect(() => {
     trySigninWithWallet();
@@ -88,7 +155,6 @@ async function updateUserNonFungibleTokensOwned() {}
             // get firestore, set user recoil
             const userRef = doc(Firestore, 'users', user.uid);
             const userDoc = await getDoc(userRef);
-
             if (userDoc.exists()) {
               setUserName(userDoc.data().userName);
               setDisplayName(userDoc.data().displayName);
@@ -96,25 +162,14 @@ async function updateUserNonFungibleTokensOwned() {}
               setCoverImageAtom(userDoc.data().coverImage);
               setBio(userDoc.data().bio);
               setPersonalLink(userDoc.data().personalLink);
-
-              const tokensOwnedFetched = objectToMap(
-                userDoc.data()?.tokensOwned ?? {}
+              const accountTokens = await getUserAccountTokens(
+                user.uid,
+                userDoc.data().tokensOwnedByMint,
+                dbToNonFungibleTokenCollection(
+                  userDoc.data().tokensOwnedByCollection ?? {}
+                )
               );
-              const tokensOwnedNow = await ReadUserTokenBalances(user.uid);
-
-              if (!areMapsTheSame(tokensOwnedNow, tokensOwnedFetched)) {
-                try {
-                  const updatedTokensOwned = await UpdateTokensOwned();
-                  setUserTokensOwned(
-                    objectToMap(updatedTokensOwned?.data?.tokensOwned ?? {})
-                  );
-                } catch (error) {
-                  toast.error('Failed to update wallet holdings');
-                  setUserTokensOwned(tokensOwnedFetched);
-                }
-              } else {
-                setUserTokensOwned(tokensOwnedNow);
-              }
+              setUserAccountTokens(accountTokens);
               setUserFinishLoading(true);
             } else {
               throw new Error('User information not found');

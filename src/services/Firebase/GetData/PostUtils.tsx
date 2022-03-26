@@ -83,17 +83,17 @@ export async function queryPostPreviews(
 }
 
 export async function queryPostFeed(
-  communityList: string[]
+  tokenIds: string[]
 ): Promise<IpostPreview[]> {
   const result: IpostPreview[] = [];
-  if (communityList.length === 0) {
+  if (tokenIds.length === 0) {
     return result;
   }
   const postRef = collection(Firestore, 'postPreviews');
 
   const postQuery = query(
     postRef,
-    where('accessTokenId', 'in', communityList),
+    where('accessTokenId', 'in', tokenIds),
     orderBy('creationDate', 'desc'),
     limit(10)
   ).withConverter(postPreviewConverter);

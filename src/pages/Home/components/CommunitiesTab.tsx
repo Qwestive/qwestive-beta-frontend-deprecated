@@ -3,36 +3,40 @@ import { useRecoilValue } from 'recoil';
 import { toast } from 'react-toastify';
 import { SearchIcon } from '@heroicons/react/solid';
 import { useTokenRegistry } from 'components/Solana/TokenRegistry';
-import GenerateTokenOwnedList from 'services/Solana/GetData/GenerateTokenOwnedList';
 import LoadingDots from 'components/Util/LoadingDots';
-import { ItokenOwnedCommunity } from 'types/types';
+import { TtokenCommunity } from 'types/types';
 import { userFinishedLoadingAtom } from 'services/recoil/appState';
 import {
   userPublicKeyAtom,
-  userTokensOwnedAtom,
+  userAccountTokensAtom,
 } from 'services/recoil/userInfo';
+import {
+  GetFungibleCommunityData,
+  GetNonFunibleCommunityData,
+} from 'services/Solana/GetData/GetTokenData';
 import OwnedTokenGrid from './OwnedTokenGrid';
 
 export default function CommunitiesTab(): JSX.Element {
   const userPublicKey = useRecoilValue(userPublicKeyAtom);
   const userFinishedLoading = useRecoilValue(userFinishedLoadingAtom);
-  const userTokensOwned = useRecoilValue(userTokensOwnedAtom);
+  const userAccountTokens = useRecoilValue(userAccountTokensAtom);
 
   const tokenRegistry = useTokenRegistry();
-  const [tokenOwnedList, setTokenOwnedList] = useState<ItokenOwnedCommunity[]>(
+  // TODO: it may not be necessary to set this with usestate since it is
+  // not used in the template.
+  const [tokenCommunities, setTokenCommunities] = useState<TtokenCommunity[]>(
     []
   );
-  const [tokenOwnedSearchedResults, setTokenOwnedSearchedResults] = useState<
-    ItokenOwnedCommunity[]
-  >([]);
+  const [tokenCommunitySearchResults, setTokenCommunitySearchResults] =
+    useState<TtokenCommunity[]>([]);
 
   const [loading, setLoading] = useState(true);
   const [searchPredicate, setSearchPredicate] = useState('');
 
   function updateTokenOwnedSearchResults(event: ChangeEvent<HTMLInputElement>) {
     setSearchPredicate(event.target.value);
-    setTokenOwnedSearchedResults(
-      tokenOwnedList.filter(
+    setTokenCommunitySearchResults(
+      tokenCommunities.filter(
         (token) =>
           token.name
             ?.toLowerCase()
@@ -45,12 +49,22 @@ export default function CommunitiesTab(): JSX.Element {
     setLoading(true);
     if (userPublicKey !== undefined) {
       try {
-        const tokenList = await GenerateTokenOwnedList(
-          tokenRegistry,
-          userTokensOwned
+        const communityDataPromises: Promise<TtokenCommunity>[] = [];
+        userAccountTokens.fungibleAccountTokensByMint.forEach((value) => {
+          communityDataPromises.push(
+            GetFungibleCommunityData(tokenRegistry, value)
+          );
+        });
+        userAccountTokens.nonFungibleAccountTokensByCollection.forEach(
+          (value) => {
+            communityDataPromises.push(GetNonFunibleCommunityData(value));
+          }
         );
-        setTokenOwnedList(tokenList);
-        setTokenOwnedSearchedResults(tokenList);
+        const communityData: TtokenCommunity[] = await Promise.all(
+          communityDataPromises
+        );
+        setTokenCommunities(communityData);
+        setTokenCommunitySearchResults(communityData);
         setSearchPredicate('');
         /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
       } catch (error: any) {
@@ -63,7 +77,7 @@ export default function CommunitiesTab(): JSX.Element {
     if (tokenRegistry.size !== 0 && userFinishedLoading) {
       generateTokenOwnedList();
     }
-  }, [tokenRegistry, userFinishedLoading, userTokensOwned]);
+  }, [tokenRegistry, userFinishedLoading, userAccountTokens]);
 
   return (
     <div>
@@ -103,7 +117,7 @@ export default function CommunitiesTab(): JSX.Element {
           </div>
         </div>
       ) : (
-        <OwnedTokenGrid tokenOwnedList={tokenOwnedSearchedResults} />
+        <OwnedTokenGrid ownedTokenCommunities={tokenCommunitySearchResults} />
       )}
     </div>
   );
