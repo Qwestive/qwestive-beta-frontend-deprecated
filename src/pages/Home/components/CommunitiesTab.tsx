@@ -6,10 +6,7 @@ import { useTokenRegistry } from 'components/Solana/TokenRegistry';
 import LoadingDots from 'components/Util/LoadingDots';
 import { TtokenCommunity } from 'types/types';
 import { userFinishedLoadingAtom } from 'services/recoil/appState';
-import {
-  userPublicKeyAtom,
-  userAccountTokensAtom,
-} from 'services/recoil/userInfo';
+import { userInfoAtom } from 'services/recoil/userInfo';
 import {
   GetFungibleCommunityData,
   GetNonFunibleCommunityData,
@@ -17,13 +14,11 @@ import {
 import OwnedTokenGrid from './OwnedTokenGrid';
 
 export default function CommunitiesTab(): JSX.Element {
-  const userPublicKey = useRecoilValue(userPublicKeyAtom);
   const userFinishedLoading = useRecoilValue(userFinishedLoadingAtom);
-  const userAccountTokens = useRecoilValue(userAccountTokensAtom);
+  const userPublicKey = useRecoilValue(userInfoAtom)?.publicKey;
+  const userAccountTokens = useRecoilValue(userInfoAtom)?.accountTokens;
 
   const tokenRegistry = useTokenRegistry();
-  // TODO: it may not be necessary to set this with usestate since it is
-  // not used in the template.
   const [tokenCommunities, setTokenCommunities] = useState<TtokenCommunity[]>(
     []
   );
@@ -50,12 +45,12 @@ export default function CommunitiesTab(): JSX.Element {
     if (userPublicKey !== undefined) {
       try {
         const communityDataPromises: Promise<TtokenCommunity>[] = [];
-        userAccountTokens.fungibleAccountTokensByMint.forEach((value) => {
+        userAccountTokens?.fungibleAccountTokensByMint?.forEach((value) => {
           communityDataPromises.push(
             GetFungibleCommunityData(tokenRegistry, value)
           );
         });
-        userAccountTokens.nonFungibleAccountTokensByCollection.forEach(
+        userAccountTokens?.nonFungibleAccountTokensByCollection?.forEach(
           (value) => {
             communityDataPromises.push(GetNonFunibleCommunityData(value));
           }
@@ -77,7 +72,7 @@ export default function CommunitiesTab(): JSX.Element {
     if (tokenRegistry.size !== 0 && userFinishedLoading) {
       generateTokenOwnedList();
     }
-  }, [tokenRegistry, userFinishedLoading, userAccountTokens]);
+  }, [tokenRegistry.size, userFinishedLoading, userAccountTokens]);
 
   return (
     <div>

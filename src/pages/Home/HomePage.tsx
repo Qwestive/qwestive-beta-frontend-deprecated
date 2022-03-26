@@ -1,14 +1,19 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import HomePageExternal from './HomePageExternal';
 import HomePageInternal from './HomePageInternal';
 
-import { userPublicKeyAtom } from '../../services/recoil/userInfo';
+import { userInfoAtom } from '../../services/recoil/userInfo';
 
 function HomePage(): JSX.Element {
-  const userPublicKey = useRecoilValue(userPublicKeyAtom);
+  const userPublicKey = useRecoilValue(userInfoAtom)?.publicKey;
+  const [showInternalView, setShowInternalView] = useState(false);
 
-  return userPublicKey ? <HomePageInternal /> : <HomePageExternal />;
+  useEffect(() => {
+    setShowInternalView(userPublicKey !== undefined);
+  }, [userPublicKey]);
+
+  return showInternalView ? <HomePageInternal /> : <HomePageExternal />;
 }
 
 export default HomePage;

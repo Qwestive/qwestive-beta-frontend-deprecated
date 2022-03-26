@@ -3,12 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useRecoilValue } from 'recoil';
 
-import WritePost from '../../../services/Firebase/WriteData/WritePost';
-import {
-  userPublicKeyAtom,
-  userProfileImageAtom,
-  userNameAtom,
-} from '../../../services/recoil/userInfo';
+import WritePost from 'services/Firebase/WriteData/WritePost';
+import { userInfoAtom } from 'services/recoil/userInfo';
 import {
   IpostPreviewSubmission,
   IpostPollSubmission,
@@ -40,9 +36,9 @@ type TpollOption = {
 
 export default function PollPost({ cId }: TpollPost): JSX.Element {
   const navigate = useNavigate();
-  const userPublicKey = useRecoilValue(userPublicKeyAtom);
-  const userName = useRecoilValue(userNameAtom);
-  const userProfileImage = useRecoilValue(userProfileImageAtom);
+  const userPublicKey = useRecoilValue(userInfoAtom)?.publicKey;
+  const userName = useRecoilValue(userInfoAtom)?.userName;
+  const userProfileImage = useRecoilValue(userInfoAtom)?.profileImage;
   /// Creates a new empty option.
   const buildNewOption = (): TpollOption => ({
     id: Date.now().toString(),

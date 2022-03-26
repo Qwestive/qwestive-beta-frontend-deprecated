@@ -3,26 +3,26 @@ import { toast } from 'react-toastify';
 import { useRecoilValue } from 'recoil';
 
 import { IpostPreview } from 'types/types';
-import { userAccountTokensAtom } from 'services/recoil/userInfo';
+import { userInfoAtom } from 'services/recoil/userInfo';
 import { userFinishedLoadingAtom } from 'services/recoil/appState';
 import { queryPostFeed } from 'services/Firebase/GetData/PostUtils';
 import LoadingDots from 'components/Util/LoadingDots';
 import PostPreviewCard from '../../Community/Feed/PostPreviewCard';
 
 export default function PostFeedTab(): JSX.Element {
-  const accountTokens = useRecoilValue(userAccountTokensAtom);
+  const accountTokens = useRecoilValue(userInfoAtom)?.accountTokens;
   const userFinishedLoading = useRecoilValue(userFinishedLoadingAtom);
   const [loading, setLoading] = useState(true);
   const [postList, setPostList] = useState<IpostPreview[]>([]);
 
-  async function getPostFeed() {
+  async function buildPostFeed() {
     setLoading(true);
     try {
       const feedCommunityIds: string[] = [];
-      accountTokens.fungibleAccountTokensByMint.forEach((value) =>
+      accountTokens?.fungibleAccountTokensByMint?.forEach((value) =>
         feedCommunityIds.push(value.mint)
       );
-      accountTokens.nonFungibleAccountTokensByCollection.forEach((value) =>
+      accountTokens?.nonFungibleAccountTokensByCollection?.forEach((value) =>
         feedCommunityIds.push(value.id)
       );
       setPostList(await queryPostFeed(feedCommunityIds.slice(0, 10)));
@@ -33,10 +33,18 @@ export default function PostFeedTab(): JSX.Element {
     setLoading(false);
   }
 
+  function clearPostFeed() {
+    setPostList([]);
+  }
+
   useEffect(() => {
     if (userFinishedLoading) {
-      getPostFeed();
+      buildPostFeed();
     }
+    // Clear post feed when component is unmounted.
+    return () => {
+      clearPostFeed();
+    };
   }, [accountTokens, userFinishedLoading]);
 
   return (

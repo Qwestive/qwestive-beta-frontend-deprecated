@@ -1,9 +1,28 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, {
+  useState,
+  useCallback,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+} from 'react';
 import Cropper from 'react-easy-crop';
 import { Point, Area } from 'react-easy-crop/types';
 import { toast } from 'react-toastify';
 import CreateCroppedImage from 'functions/ImageProcessing/CreateCroppedImage';
-import { IimageCropper } from 'types/types';
+
+interface IimageCropper {
+  setImageEditingModalOpen: Dispatch<SetStateAction<boolean>>;
+  image: string;
+  setImage: (im: string) => void;
+  imageSaver(fileToUpload: File): Promise<string>;
+  cropShape: 'rect' | 'round' | undefined;
+  successMessage: string;
+  cropperLgWidth: number;
+  cropperLgHeight: number;
+  cropperSmWidth: number;
+  cropperSmHeight: number;
+  maxZoom: number;
+}
 
 /**
  * @param cropperLgWidth -Width of the cropper when the screen is larger than sm

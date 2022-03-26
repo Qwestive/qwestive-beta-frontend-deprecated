@@ -1,7 +1,6 @@
 import { httpsCallable } from 'firebase/functions';
-
+import { PublicKey } from '@solana/web3.js';
 import { FirebaseFunctions, FirebaseAuth } from '../FirebaseConfig';
-import { IwalletPropForSignin } from '../../../types/types';
 import SignMessageForServer from './SignMessageForServer';
 /*
 Logic to SignIn an user with custom Auth process
@@ -11,6 +10,13 @@ signMessage is a wallet function
 TODO:
 - propagate or Toast if something goes wrong
 */
+
+interface IwalletPropForSignin {
+  uid: string;
+  publicKey: PublicKey;
+  signMessage: ((message: Uint8Array) => Promise<Uint8Array>) | undefined;
+}
+
 async function SigninWithWalletProcess(walletProp: IwalletPropForSignin) {
   const userCheckin = httpsCallable(
     FirebaseFunctions,

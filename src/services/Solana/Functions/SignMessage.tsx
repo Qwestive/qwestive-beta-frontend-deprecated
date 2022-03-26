@@ -1,4 +1,4 @@
-import { ImessageToSign, IsignedMessage } from '../../../types/types';
+import { ImessageToSign } from '../../../types/types';
 
 /*
 uid is the publickey as a string
@@ -6,6 +6,14 @@ message is the message to sign
 publickey is the Uint8Array version of teh publickey
 signMessage is a wallet function used to sign the message
 */
+
+interface IsignedMessage {
+  uid: string;
+  encodedMessage: Uint8Array;
+  signature: Uint8Array | undefined;
+  publicKeyBytes: Uint8Array | undefined;
+}
+
 export default async function SignMessage(
   messageToSign: ImessageToSign
 ): Promise<IsignedMessage> {

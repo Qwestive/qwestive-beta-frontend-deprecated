@@ -22,53 +22,55 @@ import { TokenRegistryProvider } from './components/Solana/TokenRegistry';
 function App(): JSX.Element {
   return (
     <WalletProviders>
-      <RecoilRoot>
-        <BrowserRouter>
-          <ToastContainer
-            position="bottom-right"
-            autoClose={5000}
-            hideProgressBar
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-          />
-          <AuthManager>
-            <Navbar />
-            <Routes>
-              <Route path="/Home" element={<HomePage />} />
-              <Route path="/" element={<Navigate to="/Home" />} />
-              <Route path="/user/:userName" element={<UserProfilePage />} />
-              <Route
-                path="/profile/settings"
-                element={<OnlyAuthRoute element={<ProfileSettingPage />} />}
-              />
-              <Route
-                path="/c/:cId"
-                element={
-                  <OnlyAuthRoute
-                    element={
-                      <TokenRegistryProvider>
-                        <CommunityPage />
-                      </TokenRegistryProvider>
-                    }
-                  />
-                }
-              />
-              <Route
-                path="/new-post/:cId"
-                element={<OnlyAuthRoute element={<NewPostPage />} />}
-              />
-              <Route
-                path="/post/:postId"
-                element={<OnlyAuthRoute element={<PostDetailPage />} />}
-              />
-            </Routes>
-          </AuthManager>
-        </BrowserRouter>
-      </RecoilRoot>
+      <TokenRegistryProvider>
+        <RecoilRoot>
+          <BrowserRouter>
+            <ToastContainer
+              position="bottom-right"
+              autoClose={5000}
+              hideProgressBar
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+            />
+            <AuthManager>
+              <Navbar />
+              <Routes>
+                <Route path="/Home" element={<HomePage />} />
+                <Route path="/" element={<Navigate to="/Home" />} />
+                <Route path="/user/:userName" element={<UserProfilePage />} />
+                <Route
+                  path="/profile/settings"
+                  element={<OnlyAuthRoute element={<ProfileSettingPage />} />}
+                />
+                <Route
+                  path="/c/:cId"
+                  element={
+                    <OnlyAuthRoute
+                      element={
+                        <TokenRegistryProvider>
+                          <CommunityPage />
+                        </TokenRegistryProvider>
+                      }
+                    />
+                  }
+                />
+                <Route
+                  path="/new-post/:cId"
+                  element={<OnlyAuthRoute element={<NewPostPage />} />}
+                />
+                <Route
+                  path="/post/:postId"
+                  element={<OnlyAuthRoute element={<PostDetailPage />} />}
+                />
+              </Routes>
+            </AuthManager>
+          </BrowserRouter>
+        </RecoilRoot>
+      </TokenRegistryProvider>
     </WalletProviders>
   );
 }

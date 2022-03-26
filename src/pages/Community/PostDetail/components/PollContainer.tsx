@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
-import CKeditorReader from '../../../../components/Posts/CKeditor/CKeditorReader';
-import { IpollOption } from '../../../../types/types';
-import { userIdAtom } from '../../../../services/recoil/userInfo';
+
+import { userInfoAtom } from 'services/recoil/userInfo';
+import CKeditorReader from 'components/Posts/CKeditor/CKeditorReader';
+import { IpollOption } from 'types/types';
 import ProgressBar from './ProgressBar';
 
 type IpollContainer = {
@@ -26,7 +27,7 @@ function PollContainer({
   const [hasVoted, setHasVoted] = useState(false);
   const [totalVotes, setTotalVotes] = useState(0);
   const userIdFiller = '_';
-  const userId = useRecoilValue(userIdAtom) ?? userIdFiller;
+  const userId = useRecoilValue(userInfoAtom)?.uid ?? userIdFiller;
 
   useEffect(() => {
     let voteFound = false;

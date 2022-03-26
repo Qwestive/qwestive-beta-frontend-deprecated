@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+import NotAccessNewPost from './Components/NotAccessNewPost';
 import NewPostTabs from './NewPostTabs';
 
 /*
@@ -39,15 +40,7 @@ export default function NewPostPage(): JSX.Element {
       {!loadingPage && hasAccess && cId !== undefined && (
         <NewPostTabs cId={cId} />
       )}
-      {!loadingPage && !hasAccess && (
-        <div>
-          <p>
-            You can not create posts for this community. To do so, you must own
-            the community&apos;s token
-          </p>
-          <Link to="/">Go back home</Link>
-        </div>
-      )}
+      {!loadingPage && !hasAccess && <NotAccessNewPost />}
     </div>
   );
 }
