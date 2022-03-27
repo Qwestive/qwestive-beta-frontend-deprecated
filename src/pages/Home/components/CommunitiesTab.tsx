@@ -69,7 +69,7 @@ export default function CommunitiesTab(): JSX.Element {
     setLoading(false);
   }
   useEffect(() => {
-    if (tokenRegistry.size !== 0 && userFinishedLoading) {
+    if (tokenRegistry.size > 0 && userFinishedLoading) {
       generateTokenOwnedList();
     }
   }, [tokenRegistry.size, userFinishedLoading, userAccountTokens]);

@@ -39,7 +39,7 @@ export function TokenRegistryProvider({
           }, new Map())
         );
       });
-  }, []);
+  }, [setTokenRegistry]);
 
   return (
     <TokenRegistryContext.Provider value={tokenRegistry}>
