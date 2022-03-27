@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
-import { queryPostPreviews } from '../../services/Firebase/GetData/PostUtils';
-import CategoriesLarge from './components/CategoriesLarge';
-import CategoriesSmall from './components/CategoriesSmall';
-import PostDisplayList from './Feed/PostDisplayList';
+import { queryPostPreviews } from 'services/Firebase/GetData/PostUtils';
 import {
   IcommunityInfo,
   IpostPreview,
   TpostSorting,
   ItokenCommunity,
 } from '../../types/types';
+import CategoriesLarge from './Categories/CategoriesLarge';
+import CategoriesSmall from './Categories/CategoriesSmall';
+import PostDisplayList from './Components/PostDisplayList';
+import NewPostPage from './NewPost/NewPostPage';
+import PostDetailPage from './PostDetail/PostDetailPage';
 
 type TmemberCommunityPage = {
   tokenCommunity: ItokenCommunity | undefined;
@@ -19,11 +21,12 @@ type TmemberCommunityPage = {
 export default function MemberCommunityPage({
   tokenCommunity,
 }: TmemberCommunityPage): JSX.Element {
-  const [postList, setPostList] = useState<Array<IpostPreview> | undefined>();
+  const [searchParams] = useSearchParams({});
+  const [postId, setPostId] = useState(searchParams.get('post'));
 
+  const [postList, setPostList] = useState<Array<IpostPreview> | undefined>();
   const [currentPostSorting, setCurrentPostSorting] =
     useState<TpostSorting>('New');
-
   const [currentCategory, setCurrentCategory] = useState('All Topics');
 
   const [postsLoading, setPostsLoading] = useState(true);
@@ -38,8 +41,6 @@ export default function MemberCommunityPage({
           currentCategory
         );
         setPostList(qResult);
-
-        /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
       } catch (error: any) {
         toast.error(error?.message);
       }
@@ -50,6 +51,10 @@ export default function MemberCommunityPage({
   useEffect(() => {
     getPosts();
   }, [currentPostSorting, currentCategory]);
+
+  useEffect(() => {
+    setPostId(searchParams.get('post'));
+  }, [searchParams]);
 
   return (
     <div>
@@ -71,13 +76,19 @@ export default function MemberCommunityPage({
           />
         </div>
         <div className="w-full ">
-          <PostDisplayList
-            currentPostSorting={currentPostSorting}
-            setCurrentPostSorting={setCurrentPostSorting}
-            communityId={tokenCommunity?.cid}
-            postList={postList}
-            postsLoading={postsLoading}
-          />
+          {!postId && (
+            <PostDisplayList
+              currentPostSorting={currentPostSorting}
+              setCurrentPostSorting={setCurrentPostSorting}
+              communityId={tokenCommunity?.cid}
+              postList={postList}
+              postsLoading={postsLoading}
+            />
+          )}
+          {postId === 'new-post' && <NewPostPage />}
+          {postId && postId !== 'new-post' && (
+            <PostDetailPage postId={postId} />
+          )}
         </div>
       </div>
     </div>

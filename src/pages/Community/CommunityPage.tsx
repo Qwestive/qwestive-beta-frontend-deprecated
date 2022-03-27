@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { IcommunityInfo, ItokenCommunity, TtokenCommunity } from 'types/types';
+
+import { useRecoilValue } from 'recoil';
+import LoadingDots from 'components/Util/LoadingDots';
+import { userInfoAtom } from 'services/recoil/userInfo';
+import { ItokenCommunity, TtokenCommunity } from 'types/types';
 import { GetTokenData } from 'services/Solana/GetData/GetTokenData';
-import NonMemberCommunityPage from './NonMemberCommunityPage';
-import NewCommunityPage from './NewCommunityPage';
+import NonMemberCommunityPage from './Components/NonMemberCommunityPage';
+import NewCommunityPage from './Components/NewCommunityPage';
 import MemberCommunityPage from './MemberCommunityPage';
 import { useTokenRegistry } from '../../components/Solana/TokenRegistry';
 import { getCommunityInfo } from '../../services/Firebase/GetData/CommunityUtil';
 import solanaLogo from '../../assets/solanaLogo.svg';
-// import { GetFungibleCommunityData } from 'services/Solana/GetData/GetTokenData';
 
-/*
-TODO: check credentials
-*/
 export default function CommunityPage(): JSX.Element {
   const { cId } = useParams<'cId'>();
   const tokenRegistry = useTokenRegistry();
-
+  const userAccountTokens = useRecoilValue(userInfoAtom)?.accountTokens;
   const [hasAccess, setHasAccess] = useState(false);
   const [loadingPage, setLoadingPage] = useState(true);
 
@@ -63,12 +63,17 @@ export default function CommunityPage(): JSX.Element {
     setLoadingPage(true);
     if (cId !== undefined) {
       try {
-        // TODO: check credentials.
-        setHasAccess(true);
-
+        if (
+          userAccountTokens?.fungibleAccountTokensByMint.get(cId) !==
+            undefined ||
+          userAccountTokens?.nonFungibleAccountTokensByCollection.get(cId) !==
+            undefined
+        ) {
+          setHasAccess(true);
+        } else {
+          throw new Error('You do not have access to this community');
+        }
         setTokenCommunity(await getTokenCommunity(cId));
-
-        /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
       } catch (error: any) {
         toast.error(error?.message);
         throw error;
@@ -91,21 +96,30 @@ export default function CommunityPage(): JSX.Element {
 
   return (
     <div className="max-w-5xl mx-auto px-2">
-      {loadingPage && <p>Loading ...</p>}
+      {loadingPage && (
+        <div>
+          <div
+            className="text-color-primary gap-2 items-baseline 
+          flex justify-center mt-10">
+            <div className="text-center text-2xl font-semibold ">Loading</div>
+            <LoadingDots classNameExtend="h-2 w-2" />
+          </div>
+        </div>
+      )}
       {!loadingPage && !hasAccess && (
         <NonMemberCommunityPage community={tokenCommunity} />
       )}
       {!loadingPage &&
         hasAccess &&
         cId !== undefined &&
-        tokenCommunity?.serverData !== undefined && (
-          <MemberCommunityPage tokenCommunity={tokenCommunity} />
+        tokenCommunity?.serverData === undefined && (
+          <NewCommunityPage community={tokenCommunity} />
         )}
       {!loadingPage &&
         hasAccess &&
         cId !== undefined &&
-        tokenCommunity?.serverData === undefined && (
-          <NewCommunityPage community={tokenCommunity} />
+        tokenCommunity?.serverData !== undefined && (
+          <MemberCommunityPage tokenCommunity={tokenCommunity} />
         )}
     </div>
   );

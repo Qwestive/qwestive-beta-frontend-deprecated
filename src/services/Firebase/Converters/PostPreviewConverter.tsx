@@ -3,6 +3,7 @@ import { IpostPreview } from '../../../types/types';
 
 // Firestore data converter
 export const postPreviewConverter = {
+  // not used
   toFirestore: (post: IpostPreview): DocumentData => {
     // Note, we don't simply return post because post contains id field which
     // we do not wish DocumentData to contain.

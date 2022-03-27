@@ -1,7 +1,8 @@
 import { doc, getDoc } from 'firebase/firestore';
+import { Icategory, IcommunityInfo } from 'types/types';
 import { Firestore } from '../FirebaseConfig';
-import { Icategory, IcommunityInfo } from '../../../types/types';
 import { communityConverter } from '../Converters/CommunityConverter';
+
 
 export async function getCommunityInfo(
   id: string

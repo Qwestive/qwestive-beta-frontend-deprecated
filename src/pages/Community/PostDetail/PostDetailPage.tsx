@@ -1,42 +1,70 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { ArrowLeftIcon } from '@heroicons/react/solid';
-import RichTextContainer from './components/RichTextContainer';
-import CommentSection from './components/CommentSection';
+import { toast } from 'react-toastify';
+
 import {
   IpostArticle,
   IpostPoll,
+  IpostContentType,
+  IpostPreview,
   ARTICLE_TYPE,
   POLL_TYPE,
-} from '../../../types/types';
-import PostActionsSection from './components/PostActionsSection';
-import { getPostInfo } from '../../../services/Firebase/GetData/PostUtils';
-import TipModalContainer from './components/TipModalContainer';
-import PollContainer from './components/PollContainer';
+} from 'types/types';
+import PostActionsSection from 'components/Posts/PostsReader/PostReaderAction/PostActionsSection';
+import {
+  getPostContent,
+  getPostPreview,
+} from 'services/Firebase/GetData/PostUtils';
+import TipModalContainer from 'components/Posts/PostsReader/PostReaderAction/Tipping/TipModalContainer';
+import PollContainer from 'components/Posts/PostsReader/PostReaderContent/PollContainer';
+import RichTextContainer from 'components/Posts/PostsReader/PostReaderContent/RichTextContainer';
+import CommentSection from 'components/Posts/PostsReader/PostComment/CommentSection';
 
 /// Component which shows all of the information inside a post.
 ///
 /// TODO:
 /// - Add loading state.
 /// - Add styling for "Post failed to load" message.
-function PostDetailPage(): JSX.Element {
-  const { postId } = useParams();
-  const [postFailedToLoad, setPostFailedToLoad] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [postData, setPostData] = useState<
-    IpostArticle | IpostPoll | undefined
-  >(undefined);
+
+type TpostDetailPage = {
+  postId: string;
+};
+
+export default function PostDetailPage({
+  postId,
+}: TpostDetailPage): JSX.Element {
+  const [postContent, setPostContent] = useState<IpostContentType | undefined>(
+    undefined
+  );
+  const [postPreview, setPostPreview] = useState<IpostPreview | undefined>(
+    undefined
+  );
   const [isTipModalOpen, setIsTipModalOpen] = useState(false);
   const [tipReceiverPublicKey, setTipReceiverPublicKey] = useState<string>();
   const [tipReceiverUserName, setTipReceiverUserName] = useState<string>();
 
+  const [postFailedToLoad, setPostFailedToLoad] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
   async function fetchPostData(
     targetPostId: string | undefined
   ): Promise<void> {
-    if (targetPostId === undefined || targetPostId === null) {
-      throw new Error('Invalid post ID: null');
+    setIsLoading(true);
+    try {
+      if (targetPostId === undefined || targetPostId === null) {
+        throw new Error('Invalid post ID: null');
+      }
+      const postPreviewFetched = await getPostPreview(targetPostId);
+      if (postPreviewFetched === undefined) throw new Error('Post not found');
+      setPostPreview(postPreviewFetched);
+      const postContentFetched = await getPostContent(targetPostId);
+      if (postContentFetched === undefined) throw new Error('Post not found');
+      setPostContent(postContentFetched);
+    } catch (error: any) {
+      toast.error(error?.message);
+      setPostFailedToLoad(true);
     }
-    setPostData(await getPostInfo(targetPostId));
     setIsLoading(false);
   }
 
@@ -50,12 +78,7 @@ function PostDetailPage(): JSX.Element {
   }
 
   useEffect(() => {
-    try {
-      fetchPostData(postId);
-    } catch (exception) {
-      setIsLoading(false);
-      setPostFailedToLoad(true);
-    }
+    fetchPostData(postId);
   }, [postId]);
 
   return (
@@ -63,9 +86,9 @@ function PostDetailPage(): JSX.Element {
       <Link
         className="flex flex-row"
         to={
-          postData?.accessTokenId !== null &&
-          postData?.accessTokenId !== undefined
-            ? `/c/${postData?.accessTokenId}`
+          postPreview?.accessTokenId !== null &&
+          postPreview?.accessTokenId !== undefined
+            ? `/c/${postPreview?.accessTokenId}`
             : '/'
         }>
         <ArrowLeftIcon className="h-4 my-auto mx-1" /> Back
@@ -80,31 +103,31 @@ function PostDetailPage(): JSX.Element {
             tipReceiverUserName={tipReceiverUserName ?? ''}
           />
           <div className="bg-white rounded-md my-6 pt-6 px-6">
-            {postData?.postType === POLL_TYPE && (
+            {postPreview?.postType === POLL_TYPE && (
               <PollContainer
-                title={postData?.title}
-                author={postData?.authorPublicKey}
-                creationDate={postData?.creationDate}
-                contents={postData?.content}
-                options={(postData as IpostPoll)?.options}
+                title={postPreview?.title}
+                author={postPreview?.authorPublicKey}
+                creationDate={postPreview?.creationDate}
+                contents={postContent?.content}
+                options={(postContent as IpostPoll)?.options}
               />
             )}
-            {postData?.postType === ARTICLE_TYPE && (
+            {postPreview?.postType === ARTICLE_TYPE && (
               <RichTextContainer
-                title={postData?.title}
-                author={postData?.authorPublicKey}
-                authorProfileImageUrl={postData?.authorProfileImageUrl}
-                creationDate={postData?.creationDate}
-                contents={(postData as IpostArticle)?.content}
+                title={postPreview?.title}
+                author={postPreview?.authorPublicKey}
+                authorProfileImageUrl={postPreview?.authorProfileImageUrl}
+                creationDate={postPreview?.creationDate}
+                contents={(postContent as IpostArticle)?.content}
               />
             )}
             <PostActionsSection
-              postId={postData?.id}
-              upVotes={postData?.upVoteUserIds}
-              downVotes={postData?.downVoteUserIds}
-              numComments={postData?.numberOfComments ?? 0}
-              authorUserName={postData?.authorUserName ?? ''}
-              authorPublicKey={postData?.authorPublicKey ?? ''}
+              postId={postPreview?.id}
+              upVotes={postPreview?.upVoteUserIds}
+              downVotes={postPreview?.downVoteUserIds}
+              numComments={postPreview?.numberOfComments ?? 0}
+              authorUserName={postPreview?.authorUserName ?? ''}
+              authorPublicKey={postPreview?.authorPublicKey ?? ''}
               tipCallback={(arg1, arg2) => handleOpenTipModal(arg1, arg2)}
             />
           </div>
@@ -117,5 +140,3 @@ function PostDetailPage(): JSX.Element {
     </div>
   );
 }
-
-export default PostDetailPage;
