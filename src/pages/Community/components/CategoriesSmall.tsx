@@ -3,18 +3,17 @@ import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/solid';
 
 import ClassNamesLogic from '../../../components/Util/ClassNamesLogic';
-import { Icategory, IcommunityTokenInfo } from '../../../types/types';
-
+import { Icategory, ItokenCommunity } from '../../../types/types';
 import defaultUserProfileImage from '../../../assets/defaultUserProfileImage.png';
 
 type TcategoriesSmall = {
-  communityTokenInfo: IcommunityTokenInfo | undefined;
+  community: ItokenCommunity | undefined;
   categoryList: Array<Icategory> | undefined;
   setCurrentCategory: React.Dispatch<React.SetStateAction<string>>;
   currentCategory: string;
 };
 export default function CategoriesSmall({
-  communityTokenInfo,
+  community,
   categoryList,
   setCurrentCategory,
   currentCategory,
@@ -27,12 +26,12 @@ export default function CategoriesSmall({
       <div>
         <div className="flex items-center py-2 gap-2 justify-left">
           <img
-            src={communityTokenInfo?.logoUrl ?? defaultUserProfileImage}
+            src={community?.imageUrl ?? defaultUserProfileImage}
             className="h-12"
             alt="tokenImage"
           />
           <p className="text-color-primary text-xl font-extrabold truncate">
-            {communityTokenInfo?.name ?? 'Unknown'}
+            {community?.name ?? 'Unknown'}
           </p>
         </div>
       </div>

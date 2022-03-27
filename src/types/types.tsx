@@ -13,28 +13,8 @@ export interface IuserInfo {
   accountTokens: AccountTokensByMintOrCollection; // not editable frontend
 }
 
-/* 
-  Community types
-*/
-export interface Icategory {
-  name: string;
-  count: number;
-}
-
-export interface Icommunity {
-  cId: string;
-  categories: Icategory[];
-}
-
-export interface IcommunityTokenInfo {
-  name: string | undefined;
-  symbol: string | undefined;
-  logoUrl: string | undefined;
-  address: string | undefined;
-}
-
 /**
- * Types for a token
+ * Types of token.
  */
 
 export interface Itoken {
@@ -59,6 +39,12 @@ export interface InonFungibleTokenMetadata {
   uri: string;
 }
 
+export interface InonFungibleTokenCollection {
+  id: string;
+  metadata: InonFungibleTokenCollectionMetadata;
+  tokensOwned: Array<InonFungibleToken>;
+}
+
 export interface InonFungibleTokenCollectionMetadata {
   symbol: string;
   creators: Array<string>;
@@ -73,18 +59,12 @@ export function areTokensEqual(objA: Itoken, objB: Itoken): boolean {
 }
 
 /**
- * Types for user owned tokens
+ * Types of user owned tokens in a wallet.
  */
 
 export interface AccountTokens {
   fungibleAccountTokens: Map<string, IfungibleToken>;
   nonFungibleAccountTokens: Map<string, InonFungibleToken>;
-}
-
-export interface InonFungibleTokenCollection {
-  id: string;
-  metadata: InonFungibleTokenCollectionMetadata;
-  tokensOwned: Array<InonFungibleToken>;
 }
 
 export interface AccountTokensByMintOrCollection {
@@ -95,10 +75,16 @@ export interface AccountTokensByMintOrCollection {
   >;
 }
 
-/* 
-  Community Types:
-*/
+/**
+ * Types of community. The data of a community for a fungible token
+ * is different from the data of a community for a non-fungible token.
+ */
+
 export type TcommunityType = 'fungible' | 'nonfungible';
+// export declare enum EcommunityType {
+//   fungible = 'fungible',
+//   nonfungible = 'nonfungible',
+// }
 
 export type TtokenCommunity =
   | IfungibleTokenCommunity
@@ -108,11 +94,12 @@ export interface ItokenCommunity {
   cid: string;
   name: string;
   imageUrl: string | undefined;
-  isActive: boolean;
   communityType: TcommunityType;
+  serverData: IcommunityInfo | undefined;
 }
 
 export interface IfungibleTokenCommunity extends ItokenCommunity {
+  symbol: string;
   tokenData: IfungibleToken;
 }
 
@@ -121,9 +108,21 @@ export interface InonFungibleTokenCommunity extends ItokenCommunity {
   tokensOwned: Array<InonFungibleToken>;
 }
 
-/* 
-  Auth types
-*/
+/* Information about a community stored in Qwestive DB. */
+
+export interface Icategory {
+  name: string;
+  count: number;
+}
+
+export interface IcommunityInfo {
+  isActive: boolean;
+  categories: Icategory[];
+}
+
+/*
+ * Auth types
+ */
 
 export interface ImessageToSign {
   uid: string;
@@ -132,9 +131,9 @@ export interface ImessageToSign {
   signMessage: ((message: Uint8Array) => Promise<Uint8Array>) | undefined;
 }
 
-/* 
-  Post types
-*/
+/*
+ *  Post types
+ */
 
 export type TpostSorting = 'New' | 'Top' | 'Poll' | 'Bounty';
 
@@ -150,8 +149,10 @@ export interface Icategories {
   count: number;
 }
 
-/// The preview of a post that is submitted to the DB as a new post for a
-/// community.
+/*
+ * The preview of a post that is submitted to the DB as a new post for a
+ * community.
+ */
 export interface IpostPreviewSubmission {
   postType: TpostType;
   accessTokenId: string;
@@ -168,27 +169,35 @@ export interface IpostPreviewSubmission {
   numberOfComments: number;
 }
 
-/// An article that is submitted to the DB as a new post for a community.
+/*
+ * An article that is submitted to the DB as a new post for a community.
+ */
 export interface IpostArticleSubmission extends IpostPreviewSubmission {
   content: string;
 }
 
-/// A poll that is submitted to the DB as a new post for a community.
+/*
+ * A poll that is submitted to the DB as a new post for a community.
+ */
 export interface IpostPollSubmission extends IpostPreviewSubmission {
   content: string;
   options: Array<IpollOption>;
 }
 
-/// A post preview that is retrieved from the DB. It differs from
-/// IpostPreviewSubmission in that it has an ID since it was already added
-/// to DB.
+/*
+ * A post preview that is retrieved from the DB. It differs from
+ * IpostPreviewSubmission in that it has an ID since it was already added
+ * to DB.
+ */
 export interface IpostPreview extends IpostPreviewSubmission {
   id: string;
 }
 
-/// An article that is retrieved from the DB. It differs from
-/// IpostArticleSubmission in that it has an ID since it was already added
-/// to DB.
+/*
+ * An article that is retrieved from the DB. It differs from
+ * IpostArticleSubmission in that it has an ID since it was already added
+ * to DB.
+ */
 export interface IpostArticle extends IpostPreview {
   content: string;
 }
@@ -199,9 +208,11 @@ export interface IpollOption {
   voteUserIds: Array<string>;
 }
 
-/// A post that is retrieved from the DB. It differs from
-/// IpostPollSubmission in that it has an ID since it was already added
-/// to DB.
+/*
+ * A poll post that is retrieved from the DB. It differs from
+ * IpostPollSubmission in that it has an ID since it was already added
+ * to DB.
+ */
 export interface IpostPoll extends IpostPreview {
   content: string;
   options: Array<IpollOption>;
@@ -224,7 +235,9 @@ export interface IpostData {
   numberOfComments: number;
 }
 
-/// A comment that is submitted to the DB as a new comment for a post.
+/*
+ * A comment that is submitted to the DB as a new comment for a post.
+ */
 export interface IpostCommentSubmission {
   postId: string;
   depth: number;
@@ -238,9 +251,11 @@ export interface IpostCommentSubmission {
   downVoteUserIds: Array<string>;
 }
 
-/// A comment that is submitted to the DB as a new comment for a post. It
-///  differs from IpostCommentSubmission in that it has an ID since it was
-/// already added to DB.
+/*
+ * A comment that is submitted to the DB as a new comment for a post. It
+ * differs from IpostCommentSubmission in that it has an ID since it was
+ * already added to DB.
+ */
 export interface IpostComment extends IpostCommentSubmission {
   id: string;
 }

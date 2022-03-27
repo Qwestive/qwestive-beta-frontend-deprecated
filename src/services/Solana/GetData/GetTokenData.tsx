@@ -1,79 +1,63 @@
-import { TokenInfoMap } from '@solana/spl-token-registry';
-import defaultUserProfileImage from 'assets/defaultUserProfileImage.png';
-import solanaLogo from 'assets/solanaLogo.svg';
+import { ParsedAccountData, PublicKey } from '@solana/web3.js';
+import { Metadata } from '@metaplex-foundation/mpl-token-metadata';
 import {
   IfungibleToken,
-  IfungibleTokenCommunity,
-  InonFungibleTokenCollection,
-  InonFungibleTokenCommunity,
+  InonFungibleToken,
+  InonFungibleTokenMetadata,
 } from 'types/types';
+import axios from 'axios';
+import { buildConnection } from '../Functions/SolanaUtil';
 
-import { getCommunityInfo } from '../../Firebase/GetData/CommunityUtil';
-import {
-  GetOnChainNftMetadata,
-  GetOffChainNftMetadata,
-} from './GetNftMetadata';
-
-async function isCommunityActive(cid: string): Promise<boolean> {
-  const communityInfo = await getCommunityInfo(cid);
-  return (communityInfo?.categories?.length ?? 0) > 0;
-}
-
-export async function GetFungibleCommunityData(
-  tokenRegistry: TokenInfoMap,
-  token: IfungibleToken
-): Promise<IfungibleTokenCommunity> {
-  const isActive = await isCommunityActive(token.mint);
-  if (token.mint === 'SOL') {
-    return {
-      cid: token.mint,
-      name: 'Sol',
-      imageUrl: solanaLogo,
-      isActive,
-      tokenData: token,
-      communityType: 'fungible',
-    };
-  }
-  const tokenInfo = tokenRegistry.get(token.mint);
-  if (tokenInfo !== undefined) {
-    return {
-      cid: token.mint,
-      name: tokenInfo.symbol,
-      imageUrl: tokenInfo.logoURI,
-      isActive,
-      tokenData: token,
-      communityType: 'fungible',
-    };
-  }
+/// Returns basic data about a provided mint ID or undefined if provided
+/// mint ID is not associated with a token.
+export async function GetTokenData(
+  mint: string
+): Promise<IfungibleToken | InonFungibleToken> {
+  const connection = buildConnection();
+  const res = await connection.getParsedAccountInfo(new PublicKey(mint));
+  const parsedAccountToken = res.value?.data as ParsedAccountData;
+  const ammountOwned =
+    parsedAccountToken.parsed.info?.tokenAmount?.uiAmount ?? 0;
+  const { ammount, decimals } = parsedAccountToken.parsed.info.tokenAmount;
   return {
-    cid: token.mint,
-    name: 'Unknown',
-    imageUrl: defaultUserProfileImage,
-    isActive,
-    tokenData: token,
-    communityType: 'fungible',
+    isFungible: ammount !== '1' && decimals !== 0,
+    mint,
+    ammountOwned,
   };
 }
 
-export async function GetNonFunibleCommunityData(
-  nftCollection: InonFungibleTokenCollection
-): Promise<InonFungibleTokenCommunity> {
-  function getRandomInt(max: number) {
-    return Math.floor(Math.random() * max);
-  }
-  const collectionToken =
-    nftCollection.tokensOwned[getRandomInt(nftCollection.tokensOwned.length)];
-  const { uri } = await GetOnChainNftMetadata(collectionToken.mint);
-  const data = await GetOffChainNftMetadata(uri);
-  const isActive = await isCommunityActive(nftCollection.id);
+export async function GetOnChainNftMetadata(
+  mint: string
+): Promise<InonFungibleTokenMetadata> {
+  const connection = buildConnection();
+  const tokenMetaPubkey = await Metadata.getPDA(new PublicKey(mint));
+  const tokenMeta = await Metadata.load(connection, tokenMetaPubkey);
+
+  const name = tokenMeta.data.data.name ?? '';
+  const creators =
+    tokenMeta.data.data.creators?.map((item) => item.address) ?? [];
+  const symbol = tokenMeta.data.data.symbol ?? '';
+  const uri = tokenMeta.data.data.uri ?? '';
 
   return {
-    cid: nftCollection.id,
-    name: data.collectionName,
-    imageUrl: data.imageUrl,
-    isActive,
-    metadata: nftCollection.metadata,
-    tokensOwned: nftCollection.tokensOwned,
-    communityType: 'nonfungible',
+    name,
+    creators,
+    symbol,
+    uri,
   };
+}
+
+export async function GetOffChainNftMetadata(uri: string): Promise<{
+  collectionName: string;
+  imageUrl: string | undefined;
+}> {
+  try {
+    const response = await axios.get(uri);
+    return {
+      collectionName: response.data.collection.name,
+      imageUrl: response.data.image,
+    };
+  } catch (error) {
+    return { collectionName: 'Unknown', imageUrl: undefined };
+  }
 }

@@ -43,18 +43,18 @@ export default function OwnedTokenGrid({
                     </h3>
                     <span
                       className={ClassNamesLogic(
-                        community.isActive
+                        community?.serverData?.isActive ?? false
                           ? ' text-green-800 bg-green-100'
                           : 'bg-pink-100 text-pink-800',
                         'flex-shrink-0 inline-block px-2 py-0.5' +
                           'text-xs font-medium  rounded-full'
                       )}>
-                      {community.isActive ? 'Active' : 'New'}
+                      {community?.serverData?.isActive ? 'Active' : 'New'}
                     </span>
                   </div>
                   <p className="mt-1 text-gray-500 text-sm truncate">
                     {community.communityType === 'fungible'
-                      ? community.cid
+                      ? (community as IfungibleTokenCommunity).symbol
                       : (community as InonFungibleTokenCommunity).metadata
                           .symbol}
                   </p>

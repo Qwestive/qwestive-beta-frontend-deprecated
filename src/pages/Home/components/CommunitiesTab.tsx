@@ -10,7 +10,7 @@ import { userInfoAtom } from 'services/recoil/userInfo';
 import {
   GetFungibleCommunityData,
   GetNonFunibleCommunityData,
-} from 'services/Solana/GetData/GetTokenData';
+} from 'services/Solana/GetData/GetCommunityData';
 import OwnedTokenGrid from './OwnedTokenGrid';
 
 export default function CommunitiesTab(): JSX.Element {
@@ -69,7 +69,7 @@ export default function CommunitiesTab(): JSX.Element {
     setLoading(false);
   }
   useEffect(() => {
-    if (tokenRegistry.size > 0 && userFinishedLoading) {
+    if (userFinishedLoading) {
       generateTokenOwnedList();
     }
   }, [tokenRegistry.size, userFinishedLoading, userAccountTokens]);

@@ -6,20 +6,18 @@ import CategoriesLarge from './components/CategoriesLarge';
 import CategoriesSmall from './components/CategoriesSmall';
 import PostDisplayList from './Feed/PostDisplayList';
 import {
-  Icommunity,
+  IcommunityInfo,
   IpostPreview,
   TpostSorting,
-  IcommunityTokenInfo,
+  ItokenCommunity,
 } from '../../types/types';
 
 type TmemberCommunityPage = {
-  communityInfo: Icommunity | undefined;
-  communityTokenInfo: IcommunityTokenInfo | undefined;
+  tokenCommunity: ItokenCommunity | undefined;
 };
 
 export default function MemberCommunityPage({
-  communityInfo,
-  communityTokenInfo,
+  tokenCommunity,
 }: TmemberCommunityPage): JSX.Element {
   const [postList, setPostList] = useState<Array<IpostPreview> | undefined>();
 
@@ -31,11 +29,11 @@ export default function MemberCommunityPage({
   const [postsLoading, setPostsLoading] = useState(true);
 
   async function getPosts() {
-    if (communityInfo?.cId !== undefined) {
+    if (tokenCommunity?.cid !== undefined) {
       setPostsLoading(true);
       try {
         const qResult = await queryPostPreviews(
-          communityInfo.cId,
+          tokenCommunity.cid,
           currentPostSorting,
           currentCategory
         );
@@ -57,8 +55,8 @@ export default function MemberCommunityPage({
     <div>
       <div className="items-center w-full block md:hidden">
         <CategoriesSmall
-          communityTokenInfo={communityTokenInfo}
-          categoryList={communityInfo?.categories}
+          community={undefined}
+          categoryList={tokenCommunity?.serverData?.categories}
           setCurrentCategory={setCurrentCategory}
           currentCategory={currentCategory}
         />
@@ -66,8 +64,8 @@ export default function MemberCommunityPage({
       <div className="flex mx-auto gap-5 mt-2 mb-2 ">
         <div className="items-center w-56 hidden md:block">
           <CategoriesLarge
-            communityTokenInfo={communityTokenInfo}
-            categoryList={communityInfo?.categories}
+            community={undefined}
+            categoryList={tokenCommunity?.serverData?.categories}
             setCurrentCategory={setCurrentCategory}
             currentCategory={currentCategory}
           />
@@ -76,7 +74,7 @@ export default function MemberCommunityPage({
           <PostDisplayList
             currentPostSorting={currentPostSorting}
             setCurrentPostSorting={setCurrentPostSorting}
-            communityInfo={communityInfo}
+            communityId={tokenCommunity?.cid}
             postList={postList}
             postsLoading={postsLoading}
           />
