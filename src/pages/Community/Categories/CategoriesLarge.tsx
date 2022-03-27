@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
-import ClassNamesLogic from '../../../components/Util/ClassNamesLogic';
-import { Icategory, IcommunityTokenInfo } from '../../../types/types';
+import ClassNamesLogic from 'components/Util/ClassNamesLogic';
+import { Icategory, IcommunityTokenInfo } from 'types/types';
 
-import defaultUserProfileImage from '../../../assets/defaultUserProfileImage.png';
+import defaultUserProfileImage from 'assets/defaultUserProfileImage.png';
 
 type TcategoriesLarge = {
   communityTokenInfo: IcommunityTokenInfo | undefined;
@@ -17,6 +18,7 @@ export default function CategoriesLarge({
   setCurrentCategory,
   currentCategory,
 }: TcategoriesLarge): JSX.Element {
+  const [, setSearchParams] = useSearchParams({});
   const [categoriesViewCounter, setCategoriesViewCounter] = useState(1);
   const [subsetCategoryList, setSubsetCategoryList] = useState(
     categoryList?.slice(0, categoriesViewCounter * 5)
@@ -50,7 +52,10 @@ export default function CategoriesLarge({
             <button
               type="button"
               className="w-full"
-              onClick={() => setCurrentCategory('All Topics')}>
+              onClick={() => {
+                setCurrentCategory('All Topics');
+                setSearchParams('');
+              }}>
               <p className="px-4 font-medium text-left">All Topics</p>
             </button>
           </div>
@@ -66,7 +71,10 @@ export default function CategoriesLarge({
                 <button
                   type="button"
                   className="w-full"
-                  onClick={() => setCurrentCategory(category.name)}>
+                  onClick={() => {
+                    setCurrentCategory(category.name);
+                    setSearchParams('');
+                  }}>
                   <div className="flex">
                     <p
                       className="px-4 w-52 truncate 

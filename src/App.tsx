@@ -3,21 +3,20 @@ import { BrowserRouter, Routes, Navigate, Route } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import { ToastContainer } from 'react-toastify';
 
-import WalletProviders from './components/Solana/SolanaWallet/WalletProviders';
-import AuthManager from './components/Authentication/AuthManager';
-import OnlyAuthRoute from './components/Authentication/OnlyAuthRoute';
-import Navbar from './components/Navbar/Navbar';
+import WalletProviders from 'components/Solana/SolanaWallet/WalletProviders';
+import AuthManager from 'components/Authentication/AuthManager';
+import OnlyAuthRoute from 'components/Authentication/OnlyAuthRoute';
+import { TokenRegistryProvider } from 'components/Solana/TokenRegistry';
 
-import HomePage from './pages/Home/HomePage';
-import UserProfilePage from './pages/UserProfile/UserProfilePage';
-import ProfileSettingPage from './pages/UserProfile/SelfProfile/ProfileSettingPage';
+import Navbar from 'components/Navbar/Navbar';
 
-import CommunityPage from './pages/Community/CommunityPage';
-import PostDetailPage from './pages/Community/PostDetailPage';
-import NewPostPage from './pages/NewPost/NewPostPage';
+import HomePage from 'pages/Home/HomePage';
+import UserProfilePage from 'pages/UserProfile/UserProfilePage';
+import ProfileSettingPage from 'pages/UserProfile/SelfProfile/ProfileSettingPage';
+
+import CommunityPage from 'pages/Community/CommunityPage';
 
 import 'react-toastify/dist/ReactToastify.css';
-import { TokenRegistryProvider } from './components/Solana/TokenRegistry';
 
 function App(): JSX.Element {
   return (
@@ -56,14 +55,6 @@ function App(): JSX.Element {
                     }
                   />
                 }
-              />
-              <Route
-                path="/new-post/:cId"
-                element={<OnlyAuthRoute element={<NewPostPage />} />}
-              />
-              <Route
-                path="/post/:postId"
-                element={<OnlyAuthRoute element={<PostDetailPage />} />}
               />
             </Routes>
           </AuthManager>

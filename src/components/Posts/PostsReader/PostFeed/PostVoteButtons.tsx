@@ -6,7 +6,7 @@ import {
   UpVotePost,
   DownVotePost,
 } from 'services/Firebase/WriteData/WriteVote';
-import ClassNamesLogic from '../../../components/Util/ClassNamesLogic';
+import ClassNamesLogic from '../../../Util/ClassNamesLogic';
 
 type TpostVoteButtons = {
   postId: string | undefined;

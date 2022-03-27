@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import telegramLogo from '../../assets/telegramLogo.svg';
-import twitterLogo from '../../assets/twitterLogo.svg';
-import discordLogo from '../../assets/discordLogo.svg';
-import discussionCardImage from '../../assets/discussionCardImage.svg';
-import pollCardImage from '../../assets/pollCardImage.svg';
-import bountyCardImage from '../../assets/bountyCardImage.svg';
-import tipCardImage from '../../assets/tipCardImage.svg';
-import CommunityCarousel from './components/CommunityCarousel';
-import WalletButton from '../../components/Solana/SolanaWallet/WalletButton';
-import FeatureCard from './components/FeatureCard';
-import appConfig from '../../config.js';
+import WalletButton from 'components/Solana/SolanaWallet/WalletButton';
+import telegramLogo from 'assets/telegramLogo.svg';
+import twitterLogo from 'assets/twitterLogo.svg';
+import discordLogo from 'assets/discordLogo.svg';
+import discussionCardImage from 'assets/discussionCardImage.svg';
+import pollCardImage from 'assets/pollCardImage.svg';
+import bountyCardImage from 'assets/bountyCardImage.svg';
+import tipCardImage from 'assets/tipCardImage.svg';
+import CommunityCarousel from './CommunityCarousel';
+import FeatureCard from './FeatureCard';
+import appConfig from '../../../config.js';
 
 function HomePageExternal(): JSX.Element {
   const [section2aFadeIn, setSection2aFadeIn] = useState(false);

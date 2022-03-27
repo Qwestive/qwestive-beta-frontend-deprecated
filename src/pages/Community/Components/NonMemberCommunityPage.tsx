@@ -1,5 +1,5 @@
 import React from 'react';
-import { IcommunityTokenInfo } from '../../types/types';
+import { IcommunityTokenInfo } from 'types/types';
 
 type TnonMemberCommunityPage = {
   communityTokenInfo: IcommunityTokenInfo | undefined;

@@ -7,10 +7,11 @@ import { userInfoAtom } from 'services/recoil/userInfo';
 import { userFinishedLoadingAtom } from 'services/recoil/appState';
 import { queryPostFeed } from 'services/Firebase/GetData/PostUtils';
 import LoadingDots from 'components/Util/LoadingDots';
-import PostPreviewCard from '../../Community/Feed/PostPreviewCard';
+import PostPreviewCard from 'components/Posts/PostsReader/PostFeed/PostPreviewCard';
 
 export default function PostFeedTab(): JSX.Element {
-  const ownedTokens = useRecoilValue(userInfoAtom)?.tokensOwned ?? new Map();
+  const ownedTokens =
+    useRecoilValue(userInfoAtom)?.tokensOwned ?? new Map<string, number>();
   const userFinishedLoading = useRecoilValue(userFinishedLoadingAtom);
   const [loading, setLoading] = useState(true);
   const [postList, setPostList] = useState<IpostPreview[]>([]);
@@ -18,11 +19,9 @@ export default function PostFeedTab(): JSX.Element {
   async function getPostFeed() {
     setLoading(true);
     try {
-      const tokenOwnedSlice = Object.keys(ownedTokens).slice(0, 10);
-      // Array.from(ownedTokens.keys()).slice(0, 10);
+      const tokenOwnedSlice = Array.from(ownedTokens.keys()).slice(0, 10);
       const queryPosts = await queryPostFeed(tokenOwnedSlice);
       setPostList(queryPosts);
-      /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     } catch (error: any) {
       toast.error(error?.message);
     }
@@ -55,7 +54,6 @@ export default function PostFeedTab(): JSX.Element {
             <p className="text-sm">Posts</p>
             <div className=" w-24 grid grid-cols-2 text-center">
               <p className="text-sm">Replies</p>
-              <p className="text-sm">Likes</p>
             </div>
           </div>
           <div className="space-y-3">

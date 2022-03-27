@@ -1,15 +1,10 @@
 import React, { useState } from 'react';
 
-import ClassNamesLogic from '../../components/Util/ClassNamesLogic';
-import CommunitiesTab from './components/CommunitiesTab';
-import { TokenRegistryProvider } from '../../components/Solana/TokenRegistry';
-import PostFeedTab from './components/PostFeedTab';
-/*
-ToDo:
-Make two tabs
-one tab is a feed
-the secondary tab is
-*/
+import ClassNamesLogic from 'components/Util/ClassNamesLogic';
+import { TokenRegistryProvider } from 'components/Solana/TokenRegistry';
+
+import CommunitiesTab from './CommunitiesTab';
+import PostFeedTab from './PostFeedTab';
 
 export default function HomePageInternal(): JSX.Element {
   const [currentTab, setCurrentTab] = useState(0);

@@ -1,15 +1,10 @@
+import { LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { TokenInfoMap } from '@solana/spl-token-registry';
+import { getCommunityInfo } from 'services/Firebase/GetData/CommunityUtil';
+import { ItokenOwnedCommunity, Icommunity } from 'types/types';
 import defaultUserProfileImage from 'assets/defaultUserProfileImage.png';
 import solanaLogo from 'assets/solanaLogo.svg';
-import { ItokenOwnedCommunity, Icommunity } from '../../../types/types';
-import { getCommunityInfo } from '../../Firebase/GetData/CommunityUtil';
 
-const LAMPORTS_PER_SOL = 1000000000;
-
-/* TODO:
-Once you get the community db design 
-Fetch the community member count
-*/
 export default async function GenerateTokenOwnedList(
   tokenRegistry: TokenInfoMap,
   tokenOwned: Map<string, number>
@@ -23,7 +18,6 @@ export default async function GenerateTokenOwnedList(
   tokenOwned.forEach((amountHeld, mint) => {
     communityInfoPromises.push(getCommunityInfo(mint));
   });
-
   const communityInfoArray = await Promise.all(communityInfoPromises);
 
   let i = 0;
@@ -55,8 +49,8 @@ export default async function GenerateTokenOwnedList(
           communityData: communityInfoArray[i],
         });
       }
-      i += 1;
     }
+    i += 1;
   });
 
   return tokenOwnedList;

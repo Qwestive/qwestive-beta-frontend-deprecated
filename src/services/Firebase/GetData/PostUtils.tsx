@@ -115,13 +115,10 @@ export async function queryPostFeed(
     limit(10)
   ).withConverter(postPreviewConverter);
 
-  const querySnapshot = await getDocs(
-    postQuery.withConverter(postPreviewConverter)
-  );
+  const querySnapshot = await getDocs(postQuery);
 
   querySnapshot.forEach((postDoc) => {
-    result.push(postPreviewConverter.fromFirestore(postDoc));
+    result.push(postDoc.data());
   });
-
   return result;
 }

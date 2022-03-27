@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
+import { useRecoilValue } from 'recoil';
+import LoadingDots from 'components/Util/LoadingDots';
+import { userInfoAtom } from 'services/recoil/userInfo';
 import { Icommunity, IcommunityTokenInfo } from 'types/types';
-import NonMemberCommunityPage from './NonMemberCommunityPage';
-import NewCommunityPage from './NewCommunityPage';
+import NonMemberCommunityPage from './Components/NonMemberCommunityPage';
+import NewCommunityPage from './Components/NewCommunityPage';
 import MemberCommunityPage from './MemberCommunityPage';
 import { useTokenRegistry } from '../../components/Solana/TokenRegistry';
 import { getCommunityInfo } from '../../services/Firebase/GetData/CommunityUtil';
 import solanaLogo from '../../assets/solanaLogo.svg';
 
-/*
-TODO: check credentials
-*/
 export default function CommunityPage(): JSX.Element {
   const { cId } = useParams<'cId'>();
   const tokenRegistry = useTokenRegistry();
-
+  const userOwnedTokens =
+    useRecoilValue(userInfoAtom)?.tokensOwned ?? new Map<string, number>();
   const [hasAccess, setHasAccess] = useState(false);
   const [loadingPage, setLoadingPage] = useState(true);
   const [communityInfo, setCommunityInfo] = useState<Icommunity | undefined>();
@@ -47,14 +47,13 @@ export default function CommunityPage(): JSX.Element {
     setLoadingPage(true);
     if (cId !== undefined) {
       try {
-        // TODO: check credentials.
-        setHasAccess(true);
-
+        if (userOwnedTokens.get(cId) !== undefined) {
+          setHasAccess(true);
+        } else {
+          throw new Error('You do not have access to this community');
+        }
         setCommunityTokenInfo(getCommunityTokenInfo(cId));
-
         setCommunityInfo(await getCommunityInfo(cId));
-
-        /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
       } catch (error: any) {
         toast.error(error?.message);
         throw error;
@@ -77,10 +76,25 @@ export default function CommunityPage(): JSX.Element {
 
   return (
     <div className="max-w-5xl mx-auto px-2">
-      {loadingPage && <p>Loading ...</p>}
+      {loadingPage && (
+        <div>
+          <div
+            className="text-color-primary gap-2 items-baseline 
+          flex justify-center mt-10">
+            <div className="text-center text-2xl font-semibold ">Loading</div>
+            <LoadingDots classNameExtend="h-2 w-2" />
+          </div>
+        </div>
+      )}
       {!loadingPage && !hasAccess && (
         <NonMemberCommunityPage communityTokenInfo={communityTokenInfo} />
       )}
+      {!loadingPage &&
+        hasAccess &&
+        cId !== undefined &&
+        communityInfo === undefined && (
+          <NewCommunityPage cId={cId} communityTokenInfo={communityTokenInfo} />
+        )}
       {!loadingPage &&
         hasAccess &&
         cId !== undefined &&
@@ -89,12 +103,6 @@ export default function CommunityPage(): JSX.Element {
             communityInfo={communityInfo}
             communityTokenInfo={communityTokenInfo}
           />
-        )}
-      {!loadingPage &&
-        hasAccess &&
-        cId !== undefined &&
-        communityInfo === undefined && (
-          <NewCommunityPage cId={cId} communityTokenInfo={communityTokenInfo} />
         )}
     </div>
   );

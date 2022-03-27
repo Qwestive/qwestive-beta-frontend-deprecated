@@ -1,11 +1,12 @@
 import React, { Fragment } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/solid';
 
-import ClassNamesLogic from '../../../components/Util/ClassNamesLogic';
-import { Icategory, IcommunityTokenInfo } from '../../../types/types';
+import ClassNamesLogic from 'components/Util/ClassNamesLogic';
+import { Icategory, IcommunityTokenInfo } from 'types/types';
 
-import defaultUserProfileImage from '../../../assets/defaultUserProfileImage.png';
+import defaultUserProfileImage from 'assets/defaultUserProfileImage.png';
 
 type TcategoriesSmall = {
   communityTokenInfo: IcommunityTokenInfo | undefined;
@@ -19,6 +20,8 @@ export default function CategoriesSmall({
   setCurrentCategory,
   currentCategory,
 }: TcategoriesSmall): JSX.Element {
+  const [, setSearchParams] = useSearchParams({});
+
   return (
     <div
       className="w-full px-3
@@ -76,7 +79,10 @@ export default function CategoriesSmall({
                         : 'hover:bg-gray-100',
                       'py-1 w-full'
                     )}
-                    onClick={() => setCurrentCategory('All Topics')}>
+                    onClick={() => {
+                      setCurrentCategory('All Topics');
+                      setSearchParams('');
+                    }}>
                     <div className="flex">
                       <p
                         className="px-4 w-52 truncate 
@@ -97,7 +103,10 @@ export default function CategoriesSmall({
                             : 'hover:bg-gray-100',
                           'py-1 w-full'
                         )}
-                        onClick={() => setCurrentCategory(category.name)}>
+                        onClick={() => {
+                          setCurrentCategory(category.name);
+                          setSearchParams('');
+                        }}>
                         <div className="flex">
                           <p
                             className="px-4 w-52 truncate overflow-hidden 
