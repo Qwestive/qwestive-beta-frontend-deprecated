@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import { useSearchParams } from 'react-router-dom';
-
 import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/solid';
 
