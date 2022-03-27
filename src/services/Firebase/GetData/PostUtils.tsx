@@ -8,19 +8,36 @@ import {
   getDocs,
   orderBy,
 } from 'firebase/firestore';
+import { TpostSorting, IpostPreview, IpostContentType } from 'types/types';
+
 import { Firestore } from '../FirebaseConfig';
 import { postConverter } from '../Converters/PostConverter';
-
-import { IpostArticle, TpostSorting, IpostPreview } from '../../../types/types';
 import { postPreviewConverter } from '../Converters/PostPreviewConverter';
 
-export async function getPostInfo(postId: string): Promise<IpostArticle> {
-  const docRef = doc(Firestore, 'posts', postId).withConverter(postConverter);
-  const docSnap = await getDoc(docRef);
-  if (docSnap.exists()) {
-    return docSnap.data();
+export async function getPostPreview(
+  postId: string
+): Promise<IpostPreview | undefined> {
+  const postPreviewRef = doc(Firestore, 'postPreviews', postId).withConverter(
+    postPreviewConverter
+  );
+  const postPreviewDoc = await getDoc(postPreviewRef);
+  if (postPreviewDoc.exists()) {
+    return postPreviewDoc.data();
   }
-  throw new Error(`Post with provided ID: ${postId}, does not exist`);
+  return undefined;
+}
+
+export async function getPostContent(
+  postId: string
+): Promise<IpostContentType | undefined> {
+  const postContentRef = doc(Firestore, 'posts', postId).withConverter(
+    postConverter
+  );
+  const postContentDoc = await getDoc(postContentRef);
+  if (postContentDoc.exists()) {
+    return postContentDoc.data();
+  }
+  return undefined;
 }
 
 /*

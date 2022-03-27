@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import CKeditorReader from '../../../../components/Posts/CKeditor/CKeditorReader';
+import CKeditorReader from './CKeditorReader';
 import defaultUserProfileImage from '../../../../assets/defaultUserProfileImage.png';
 
 type PostContents = {
@@ -27,7 +27,7 @@ function RichTextContainer({
     if (creationDate !== undefined) {
       setFormattedDate(new Date(creationDate ?? 0).toLocaleDateString());
     }
-  });
+  }, []);
 
   return (
     <div>

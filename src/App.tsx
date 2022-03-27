@@ -13,7 +13,7 @@ import UserProfilePage from './pages/UserProfile/UserProfilePage';
 import ProfileSettingPage from './pages/UserProfile/SelfProfile/ProfileSettingPage';
 
 import CommunityPage from './pages/Community/CommunityPage';
-import PostDetailPage from './pages/Community/PostDetail/PostDetailPage';
+import PostDetailPage from './pages/Community/PostDetailPage';
 import NewPostPage from './pages/NewPost/NewPostPage';
 
 import 'react-toastify/dist/ReactToastify.css';

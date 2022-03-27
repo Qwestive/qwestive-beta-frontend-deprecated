@@ -9,7 +9,7 @@ import {
   Commitment,
 } from '@solana/web3.js';
 import React, { useCallback } from 'react';
-import appConfig from '../../../../config.js';
+import appConfig from '../../../../../config.js';
 
 interface IsendTipButton {
   toPublicKey: string;

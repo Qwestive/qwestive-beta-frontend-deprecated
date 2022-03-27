@@ -71,6 +71,26 @@ export interface Icategories {
 
 /// The preview of a post that is submitted to the DB as a new post for a
 /// community.
+
+export interface IpostArticle {
+  postType: 'article';
+  content: string;
+}
+
+export interface IpollOption {
+  id: string;
+  name: string;
+  voteUserIds: Array<string>;
+}
+
+export interface IpostPoll {
+  postType: 'poll';
+  content: string;
+  options: Array<IpollOption>;
+}
+
+export type IpostContentType = IpostPoll | IpostArticle;
+
 export interface IpostPreviewSubmission {
   postType: TpostType;
   accessTokenId: string;
@@ -87,6 +107,10 @@ export interface IpostPreviewSubmission {
   numberOfComments: number;
 }
 
+export interface IpostPreview extends IpostPreviewSubmission {
+  id: string;
+}
+
 /// An article that is submitted to the DB as a new post for a community.
 export interface IpostArticleSubmission extends IpostPreviewSubmission {
   content: string;
@@ -96,51 +120,6 @@ export interface IpostArticleSubmission extends IpostPreviewSubmission {
 export interface IpostPollSubmission extends IpostPreviewSubmission {
   content: string;
   options: Array<IpollOption>;
-}
-
-/// A post preview that is retrieved from the DB. It differs from
-/// IpostPreviewSubmission in that it has an ID since it was already added
-/// to DB.
-export interface IpostPreview extends IpostPreviewSubmission {
-  id: string;
-}
-
-/// An article that is retrieved from the DB. It differs from
-/// IpostArticleSubmission in that it has an ID since it was already added
-/// to DB.
-export interface IpostArticle extends IpostPreview {
-  content: string;
-}
-
-export interface IpollOption {
-  id: string;
-  name: string;
-  voteUserIds: Array<string>;
-}
-
-/// A post that is retrieved from the DB. It differs from
-/// IpostPollSubmission in that it has an ID since it was already added
-/// to DB.
-export interface IpostPoll extends IpostPreview {
-  content: string;
-  options: Array<IpollOption>;
-}
-
-export interface IpostData {
-  id: string;
-  postType: string;
-  accessTokenId: string;
-  accessMinimumTokenBalance: number;
-  authorUserId: string;
-  authorUserName: string;
-  authorPublicKey: string;
-  authorProfileImageUrl: string;
-  title: string;
-  contents: string;
-  creationDate: Date;
-  upVoteUserIds: Array<string>;
-  downVoteUserIds: Array<string>;
-  numberOfComments: number;
 }
 
 /// A comment that is submitted to the DB as a new comment for a post.

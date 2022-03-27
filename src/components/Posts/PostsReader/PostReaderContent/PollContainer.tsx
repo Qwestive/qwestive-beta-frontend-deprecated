@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 
 import { userInfoAtom } from 'services/recoil/userInfo';
-import CKeditorReader from 'components/Posts/CKeditor/CKeditorReader';
+import CKeditorReader from 'components/Posts/PostsReader/PostReaderContent/CKeditorReader';
 import { IpollOption } from 'types/types';
 import ProgressBar from './ProgressBar';
 

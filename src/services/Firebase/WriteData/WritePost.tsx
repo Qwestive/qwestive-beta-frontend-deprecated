@@ -1,23 +1,19 @@
 import { doc, setDoc, addDoc, collection } from 'firebase/firestore';
+import { IpostContentType, IpostPreviewSubmission } from 'types/types';
 
 import { FirebaseAuth, Firestore } from '../FirebaseConfig';
-import {
-  IpostPreviewSubmission,
-  IpostArticleSubmission,
-  IpostPollSubmission,
-} from '../../../types/types';
 
 export default async function WritePost(
-  postPreview: IpostPreviewSubmission,
-  post: IpostArticleSubmission | IpostPollSubmission
+  postPreviewSubmission: IpostPreviewSubmission,
+  postContent: IpostContentType
 ): Promise<string> {
   if (FirebaseAuth.currentUser != null) {
     const previewPostRef = await addDoc(
       collection(Firestore, 'postPreviews'),
-      postPreview
+      postPreviewSubmission
     );
     const postRef = doc(Firestore, 'posts', previewPostRef.id);
-    await setDoc(postRef, post);
+    await setDoc(postRef, postContent);
 
     return previewPostRef.id;
   }
