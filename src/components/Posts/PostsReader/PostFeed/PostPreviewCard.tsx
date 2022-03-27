@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { timeSince } from '../../../functions/TimeFunctions';
-import { IpostPreview } from '../../../types/types';
+import { timeSince } from 'functions/TimeFunctions';
+import { IpostPreview } from 'types/types';
 import PostVoteButtons from './PostVoteButtons';
 
 type TpostPreviewCard = {
@@ -22,7 +22,7 @@ export default function PostPreviewCard({
         downVotes={post.downVoteUserIds}
       />
       <Link
-        to={`/post/${post.id}`}
+        to={`/c/${post.accessTokenId}?post=${post.id}`}
         className="flex flex-row w-full justify-between my-auto">
         {/* Preview */}
         <div className="overflow-hidden">

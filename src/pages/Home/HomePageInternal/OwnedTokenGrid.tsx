@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import ClassNamesLogic from 'components/Util/ClassNamesLogic';
-
 import { ItokenOwnedCommunity } from 'types/types';
 
 type ItokenOwnedList = {

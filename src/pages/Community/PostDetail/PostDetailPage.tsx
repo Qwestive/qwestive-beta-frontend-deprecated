@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { ArrowLeftIcon } from '@heroicons/react/solid';
 import { toast } from 'react-toastify';
 
@@ -26,8 +26,14 @@ import CommentSection from 'components/Posts/PostsReader/PostComment/CommentSect
 /// TODO:
 /// - Add loading state.
 /// - Add styling for "Post failed to load" message.
-export default function PostDetailPage(): JSX.Element {
-  const { postId } = useParams();
+
+type TpostDetailPage = {
+  postId: string;
+};
+
+export default function PostDetailPage({
+  postId,
+}: TpostDetailPage): JSX.Element {
   const [postContent, setPostContent] = useState<IpostContentType | undefined>(
     undefined
   );

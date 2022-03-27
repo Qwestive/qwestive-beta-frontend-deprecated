@@ -1,13 +1,13 @@
 import { doc, getDoc } from 'firebase/firestore';
+import { Icommunity, Icategory } from 'types/types';
+
 import { Firestore } from '../FirebaseConfig';
-import { Icommunity, Icategory } from '../../../types/types';
 
 export async function getCommunityInfo(
   mint: string
 ): Promise<Icommunity | undefined> {
   const communityRef = doc(Firestore, 'communities', mint);
   const communityDoc = await getDoc(communityRef);
-
   if (communityDoc.exists()) {
     return {
       cId: mint,
