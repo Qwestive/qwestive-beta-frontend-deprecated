@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
+import { useRecoilValue } from 'recoil';
+import { userInfoAtom } from 'services/recoil/userInfo';
 import { Icommunity, IcommunityTokenInfo } from 'types/types';
 import NonMemberCommunityPage from './NonMemberCommunityPage';
 import NewCommunityPage from './NewCommunityPage';
@@ -15,8 +16,10 @@ TODO: check credentials
 */
 export default function CommunityPage(): JSX.Element {
   const { cId } = useParams<'cId'>();
+  const { postId } = useParams<'postId'>();
   const tokenRegistry = useTokenRegistry();
-
+  const userOwnedTokens =
+    useRecoilValue(userInfoAtom)?.tokensOwned ?? new Map<string, number>();
   const [hasAccess, setHasAccess] = useState(false);
   const [loadingPage, setLoadingPage] = useState(true);
   const [communityInfo, setCommunityInfo] = useState<Icommunity | undefined>();
@@ -47,14 +50,13 @@ export default function CommunityPage(): JSX.Element {
     setLoadingPage(true);
     if (cId !== undefined) {
       try {
-        // TODO: check credentials.
-        setHasAccess(true);
-
+        if (userOwnedTokens.get(cId) !== undefined) {
+          setHasAccess(true);
+        } else {
+          throw new Error('You do not have access to this community');
+        }
         setCommunityTokenInfo(getCommunityTokenInfo(cId));
-
         setCommunityInfo(await getCommunityInfo(cId));
-
-        /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
       } catch (error: any) {
         toast.error(error?.message);
         throw error;

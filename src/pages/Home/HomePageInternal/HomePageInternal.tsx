@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-import ClassNamesLogic from '../../components/Util/ClassNamesLogic';
-import CommunitiesTab from './components/CommunitiesTab';
-import { TokenRegistryProvider } from '../../components/Solana/TokenRegistry';
-import PostFeedTab from './components/PostFeedTab';
+import ClassNamesLogic from '../../../components/Util/ClassNamesLogic';
+import CommunitiesTab from './CommunitiesTab';
+import { TokenRegistryProvider } from '../../../components/Solana/TokenRegistry';
+import PostFeedTab from './PostFeedTab';
 /*
 ToDo:
 Make two tabs
