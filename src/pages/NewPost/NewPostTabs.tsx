@@ -52,11 +52,6 @@ export default function NewPostTabs({ cId }: TnewPostTabs): JSX.Element {
   // Post content states
   const [richTextContent, setRichTextContent] = useState('');
 
-  const [articleContent, setArticleContent] = useState<IpostArticle>({
-    postType: 'article',
-    content: richTextContent,
-  });
-
   const [pollOptions, setPollOptions] = useState<Array<IpollOption>>(() => [
     { id: Date.now().toString(), name: '', voteUserIds: [] },
   ]);
@@ -73,41 +68,31 @@ export default function NewPostTabs({ cId }: TnewPostTabs): JSX.Element {
     }));
   }, [pollOptions]);
 
-  useEffect(() => {
-    setPollContent((prevState) => ({
-      ...prevState,
-      content: richTextContent,
-    }));
-    setArticleContent((prevState) => ({
-      ...prevState,
-      content: richTextContent,
-    }));
-  }, [richTextContent]);
-
   function getPostContent(): IpostContentType {
     switch (postPreviewSubmission.postType) {
-      case 'poll':
-        return pollContent;
-      default:
-        return articleContent;
+      case 'poll': {
+        const pollContentSubmit = {
+          ...pollContent,
+          content: richTextContent,
+        } as IpostPoll;
+        return pollContentSubmit;
+      }
+      default: {
+        const articleContentSubmit = {
+          postType: 'article',
+          content: richTextContent,
+        } as IpostArticle;
+        return articleContentSubmit;
+      }
     }
   }
 
   function switchPostContentType(tabId: number) {
     setCurrentTab(tabId);
-
-    if (tabs[tabId].name === 'post') {
-      setPostPreviewSubmission((prevState) => ({
-        ...prevState,
-        postType: 'article',
-      }));
-    }
-    if (tabs[tabId].name === 'poll') {
-      setPostPreviewSubmission((prevState) => ({
-        ...prevState,
-        postType: 'poll',
-      }));
-    }
+    setPostPreviewSubmission((prevState) => ({
+      ...prevState,
+      postType: tabs[tabId].name === 'poll' ? 'poll' : 'article',
+    }));
   }
 
   return (
