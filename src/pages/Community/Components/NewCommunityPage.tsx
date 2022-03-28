@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import { PlusIcon } from '@heroicons/react/solid';
 import { Link } from 'react-router-dom';
-import {
-  IfungibleTokenCommunity,
-  InonFungibleTokenCommunity,
-  TtokenCommunity,
-} from 'types/types';
+import { TtokenCommunity } from 'types/types';
+import { getCommunitySymbol } from 'types/TypesUtil';
 
 type TnewCommunityPage = {
   community: TtokenCommunity | undefined;
@@ -14,14 +11,6 @@ type TnewCommunityPage = {
 export default function NewCommunityPage({
   community,
 }: TnewCommunityPage): JSX.Element {
-  function getCommunitySymbol(c: TtokenCommunity | undefined): string {
-    if (c === undefined) return '';
-    if (c?.communityType === 'fungible') {
-      return (c as IfungibleTokenCommunity).symbol;
-    }
-    return (community as InonFungibleTokenCommunity).metadata.symbol;
-  }
-
   const [symbol] = useState(getCommunitySymbol(community));
 
   return (
@@ -50,7 +39,7 @@ export default function NewCommunityPage({
           This is a new community, be the first to post something!
         </p>
         <div className="flex justify-center mt-10 transform scale-125">
-          <Link to={`/new-post/${community?.cid}`}>
+          <Link to={`/c/${community?.cid}?post=new-post`}>
             <button type="button" className="btn-filled rounded-3xl py-2.5">
               <p className="flex items-center gap-1 ">
                 <PlusIcon className="h-5" /> Post

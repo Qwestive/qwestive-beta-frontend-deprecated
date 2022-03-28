@@ -1,6 +1,7 @@
 import { ParsedAccountData, PublicKey } from '@solana/web3.js';
 import { Metadata } from '@metaplex-foundation/mpl-token-metadata';
 import {
+  AccountTokensByMintOrCollection,
   IfungibleToken,
   InonFungibleToken,
   InonFungibleTokenMetadata,
@@ -11,18 +12,36 @@ import { buildConnection } from '../Functions/SolanaUtil';
 /// Returns basic data about a provided mint ID or undefined if provided
 /// mint ID is not associated with a token.
 export async function GetTokenData(
-  mint: string
+  mint: string,
+  userAccountTokens: AccountTokensByMintOrCollection
 ): Promise<IfungibleToken | InonFungibleToken> {
   const connection = buildConnection();
+  if (mint === 'SOL') {
+    return {
+      mint,
+      isFungible: true,
+      ammountOwned:
+        userAccountTokens.fungibleAccountTokensByMint.get(mint)?.ammountOwned ??
+        0,
+    };
+  }
   const res = await connection.getParsedAccountInfo(new PublicKey(mint));
   const parsedAccountToken = res.value?.data as ParsedAccountData;
-  const ammountOwned =
-    parsedAccountToken.parsed.info?.tokenAmount?.uiAmount ?? 0;
-  const { ammount, decimals } = parsedAccountToken.parsed.info.tokenAmount;
+  const { supply, decimals } = parsedAccountToken.parsed.info;
+  const isFungible = supply > 1 && decimals !== 0;
+  if (isFungible) {
+    return {
+      isFungible,
+      mint,
+      ammountOwned:
+        userAccountTokens.fungibleAccountTokensByMint.get(mint)?.ammountOwned ??
+        0,
+    };
+  }
   return {
-    isFungible: ammount !== '1' && decimals !== 0,
+    isFungible,
     mint,
-    ammountOwned,
+    ammountOwned: 1,
   };
 }
 

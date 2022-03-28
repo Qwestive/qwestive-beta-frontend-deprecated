@@ -2,11 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import ClassNamesLogic from 'components/Util/ClassNamesLogic';
+import { EcommunityType, TtokenCommunity } from 'types/types';
 import {
-  IfungibleTokenCommunity,
-  InonFungibleTokenCommunity,
-  TtokenCommunity,
-} from 'types/types';
+  getCommunitySymbol,
+  getCommunityTokensOwnedQuantity,
+} from 'types/TypesUtil';
 
 type IownedTokenGrid = {
   ownedTokenCommunities: Array<TtokenCommunity>;
@@ -42,32 +42,25 @@ export default function OwnedTokenGrid({
                     </h3>
                     <span
                       className={ClassNamesLogic(
-                        community?.serverData?.isActive ?? false
+                        community?.data?.isActive ?? false
                           ? ' text-green-800 bg-green-100'
                           : 'bg-pink-100 text-pink-800',
                         'flex-shrink-0 inline-block px-2 py-0.5' +
                           'text-xs font-medium  rounded-full'
                       )}>
-                      {community?.serverData?.isActive ? 'Active' : 'New'}
+                      {community?.data?.isActive ? 'Active' : 'New'}
                     </span>
                   </div>
                   <p className="mt-1 text-gray-500 text-sm truncate">
-                    {community.communityType === 'fungible'
-                      ? (community as IfungibleTokenCommunity).symbol
-                      : (community as InonFungibleTokenCommunity).metadata
-                          .symbol}
+                    {getCommunitySymbol(community)}
                   </p>
                   <p className="mt-1 text-gray-500 text-sm truncate">
                     You have
-                    {community.communityType === 'fungible'
-                      ? ` ${
-                          (community as IfungibleTokenCommunity).tokenData
-                            .ammountOwned
-                        } tokens`
-                      : ` ${
-                          (community as InonFungibleTokenCommunity).tokensOwned
-                            .length
-                        } NFTs.`}
+                    {`${getCommunityTokensOwnedQuantity(community)} ${
+                      community.type === EcommunityType.fungible
+                        ? 'tokens'
+                        : 'NFTs.'
+                    }`}
                   </p>
                 </div>
               </div>

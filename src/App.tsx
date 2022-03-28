@@ -47,15 +47,7 @@ function App(): JSX.Element {
                 />
                 <Route
                   path="/c/:cId"
-                  element={
-                    <OnlyAuthRoute
-                      element={
-                        <TokenRegistryProvider>
-                          <CommunityPage />
-                        </TokenRegistryProvider>
-                      }
-                    />
-                  }
+                  element={<OnlyAuthRoute element={<CommunityPage />} />}
                 />
               </Routes>
             </AuthManager>

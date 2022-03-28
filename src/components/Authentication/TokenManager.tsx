@@ -13,8 +13,10 @@ import {
 import ReadUserAccountTokens from 'services/Solana/GetData/ReadUserAccountTokens';
 import { areMapsTheSame, objectToMap } from 'functions/Util';
 
-// Returns the most up-to-date, BE verified versions of a user's balance
-// of fungible tokens.
+/*
+ * Returns the most up-to-date, BE verified versions of a user's balance
+ * of fungible tokens.
+ */
 async function updateUserAccountFungibleTokens(
   dbTokens: Map<string, IfungibleToken>,
   walletTokens: Map<string, IfungibleToken>
@@ -26,8 +28,10 @@ async function updateUserAccountFungibleTokens(
   return dbTokens;
 }
 
-// Returns the most up-to-date, BE verified versions of a user's balance
-// of non-fungible tokens.
+/*
+ * Returns the most up-to-date, BE verified versions of a user's balance
+ * of non-fungible tokens.
+ */
 async function updateUserAccountNonFungibleTokens(
   dbTokenCollection: Map<string, InonFungibleTokenCollection>,
   walletTokens: Map<string, InonFungibleToken>
@@ -47,8 +51,10 @@ async function updateUserAccountNonFungibleTokens(
   return dbTokenCollection;
 }
 
-// Returns the most up-to-date, BE verified versions of a user's balance
-// of fungible and non-fungible tokens.
+/*
+ * Returns the most up-to-date, BE verified versions of a user's balance
+ * of fungible and non-fungible tokens.
+ */
 export async function getUserAccountTokens(
   targetPublicKey: string,
   accountTokens: AccountTokensByMintOrCollection

@@ -2,12 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { queryPostPreviews } from 'services/Firebase/GetData/PostUtils';
-import {
-  IcommunityInfo,
-  IpostPreview,
-  TpostSorting,
-  ItokenCommunity,
-} from '../../types/types';
+import { IpostPreview, TpostSorting, ItokenCommunity } from 'types/types';
 import CategoriesLarge from './Categories/CategoriesLarge';
 import CategoriesSmall from './Categories/CategoriesSmall';
 import PostDisplayList from './Components/PostDisplayList';
@@ -15,11 +10,11 @@ import NewPostPage from './NewPost/NewPostPage';
 import PostDetailPage from './PostDetail/PostDetailPage';
 
 type TmemberCommunityPage = {
-  tokenCommunity: ItokenCommunity | undefined;
+  community: ItokenCommunity | undefined;
 };
 
 export default function MemberCommunityPage({
-  tokenCommunity,
+  community,
 }: TmemberCommunityPage): JSX.Element {
   const [searchParams] = useSearchParams({});
   const [postId, setPostId] = useState(searchParams.get('post'));
@@ -32,11 +27,11 @@ export default function MemberCommunityPage({
   const [postsLoading, setPostsLoading] = useState(true);
 
   async function getPosts() {
-    if (tokenCommunity?.cid !== undefined) {
+    if (community?.cid !== undefined) {
       setPostsLoading(true);
       try {
         const qResult = await queryPostPreviews(
-          tokenCommunity.cid,
+          community.cid,
           currentPostSorting,
           currentCategory
         );
@@ -60,8 +55,7 @@ export default function MemberCommunityPage({
     <div>
       <div className="items-center w-full block md:hidden">
         <CategoriesSmall
-          community={undefined}
-          categoryList={tokenCommunity?.serverData?.categories}
+          community={community}
           setCurrentCategory={setCurrentCategory}
           currentCategory={currentCategory}
         />
@@ -69,8 +63,7 @@ export default function MemberCommunityPage({
       <div className="flex mx-auto gap-5 mt-2 mb-2 ">
         <div className="items-center w-56 hidden md:block">
           <CategoriesLarge
-            community={undefined}
-            categoryList={tokenCommunity?.serverData?.categories}
+            community={community}
             setCurrentCategory={setCurrentCategory}
             currentCategory={currentCategory}
           />
@@ -80,7 +73,7 @@ export default function MemberCommunityPage({
             <PostDisplayList
               currentPostSorting={currentPostSorting}
               setCurrentPostSorting={setCurrentPostSorting}
-              communityId={tokenCommunity?.cid}
+              communityId={community?.cid}
               postList={postList}
               postsLoading={postsLoading}
             />

@@ -40,7 +40,7 @@ export default function CommunitiesTab(): JSX.Element {
     );
   }
 
-  async function generateTokenOwnedList() {
+  async function generateCommunityList() {
     setLoading(true);
     if (userPublicKey !== undefined) {
       try {
@@ -61,16 +61,17 @@ export default function CommunitiesTab(): JSX.Element {
         setTokenCommunities(communityData);
         setTokenCommunitySearchResults(communityData);
         setSearchPredicate('');
-        /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-      } catch (error: any) {
-        toast.error(error?.message);
+      } catch (error) {
+        /// TODO: Make the user log in if their public key is undefined.
+        toast.error('Failed to load your communities, please log-in again');
+        throw error;
       }
     }
     setLoading(false);
   }
   useEffect(() => {
     if (userFinishedLoading) {
-      generateTokenOwnedList();
+      generateCommunityList();
     }
   }, [tokenRegistry.size, userFinishedLoading, userAccountTokens]);
 

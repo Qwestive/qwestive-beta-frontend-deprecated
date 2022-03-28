@@ -1,26 +1,29 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/solid';
 
 import ClassNamesLogic from 'components/Util/ClassNamesLogic';
-import { Icategory, ItokenCommunity } from 'types/types';
+import { Icategories, ItokenCommunity } from 'types/types';
 
 import defaultUserProfileImage from 'assets/defaultUserProfileImage.png';
 
 type TcategoriesSmall = {
   community: ItokenCommunity | undefined;
-  categoryList: Array<Icategory> | undefined;
   setCurrentCategory: React.Dispatch<React.SetStateAction<string>>;
   currentCategory: string;
 };
 export default function CategoriesSmall({
   community,
-  categoryList,
   setCurrentCategory,
   currentCategory,
 }: TcategoriesSmall): JSX.Element {
   const [, setSearchParams] = useSearchParams({});
+  const [categories, setCategories] = useState<Array<Icategories>>([]);
+
+  useEffect(() => {
+    setCategories(community?.data?.categories ?? []);
+  }, [community?.data?.categories]);
 
   return (
     <div
@@ -92,8 +95,8 @@ export default function CategoriesSmall({
                     </div>
                   </button>
                 </Menu.Item>
-                {categoryList !== undefined &&
-                  categoryList.map((category) => (
+                {categories !== undefined &&
+                  categories.map((category) => (
                     <Menu.Item key={category.name}>
                       <button
                         type="button"

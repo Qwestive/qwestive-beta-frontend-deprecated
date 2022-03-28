@@ -1,12 +1,11 @@
 import { doc, getDoc } from 'firebase/firestore';
-import { Icategory, IcommunityInfo } from 'types/types';
+import { Icategory, IcommunityData } from 'types/types';
 import { Firestore } from '../FirebaseConfig';
 import { communityConverter } from '../Converters/CommunityConverter';
 
-
-export async function getCommunityInfo(
+export async function getCommunityData(
   id: string
-): Promise<IcommunityInfo | undefined> {
+): Promise<IcommunityData | undefined> {
   const communityRef = doc(Firestore, 'communities', id).withConverter(
     communityConverter
   );

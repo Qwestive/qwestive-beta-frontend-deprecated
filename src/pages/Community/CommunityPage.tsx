@@ -5,58 +5,48 @@ import { toast } from 'react-toastify';
 import { useRecoilValue } from 'recoil';
 import LoadingDots from 'components/Util/LoadingDots';
 import { userInfoAtom } from 'services/recoil/userInfo';
-import { ItokenCommunity, TtokenCommunity } from 'types/types';
-import { GetTokenData } from 'services/Solana/GetData/GetTokenData';
+import {
+  EcommunityType,
+  IfungibleToken,
+  InonFungibleTokenCollection,
+  TtokenCommunity,
+} from 'types/types';
+import { getTokenCommunityData } from 'services/Solana/GetData/GetCommunityData';
 import NonMemberCommunityPage from './Components/NonMemberCommunityPage';
 import NewCommunityPage from './Components/NewCommunityPage';
 import MemberCommunityPage from './MemberCommunityPage';
 import { useTokenRegistry } from '../../components/Solana/TokenRegistry';
-import { getCommunityInfo } from '../../services/Firebase/GetData/CommunityUtil';
 import solanaLogo from '../../assets/solanaLogo.svg';
 
 export default function CommunityPage(): JSX.Element {
   const { cId } = useParams<'cId'>();
   const tokenRegistry = useTokenRegistry();
-  const userAccountTokens = useRecoilValue(userInfoAtom)?.accountTokens;
+  const userAccountTokens = useRecoilValue(userInfoAtom)?.accountTokens ?? {
+    fungibleAccountTokensByMint: new Map<string, IfungibleToken>(),
+    nonFungibleAccountTokensByCollection: new Map<
+      string,
+      InonFungibleTokenCollection
+    >(),
+  };
   const [hasAccess, setHasAccess] = useState(false);
   const [loadingPage, setLoadingPage] = useState(true);
 
-  const [tokenCommunity, setTokenCommunity] = useState<
-    TtokenCommunity | undefined
-  >();
+  const [community, setCommunity] = useState<TtokenCommunity | undefined>();
   const [tokenRegistryHasLoaded, setTokenRegistryHasLoaded] = useState(false);
 
   async function getTokenCommunity(cid: string): Promise<TtokenCommunity> {
-    // const community = await GetFungibleCommunityData(tokenRegistry, cid);
     if (cid === 'SOL') {
-      // return {
-      //   name: 'Solana',
-      //   symbol: 'SOL',
-      //   logoUrl: solanaLogo,
-      //   address: '',
-      // };
       return {
         cid,
+        type: EcommunityType.fungible,
         name: 'Solana',
         imageUrl: solanaLogo,
-        serverData: undefined,
-        communityType: 'fungible',
+        data: undefined,
         symbol: 'SOL',
         tokenData: { isFungible: true, mint: 'SOL', ammountOwned: 0 },
       };
     }
-    const tokenInfo = tokenRegistry.get(cid);
-    // const token = await GetTokenData(cid);
-
-    return {
-      cid,
-      name: tokenInfo?.name ?? '',
-      imageUrl: tokenInfo?.logoURI ?? '',
-      serverData: undefined,
-      communityType: 'fungible',
-      symbol: 'SOL',
-      tokenData: { isFungible: true, mint: 'SOL', ammountOwned: 0 },
-    };
+    return getTokenCommunityData(tokenRegistry, userAccountTokens, cid);
   }
 
   async function handleLoadPage() {
@@ -73,7 +63,7 @@ export default function CommunityPage(): JSX.Element {
         } else {
           throw new Error('You do not have access to this community');
         }
-        setTokenCommunity(await getTokenCommunity(cId));
+        setCommunity(await getTokenCommunity(cId));
       } catch (error: any) {
         toast.error(error?.message);
         throw error;
@@ -107,19 +97,19 @@ export default function CommunityPage(): JSX.Element {
         </div>
       )}
       {!loadingPage && !hasAccess && (
-        <NonMemberCommunityPage community={tokenCommunity} />
+        <NonMemberCommunityPage community={community} />
       )}
       {!loadingPage &&
         hasAccess &&
         cId !== undefined &&
-        tokenCommunity?.serverData === undefined && (
-          <NewCommunityPage community={tokenCommunity} />
+        community?.data === undefined && (
+          <NewCommunityPage community={community} />
         )}
       {!loadingPage &&
         hasAccess &&
         cId !== undefined &&
-        tokenCommunity?.serverData !== undefined && (
-          <MemberCommunityPage tokenCommunity={tokenCommunity} />
+        community?.data !== undefined && (
+          <MemberCommunityPage community={community} />
         )}
     </div>
   );

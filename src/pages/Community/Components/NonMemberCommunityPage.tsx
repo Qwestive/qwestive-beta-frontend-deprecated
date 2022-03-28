@@ -1,10 +1,7 @@
 import React from 'react';
 
-import {
-  IfungibleTokenCommunity,
-  InonFungibleTokenCommunity,
-  TtokenCommunity,
-} from 'types/types';
+import { EcommunityType, TtokenCommunity } from 'types/types';
+import { getCommunitySymbol } from 'types/TypesUtil';
 
 type TnonMemberCommunityPage = {
   community: TtokenCommunity | undefined;
@@ -21,18 +18,14 @@ export default function NonMemberCommunityPage({
       {community !== undefined && (
         <div className="space-y-3 mt-3">
           <p>{community.name}</p>
-          <p>
-            {community.communityType === 'fungible'
-              ? (community as IfungibleTokenCommunity).symbol
-              : (community as InonFungibleTokenCommunity).metadata.symbol}
-          </p>
+          <p>{getCommunitySymbol(community)}</p>
           <img
             src={community.imageUrl}
             className="mx-auto h-32"
             alt="logoUri"
           />
           {/* Show cid (public key for tokens - not NFT Collections) */}
-          {community.communityType === 'fungible' && <p>{community.cid}</p>}
+          {community.type === EcommunityType.fungible && <p>{community.cid}</p>}
         </div>
       )}
     </div>

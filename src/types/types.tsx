@@ -80,11 +80,10 @@ export interface AccountTokensByMintOrCollection {
  * is different from the data of a community for a non-fungible token.
  */
 
-export type TcommunityType = 'fungible' | 'nonfungible';
-// export declare enum EcommunityType {
-//   fungible = 'fungible',
-//   nonfungible = 'nonfungible',
-// }
+export enum EcommunityType {
+  fungible = 'fungible',
+  nonfungible = 'nonfungible',
+}
 
 export type TtokenCommunity =
   | IfungibleTokenCommunity
@@ -92,10 +91,10 @@ export type TtokenCommunity =
 
 export interface ItokenCommunity {
   cid: string;
+  type: EcommunityType;
   name: string;
   imageUrl: string | undefined;
-  communityType: TcommunityType;
-  serverData: IcommunityInfo | undefined;
+  data: IcommunityData | undefined;
 }
 
 export interface IfungibleTokenCommunity extends ItokenCommunity {
@@ -108,14 +107,14 @@ export interface InonFungibleTokenCommunity extends ItokenCommunity {
   tokensOwned: Array<InonFungibleToken>;
 }
 
-/* Information about a community stored in Qwestive DB. */
+/* Data about a community stored in Qwestive DB. */
 
 export interface Icategory {
   name: string;
   count: number;
 }
 
-export interface IcommunityInfo {
+export interface IcommunityData {
   isActive: boolean;
   categories: Icategory[];
 }

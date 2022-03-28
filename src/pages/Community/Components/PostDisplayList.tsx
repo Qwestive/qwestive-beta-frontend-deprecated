@@ -7,7 +7,6 @@ import LoadingDots from 'components/Util/LoadingDots';
 import ClassNamesLogic from 'components/Util/ClassNamesLogic';
 import PostPreviewCard from '../../../components/Posts/PostsReader/PostFeed/PostPreviewCard';
 
-
 type TpostDisplayList = {
   currentPostSorting: TpostSorting;
   setCurrentPostSorting: React.Dispatch<React.SetStateAction<TpostSorting>>;
@@ -48,7 +47,7 @@ export default function PostDisplayList({
           </div>
           {/* Large screen post button */}
           <div className="hidden sm:block">
-            <Link to={`/new-post/${communityId}`}>
+            <Link to={`/c/${communityId}?post=new-post`}>
               <button type="button" className="btn-filled rounded-3xl py-2.5">
                 <div className="flex items-center gap-1 ">
                   <PlusIcon className="h-5" /> Post
@@ -90,7 +89,7 @@ export default function PostDisplayList({
         </div>
         {/* Small screen post button */}
         <div className="block sm:hidden absolute bottom-10 right-5 z-10">
-          <Link to={`/new-post/${communityId}`}>
+          <Link to={`/c/${communityId}?post=new-post`}>
             <button type="button" className="btn-filled rounded-3xl py-2.5">
               <div className="flex items-center gap-1 ">
                 <PlusIcon className="h-5" /> Post

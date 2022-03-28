@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import ClassNamesLogic from 'components/Util/ClassNamesLogic';
@@ -8,21 +8,28 @@ import defaultUserProfileImage from 'assets/defaultUserProfileImage.png';
 
 type TcategoriesLarge = {
   community: ItokenCommunity | undefined;
-  categoryList: Array<Icategory> | undefined;
   setCurrentCategory: React.Dispatch<React.SetStateAction<string>>;
   currentCategory: string;
 };
+
 export default function CategoriesLarge({
   community,
-  categoryList,
   setCurrentCategory,
   currentCategory,
 }: TcategoriesLarge): JSX.Element {
   const [, setSearchParams] = useSearchParams({});
   const [categoriesViewCounter, setCategoriesViewCounter] = useState(1);
-  const [subsetCategoryList, setSubsetCategoryList] = useState(
-    categoryList?.slice(0, categoriesViewCounter * 5)
+  const [categories, setCategories] = useState<Array<Icategory>>([]);
+  const [categoriesSubset, setCategoriesSubset] = useState<Array<Icategory>>(
+    []
   );
+
+  useEffect(() => {
+    setCategories(community?.data?.categories ?? []);
+    setCategoriesSubset(
+      community?.data?.categories?.slice(0, categoriesViewCounter * 5) ?? []
+    );
+  }, [community?.data?.categories]);
 
   return (
     <div className="w-full ">
@@ -59,66 +66,59 @@ export default function CategoriesLarge({
               <p className="px-4 font-medium text-left">All Topics</p>
             </button>
           </div>
-          {subsetCategoryList !== undefined &&
-            subsetCategoryList.map((category) => (
-              <div
-                key={category.name}
-                className={ClassNamesLogic(
-                  currentCategory === category.name
-                    ? 'bg-gray-300'
-                    : 'hover:bg-gray-200'
-                )}>
-                <button
-                  type="button"
-                  className="w-full"
-                  onClick={() => {
-                    setCurrentCategory(category.name);
-                    setSearchParams('');
-                  }}>
-                  <div className="flex">
-                    <p
-                      className="px-4 w-52 truncate 
-                    overflow-hidden font-medium text-left  ">
-                      {category.name}
-                    </p>
-                    <p className="pr-3">{category.count}</p>
-                  </div>
-                </button>
-              </div>
-            ))}
-          {categoryList !== undefined &&
-            subsetCategoryList !== undefined &&
-            subsetCategoryList.length < categoryList.length && (
+          {categoriesSubset.map((category) => (
+            <div
+              key={category.name}
+              className={ClassNamesLogic(
+                currentCategory === category.name
+                  ? 'bg-gray-300'
+                  : 'hover:bg-gray-200'
+              )}>
               <button
                 type="button"
-                className="px-3 text-qwestive-purple font-medium underline"
+                className="w-full"
                 onClick={() => {
-                  setSubsetCategoryList(
-                    categoryList?.slice(0, (categoriesViewCounter + 1) * 5)
-                  );
-                  setCategoriesViewCounter(categoriesViewCounter + 1);
+                  setCurrentCategory(category.name);
+                  setSearchParams('');
                 }}>
-                View more
+                <div className="flex">
+                  <p
+                    className="px-4 w-52 truncate 
+                  overflow-hidden font-medium text-left  ">
+                    {category.name}
+                  </p>
+                  <p className="pr-3">{category.count}</p>
+                </div>
               </button>
-            )}
-          {categoryList !== undefined &&
-            subsetCategoryList !== undefined &&
-            subsetCategoryList.length > 5 &&
-            categoriesViewCounter > 1 && (
-              <button
-                type="button"
-                className="px-3 text-qwestive-purple font-medium underline"
-                onClick={() => {
-                  setSubsetCategoryList(
-                    categoryList?.slice(0, (categoriesViewCounter - 1) * 5)
-                  );
-                  setCategoriesViewCounter(categoriesViewCounter - 1);
-                }}>
-                View Less
-              </button>
-            )}
+            </div>
+          ))}
+          {categoriesSubset.length < categories.length && (
+            <button
+              type="button"
+              className="px-3 text-qwestive-purple font-medium underline"
+              onClick={() => {
+                setCategoriesSubset(
+                  categories?.slice(0, (categoriesViewCounter + 1) * 5)
+                );
+                setCategoriesViewCounter(categoriesViewCounter + 1);
+              }}>
+              View more
+            </button>
+          )}
+          {categoriesSubset.length > 5 && categoriesViewCounter > 1 && (
+            <button
+              type="button"
+              className="px-3 text-qwestive-purple font-medium underline"
+              onClick={() => {
+                setCategoriesSubset(
+                  categories?.slice(0, (categoriesViewCounter - 1) * 5)
+                );
+                setCategoriesViewCounter(categoriesViewCounter - 1);
+              }}>
+              View Less
+            </button>
+          )}
         </div>
-
         <div className="border-b border-gray-900 pt-3" />
       </div>
     </div>

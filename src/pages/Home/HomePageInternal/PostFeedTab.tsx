@@ -26,7 +26,6 @@ export default function PostFeedTab(): JSX.Element {
         feedCommunityIds.push(value.id)
       );
       setPostList(await queryPostFeed(feedCommunityIds.slice(0, 10)));
-      /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     } catch (error: any) {
       toast.error(error?.message);
     }
