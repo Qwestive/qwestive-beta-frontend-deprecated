@@ -7,6 +7,8 @@ import {
   limit,
   getDocs,
   orderBy,
+  QueryDocumentSnapshot,
+  startAt,
 } from 'firebase/firestore';
 import { TpostSorting, IpostPreview, IpostContentType } from 'types/types';
 
@@ -46,57 +48,40 @@ TODO: add top query type
 export async function queryPostPreviews(
   cId: string,
   sortingType: TpostSorting,
-  category: string
-): Promise<IpostPreview[]> {
+  category: string,
+  startSnap: QueryDocumentSnapshot<IpostPreview> | undefined,
+  quantity: number
+): Promise<[IpostPreview[], QueryDocumentSnapshot<IpostPreview>]> {
   const postRef = collection(Firestore, 'postPreviews');
-
-  let postQuery = query(
-    postRef,
+  const queryConstraints = [
     where('accessTokenId', '==', cId),
     orderBy('creationDate', 'desc'),
-    limit(10)
-  );
+    limit(quantity),
+  ];
 
   const sortingTypeQuery = sortingType.toLowerCase();
 
-  if (!(category === 'All Topics')) {
-    if (['poll', 'bounty'].includes(sortingTypeQuery)) {
-      postQuery = query(
-        postRef,
-        where('accessTokenId', '==', cId),
-        where('category', '==', category),
-        where('postType', '==', sortingTypeQuery),
-        orderBy('creationDate', 'desc'),
-        limit(10)
-      );
-    } else {
-      postQuery = query(
-        postRef,
-        where('accessTokenId', '==', cId),
-        where('category', '==', category),
-        orderBy('creationDate', 'desc'),
-        limit(10)
-      );
-    }
-  } else if (['poll', 'bounty'].includes(sortingTypeQuery)) {
-    postQuery = query(
-      postRef,
-      where('accessTokenId', '==', cId),
-      where('postType', '==', sortingTypeQuery),
-      orderBy('creationDate', 'desc'),
-      limit(10)
-    );
-  }
+  if (!(category === 'All Topics'))
+    queryConstraints.push(where('category', '==', category));
+
+  if (['poll', 'bounty'].includes(sortingTypeQuery))
+    queryConstraints.push(where('postType', '==', sortingTypeQuery));
+
+  if (startSnap !== undefined) queryConstraints.push(startAt(startSnap));
+
+  const postQuery = query(postRef, ...queryConstraints);
+
   const querySnapshot = await getDocs(
     postQuery.withConverter(postPreviewConverter)
   );
-  const result: IpostPreview[] = [];
+  const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
 
+  const result: IpostPreview[] = [];
   querySnapshot.forEach((postDoc) => {
     result.push(postPreviewConverter.fromFirestore(postDoc));
   });
 
-  return result;
+  return [result, lastVisible];
 }
 
 export async function queryPostFeed(

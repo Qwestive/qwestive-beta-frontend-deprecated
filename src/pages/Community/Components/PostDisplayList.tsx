@@ -11,8 +11,10 @@ type TpostDisplayList = {
   currentPostSorting: TpostSorting;
   setCurrentPostSorting: React.Dispatch<React.SetStateAction<TpostSorting>>;
   communityId: string | undefined;
-  postList: IpostPreview[] | undefined;
+  postBatchList: Array<IpostPreview[]>;
+  hasMorePost: boolean;
   postsLoading: boolean;
+  getPostBatch: () => Promise<void>;
 };
 
 const postSortingTypes = ['New', 'Top', 'Poll', 'Bounty'] as TpostSorting[];
@@ -21,8 +23,10 @@ export default function PostDisplayList({
   currentPostSorting,
   setCurrentPostSorting,
   communityId,
-  postList,
+  postBatchList,
+  hasMorePost,
   postsLoading,
+  getPostBatch,
 }: TpostDisplayList): JSX.Element {
   return (
     <div>
@@ -49,7 +53,7 @@ export default function PostDisplayList({
           <div className="hidden sm:block">
             <Link to={`/c/${communityId}?post=new-post`}>
               <button type="button" className="btn-filled rounded-3xl py-2.5">
-                <div className="flex items-center gap-1 ">
+                <div className="flex items-center gap-1 -ml-1 ">
                   <PlusIcon className="h-5" /> Post
                 </div>
               </button>
@@ -58,7 +62,7 @@ export default function PostDisplayList({
         </div>
         {/* Post List */}
         <div className="mt-5 p-2 space-y-2">
-          {postsLoading ? (
+          {postsLoading && postBatchList.length === 0 ? (
             <div>
               <div
                 className="text-color-primary gap-2 items-baseline 
@@ -78,12 +82,37 @@ export default function PostDisplayList({
                 </div>
               </div>
               <div className="space-y-3">
-                {postList?.map((post) => (
-                  <div key={post.creationDate}>
-                    <PostPreviewCard post={post} />
+                {postBatchList.map((postList) => (
+                  <div key={postList[0].id} className="my-3 space-y-3">
+                    {postList?.map((post) => (
+                      <div key={post.id}>
+                        <PostPreviewCard post={post} />
+                      </div>
+                    ))}
                   </div>
                 ))}
               </div>
+            </div>
+          )}
+          {/* Load More Posts Button */}
+          {hasMorePost && (
+            <div className="mt-3 flex justify-center">
+              <button
+                type="button"
+                className="btn-filled"
+                onClick={getPostBatch}
+                disabled={postsLoading}>
+                {postsLoading ? (
+                  <div
+                    className="text-color-primary gap-2 items-baseline 
+             flex justify-center mt-10">
+                    <div className="text-center">Loading</div>
+                    <LoadingDots classNameExtend="h-1 w-1" />
+                  </div>
+                ) : (
+                  <p>Load More Posts</p>
+                )}
+              </button>
             </div>
           )}
         </div>

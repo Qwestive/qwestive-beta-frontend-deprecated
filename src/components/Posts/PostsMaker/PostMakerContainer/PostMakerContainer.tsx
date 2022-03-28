@@ -57,7 +57,7 @@ export default function PostMakerContainer({
       setPostPreviewSubmission(savedPreview);
       const postId = await WritePost(savedPreview, postContent);
       toast.success('Post saved');
-      navigate(`/post/${postId}`);
+      navigate(`/${postPreviewSubmission.accessId}?post=${postId}`);
     } catch (error: any) {
       toast.error(error?.message);
       setDisableEdit(false);
