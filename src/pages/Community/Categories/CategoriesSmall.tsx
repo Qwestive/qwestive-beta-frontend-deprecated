@@ -1,26 +1,29 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/solid';
 
 import ClassNamesLogic from 'components/Util/ClassNamesLogic';
-import { Icategory, IcommunityTokenInfo } from 'types/types';
+import { Icategories, ItokenCommunity } from 'types/types';
 
 import defaultUserProfileImage from 'assets/defaultUserProfileImage.png';
 
 type TcategoriesSmall = {
-  communityTokenInfo: IcommunityTokenInfo | undefined;
-  categoryList: Array<Icategory> | undefined;
+  community: ItokenCommunity | undefined;
   setCurrentCategory: React.Dispatch<React.SetStateAction<string>>;
   currentCategory: string;
 };
 export default function CategoriesSmall({
-  communityTokenInfo,
-  categoryList,
+  community,
   setCurrentCategory,
   currentCategory,
 }: TcategoriesSmall): JSX.Element {
   const [, setSearchParams] = useSearchParams({});
+  const [categories, setCategories] = useState<Array<Icategories>>([]);
+
+  useEffect(() => {
+    setCategories(community?.data?.categories ?? []);
+  }, [community?.data?.categories]);
 
   return (
     <div
@@ -30,12 +33,12 @@ export default function CategoriesSmall({
       <div>
         <div className="flex items-center py-2 gap-2 justify-left">
           <img
-            src={communityTokenInfo?.logoUrl ?? defaultUserProfileImage}
+            src={community?.imageUrl ?? defaultUserProfileImage}
             className="h-12"
             alt="tokenImage"
           />
           <p className="text-color-primary text-xl font-extrabold truncate">
-            {communityTokenInfo?.name ?? 'Unknown'}
+            {community?.name ?? 'Unknown'}
           </p>
         </div>
       </div>
@@ -92,8 +95,8 @@ export default function CategoriesSmall({
                     </div>
                   </button>
                 </Menu.Item>
-                {categoryList !== undefined &&
-                  categoryList.map((category) => (
+                {categories !== undefined &&
+                  categories.map((category) => (
                     <Menu.Item key={category.name}>
                       <button
                         type="button"

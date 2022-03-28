@@ -1,20 +1,20 @@
 import { doc, getDoc } from 'firebase/firestore';
-import { Icommunity, Icategory } from 'types/types';
-
+import { Icategory, IcommunityData } from 'types/types';
 import { Firestore } from '../FirebaseConfig';
+import { communityConverter } from '../Converters/CommunityConverter';
 
-export async function getCommunityInfo(
-  mint: string
-): Promise<Icommunity | undefined> {
-  const communityRef = doc(Firestore, 'communities', mint);
+export async function getCommunityData(
+  id: string
+): Promise<IcommunityData | undefined> {
+  const communityRef = doc(Firestore, 'communities', id).withConverter(
+    communityConverter
+  );
   const communityDoc = await getDoc(communityRef);
   if (communityDoc.exists()) {
-    return {
-      cId: mint,
-      categories: communityDoc.data().categories,
-    };
+    return communityDoc.data();
   }
-  return undefined;
+
+  throw new Error(`Community with provided ID: ${id}, does not exist`);
 }
 
 export async function getPostCategories(

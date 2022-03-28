@@ -21,45 +21,39 @@ import 'react-toastify/dist/ReactToastify.css';
 function App(): JSX.Element {
   return (
     <WalletProviders>
-      <RecoilRoot>
-        <BrowserRouter>
-          <ToastContainer
-            position="bottom-right"
-            autoClose={5000}
-            hideProgressBar
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-          />
-          <AuthManager>
-            <Navbar />
-            <Routes>
-              <Route path="/Home" element={<HomePage />} />
-              <Route path="/" element={<Navigate to="/Home" />} />
-              <Route path="/user/:userName" element={<UserProfilePage />} />
-              <Route
-                path="/profile/settings"
-                element={<OnlyAuthRoute element={<ProfileSettingPage />} />}
-              />
-              <Route
-                path="/c/:cId"
-                element={
-                  <OnlyAuthRoute
-                    element={
-                      <TokenRegistryProvider>
-                        <CommunityPage />
-                      </TokenRegistryProvider>
-                    }
-                  />
-                }
-              />
-            </Routes>
-          </AuthManager>
-        </BrowserRouter>
-      </RecoilRoot>
+      <TokenRegistryProvider>
+        <RecoilRoot>
+          <BrowserRouter>
+            <ToastContainer
+              position="bottom-right"
+              autoClose={5000}
+              hideProgressBar
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+            />
+            <AuthManager>
+              <Navbar />
+              <Routes>
+                <Route path="/Home" element={<HomePage />} />
+                <Route path="/" element={<Navigate to="/Home" />} />
+                <Route path="/user/:userName" element={<UserProfilePage />} />
+                <Route
+                  path="/profile/settings"
+                  element={<OnlyAuthRoute element={<ProfileSettingPage />} />}
+                />
+                <Route
+                  path="/c/:cId"
+                  element={<OnlyAuthRoute element={<CommunityPage />} />}
+                />
+              </Routes>
+            </AuthManager>
+          </BrowserRouter>
+        </RecoilRoot>
+      </TokenRegistryProvider>
     </WalletProviders>
   );
 }

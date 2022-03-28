@@ -3,34 +3,35 @@ import { useRecoilValue } from 'recoil';
 import { toast } from 'react-toastify';
 import { SearchIcon } from '@heroicons/react/solid';
 import { useTokenRegistry } from 'components/Solana/TokenRegistry';
-import GenerateTokenOwnedList from 'services/Solana/GetData/GenerateTokenOwnedList';
 import LoadingDots from 'components/Util/LoadingDots';
-import { ItokenOwnedCommunity } from 'types/types';
+import { TtokenCommunity } from 'types/types';
 import { userFinishedLoadingAtom } from 'services/recoil/appState';
 import { userInfoAtom } from 'services/recoil/userInfo';
+import {
+  GetFungibleCommunityData,
+  GetNonFunibleCommunityData,
+} from 'services/Solana/GetData/GetCommunityData';
 import OwnedTokenGrid from './OwnedTokenGrid';
 
 export default function CommunitiesTab(): JSX.Element {
-  const userPublicKey = useRecoilValue(userInfoAtom)?.publicKey;
   const userFinishedLoading = useRecoilValue(userFinishedLoadingAtom);
-  const userTokensOwned =
-    useRecoilValue(userInfoAtom)?.tokensOwned ?? new Map();
+  const userPublicKey = useRecoilValue(userInfoAtom)?.publicKey;
+  const userAccountTokens = useRecoilValue(userInfoAtom)?.accountTokens;
 
   const tokenRegistry = useTokenRegistry();
-  const [tokenOwnedList, setTokenOwnedList] = useState<ItokenOwnedCommunity[]>(
+  const [tokenCommunities, setTokenCommunities] = useState<TtokenCommunity[]>(
     []
   );
-  const [tokenOwnedSearchedResults, setTokenOwnedSearchedResults] = useState<
-    ItokenOwnedCommunity[]
-  >([]);
+  const [tokenCommunitySearchResults, setTokenCommunitySearchResults] =
+    useState<TtokenCommunity[]>([]);
 
   const [loading, setLoading] = useState(true);
   const [searchPredicate, setSearchPredicate] = useState('');
 
   function updateTokenOwnedSearchResults(event: ChangeEvent<HTMLInputElement>) {
     setSearchPredicate(event.target.value);
-    setTokenOwnedSearchedResults(
-      tokenOwnedList.filter(
+    setTokenCommunitySearchResults(
+      tokenCommunities.filter(
         (token) =>
           token.name
             ?.toLowerCase()
@@ -39,29 +40,40 @@ export default function CommunitiesTab(): JSX.Element {
     );
   }
 
-  async function generateTokenOwnedList() {
+  async function generateCommunityList() {
     setLoading(true);
     if (userPublicKey !== undefined) {
       try {
-        const tokenList = await GenerateTokenOwnedList(
-          tokenRegistry,
-          userTokensOwned
+        const communityDataPromises: Promise<TtokenCommunity>[] = [];
+        userAccountTokens?.fungibleAccountTokensByMint?.forEach((value) => {
+          communityDataPromises.push(
+            GetFungibleCommunityData(tokenRegistry, value)
+          );
+        });
+        userAccountTokens?.nonFungibleAccountTokensByCollection?.forEach(
+          (value) => {
+            communityDataPromises.push(GetNonFunibleCommunityData(value));
+          }
         );
-        setTokenOwnedList(tokenList);
-        setTokenOwnedSearchedResults(tokenList);
+        const communityData: TtokenCommunity[] = await Promise.all(
+          communityDataPromises
+        );
+        setTokenCommunities(communityData);
+        setTokenCommunitySearchResults(communityData);
         setSearchPredicate('');
-        /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-      } catch (error: any) {
-        toast.error(error?.message);
+      } catch (error) {
+        /// TODO: Make the user log in if their public key is undefined.
+        toast.error('Failed to load your communities, please log-in again');
+        throw error;
       }
     }
     setLoading(false);
   }
   useEffect(() => {
-    if (tokenRegistry.size !== 0 && userFinishedLoading) {
-      generateTokenOwnedList();
+    if (userFinishedLoading) {
+      generateCommunityList();
     }
-  }, [tokenRegistry, userFinishedLoading, userTokensOwned]);
+  }, [tokenRegistry.size, userFinishedLoading, userAccountTokens]);
 
   return (
     <div>
@@ -101,7 +113,7 @@ export default function CommunitiesTab(): JSX.Element {
           </div>
         </div>
       ) : (
-        <OwnedTokenGrid tokenOwnedList={tokenOwnedSearchedResults} />
+        <OwnedTokenGrid ownedTokenCommunities={tokenCommunitySearchResults} />
       )}
     </div>
   );

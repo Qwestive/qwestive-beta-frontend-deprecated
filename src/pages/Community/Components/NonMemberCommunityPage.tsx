@@ -1,28 +1,31 @@
 import React from 'react';
-import { IcommunityTokenInfo } from 'types/types';
+
+import { EcommunityType, TtokenCommunity } from 'types/types';
+import { getCommunitySymbol } from 'types/TypesUtil';
 
 type TnonMemberCommunityPage = {
-  communityTokenInfo: IcommunityTokenInfo | undefined;
+  community: TtokenCommunity | undefined;
 };
 // TODO: design
 export default function NonMemberCommunityPage({
-  communityTokenInfo,
+  community,
 }: TnonMemberCommunityPage): JSX.Element {
   return (
     <div className="mt-10 text-center text-color-primary">
       <div className="font-bold text-xl">
         You do not have access to this community
       </div>
-      {communityTokenInfo !== undefined && (
+      {community !== undefined && (
         <div className="space-y-3 mt-3">
-          <p>{communityTokenInfo.name}</p>
-          <p>{communityTokenInfo.symbol}</p>
+          <p>{community.name}</p>
+          <p>{getCommunitySymbol(community)}</p>
           <img
-            src={communityTokenInfo.logoUrl}
+            src={community.imageUrl}
             className="mx-auto h-32"
             alt="logoUri"
           />
-          <p>{communityTokenInfo.address}</p>
+          {/* Show cid (public key for tokens - not NFT Collections) */}
+          {community.type === EcommunityType.fungible && <p>{community.cid}</p>}
         </div>
       )}
     </div>

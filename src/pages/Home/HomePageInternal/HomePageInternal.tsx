@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 
 import ClassNamesLogic from 'components/Util/ClassNamesLogic';
-import { TokenRegistryProvider } from 'components/Solana/TokenRegistry';
-
 import CommunitiesTab from './CommunitiesTab';
 import PostFeedTab from './PostFeedTab';
 
@@ -13,6 +11,7 @@ export default function HomePageInternal(): JSX.Element {
     { name: 'Communities', idx: 0 },
     { name: 'Feed', idx: 1 },
   ];
+
   return (
     <div className="max-w-2xl mx-auto mt-8 px-1 mb-5">
       <div className="border-b border-gray-500">
@@ -36,9 +35,7 @@ export default function HomePageInternal(): JSX.Element {
         </nav>
       </div>
       <div className={currentTab !== 0 ? 'hidden' : ''}>
-        <TokenRegistryProvider>
-          <CommunitiesTab />
-        </TokenRegistryProvider>
+        <CommunitiesTab />
       </div>
       <div className={currentTab !== 1 ? 'hidden' : ''}>
         <PostFeedTab />

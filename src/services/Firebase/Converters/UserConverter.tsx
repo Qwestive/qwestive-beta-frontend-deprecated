@@ -1,6 +1,20 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
-import { IuserInfo } from 'types/types';
+import { AccountTokensByMintOrCollection, IuserInfo } from 'types/types';
 import { objectToMap } from 'functions/Util';
+import { dbToNonFungibleTokenCollection } from './TokensOwnedConverter';
+
+function buildAccountTokensFromDb(
+  dbTokensOwnedByMint: any,
+  dbTokensOwnedByCollection: any
+): AccountTokensByMintOrCollection {
+  return {
+    fungibleAccountTokensByMint: objectToMap(dbTokensOwnedByMint ?? {}),
+    nonFungibleAccountTokensByCollection: dbToNonFungibleTokenCollection(
+      dbTokensOwnedByCollection ?? {}
+    ),
+  };
+}
 
 export const userConverter = {
   toFirestore(userInfo: IuserInfo): DocumentData {
@@ -23,7 +37,10 @@ export const userConverter = {
       coverImage: data.coverImage,
       bio: data.bio,
       personalLink: data.personalLink,
-      tokensOwned: objectToMap(data.tokensOwned ?? {}),
+      accountTokens: buildAccountTokensFromDb(
+        data.tokensOwnedByMint,
+        data.tokensOwnedByCollection
+      ),
     } as IuserInfo;
   },
 };

@@ -1,16 +1,16 @@
 import React from 'react';
 import { PlusIcon } from '@heroicons/react/solid';
 import { Link } from 'react-router-dom';
+
+import { IpostPreview, TpostSorting } from 'types/types';
 import LoadingDots from 'components/Util/LoadingDots';
 import ClassNamesLogic from 'components/Util/ClassNamesLogic';
-import { Icommunity, IpostPreview, TpostSorting } from 'types/types';
-
 import PostPreviewCard from '../../../components/Posts/PostsReader/PostFeed/PostPreviewCard';
 
 type TpostDisplayList = {
   currentPostSorting: TpostSorting;
   setCurrentPostSorting: React.Dispatch<React.SetStateAction<TpostSorting>>;
-  communityInfo: Icommunity | undefined;
+  communityId: string | undefined;
   postList: IpostPreview[] | undefined;
   postsLoading: boolean;
 };
@@ -20,7 +20,7 @@ const postSortingTypes = ['New', 'Top', 'Poll', 'Bounty'] as TpostSorting[];
 export default function PostDisplayList({
   currentPostSorting,
   setCurrentPostSorting,
-  communityInfo,
+  communityId,
   postList,
   postsLoading,
 }: TpostDisplayList): JSX.Element {
@@ -47,7 +47,7 @@ export default function PostDisplayList({
           </div>
           {/* Large screen post button */}
           <div className="hidden sm:block">
-            <Link to={`/c/${communityInfo?.cId}?post=new-post`}>
+            <Link to={`/c/${communityId}?post=new-post`}>
               <button type="button" className="btn-filled rounded-3xl py-2.5">
                 <div className="flex items-center gap-1 ">
                   <PlusIcon className="h-5" /> Post
@@ -89,7 +89,7 @@ export default function PostDisplayList({
         </div>
         {/* Small screen post button */}
         <div className="block sm:hidden absolute bottom-10 right-5 z-10">
-          <Link to={`/c/${communityInfo?.cId}?post=new-post`}>
+          <Link to={`/c/${communityId}?post=new-post`}>
             <button type="button" className="btn-filled rounded-3xl py-2.5">
               <div className="flex items-center gap-1 ">
                 <PlusIcon className="h-5" /> Post

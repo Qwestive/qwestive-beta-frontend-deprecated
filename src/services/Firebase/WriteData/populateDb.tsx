@@ -3,9 +3,9 @@ import { doc, setDoc } from 'firebase/firestore';
 import { Firestore } from '../FirebaseConfig';
 import {
   IpostPreviewSubmission,
-  IpostArticleSubmission,
   IpostCommentSubmission,
-  IpostPollSubmission,
+  IpostArticle,
+  IpostPoll,
 } from '../../../types/types';
 
 export interface IpostPreviewWrapper {
@@ -15,11 +15,11 @@ export interface IpostPreviewWrapper {
 
 export interface IpostArticleWrapper {
   id: string;
-  contents: IpostArticleSubmission;
+  contents: IpostArticle;
 }
 export interface IpostPollWrapper {
   id: string;
-  contents: IpostPollSubmission;
+  contents: IpostPoll;
 }
 
 export interface IpostCommentWrapper {
@@ -35,8 +35,9 @@ const POST_PREVIEWS: Array<IpostPreviewWrapper> = [
     id: '111',
     contents: {
       postType: 'article',
-      accessTokenId: ACCESS_TOKEN_ID,
-      accessMinimumTokenBalance: 1,
+      accessId: ACCESS_TOKEN_ID,
+      accessByTokenCollection: false,
+      minimumAccessBalance: 1,
       authorUserId: AUTHORID,
       authorUserName: 'metadiego',
       authorPublicKey: AUTHORID,
@@ -53,8 +54,9 @@ const POST_PREVIEWS: Array<IpostPreviewWrapper> = [
     id: '222',
     contents: {
       postType: 'article',
-      accessTokenId: ACCESS_TOKEN_ID,
-      accessMinimumTokenBalance: 10,
+      accessId: ACCESS_TOKEN_ID,
+      accessByTokenCollection: false,
+      minimumAccessBalance: 1,
       authorUserId: AUTHORID,
       authorUserName: 'jisnpe',
       authorPublicKey: AUTHORID,
@@ -71,8 +73,9 @@ const POST_PREVIEWS: Array<IpostPreviewWrapper> = [
     id: '333',
     contents: {
       postType: 'article',
-      accessTokenId: ACCESS_TOKEN_ID,
-      accessMinimumTokenBalance: 50,
+      accessId: ACCESS_TOKEN_ID,
+      accessByTokenCollection: false,
+      minimumAccessBalance: 50,
       authorUserId: AUTHORID,
       authorUserName: 'seanHCode',
       authorPublicKey: AUTHORID,
@@ -89,8 +92,9 @@ const POST_PREVIEWS: Array<IpostPreviewWrapper> = [
     id: '444',
     contents: {
       postType: 'article',
-      accessTokenId: ACCESS_TOKEN_ID,
-      accessMinimumTokenBalance: 50,
+      accessId: ACCESS_TOKEN_ID,
+      accessByTokenCollection: false,
+      minimumAccessBalance: 30,
       authorUserId: AUTHORID,
       authorUserName: 'jasonzhu',
       authorPublicKey: AUTHORID,
@@ -107,8 +111,9 @@ const POST_PREVIEWS: Array<IpostPreviewWrapper> = [
     id: '555',
     contents: {
       postType: 'article',
-      accessTokenId: ACCESS_TOKEN_ID,
-      accessMinimumTokenBalance: 100,
+      accessId: ACCESS_TOKEN_ID,
+      accessByTokenCollection: false,
+      minimumAccessBalance: 1,
       authorUserId: AUTHORID,
       authorUserName: 'pauloalmeida',
       authorPublicKey: AUTHORID,
@@ -125,8 +130,9 @@ const POST_PREVIEWS: Array<IpostPreviewWrapper> = [
     id: '666',
     contents: {
       postType: 'article',
-      accessTokenId: ACCESS_TOKEN_ID,
-      accessMinimumTokenBalance: 100,
+      accessId: ACCESS_TOKEN_ID,
+      accessByTokenCollection: false,
+      minimumAccessBalance: 100,
       authorUserId: AUTHORID,
       authorUserName: 'metadiego',
       authorPublicKey: AUTHORID,
@@ -143,8 +149,9 @@ const POST_PREVIEWS: Array<IpostPreviewWrapper> = [
     id: '777',
     contents: {
       postType: 'article',
-      accessTokenId: ACCESS_TOKEN_ID,
-      accessMinimumTokenBalance: 1000,
+      accessId: ACCESS_TOKEN_ID,
+      accessByTokenCollection: false,
+      minimumAccessBalance: 1,
       authorUserId: AUTHORID,
       authorUserName: 'jinspe',
       authorPublicKey: AUTHORID,
@@ -164,147 +171,63 @@ const POSTS: Array<IpostArticleWrapper> = [
     id: '111',
     contents: {
       postType: 'article',
-      accessTokenId: ACCESS_TOKEN_ID,
-      accessMinimumTokenBalance: 1,
-      authorUserId: AUTHORID,
-      authorUserName: 'metadiego',
-      authorPublicKey: AUTHORID,
-      authorProfileImageUrl: '',
-      title: 'Web 2.5: Where we are truly headed',
       content:
         '<h1>Heading</h2><h2>Subheading</h2><p>Some paragrap</p><li>' +
         '<ul>List Item 1</ul><ul>List item 2</ul></li>',
-      creationDate: 1234,
-      category: 'category-1',
-      upVoteUserIds: [],
-      downVoteUserIds: [],
-      numberOfComments: 10,
     },
   },
   {
     id: '222',
     contents: {
       postType: 'article',
-      accessTokenId: ACCESS_TOKEN_ID,
-      accessMinimumTokenBalance: 10,
-      authorUserId: AUTHORID,
-      authorUserName: 'jisnpe',
-      authorPublicKey: AUTHORID,
-      authorProfileImageUrl: '',
-      title: 'Web 2.5: Where we are truly behind',
       content:
         '<h1>Heading</h2><h2>Subheading</h2><p>Some paragrap</p><li>' +
         '<ul>List Item 1</ul><ul>List item 2</ul></li>',
-      creationDate: 123,
-      category: 'category-1',
-      upVoteUserIds: [],
-      downVoteUserIds: [],
-      numberOfComments: 10,
     },
   },
   {
     id: '333',
     contents: {
       postType: 'article',
-      accessTokenId: ACCESS_TOKEN_ID,
-      accessMinimumTokenBalance: 50,
-      authorUserId: AUTHORID,
-      authorUserName: 'seanHCode',
-      authorPublicKey: AUTHORID,
-      authorProfileImageUrl: '',
-      title: 'Web 2.5: Where we are truly headed',
       content:
         '<h1>Heading</h2><h2>Subheading</h2><p>Some paragrap</p><li>' +
         '<ul>List Item 1</ul><ul>List item 2</ul></li>',
-      creationDate: 1234,
-      category: 'category-2',
-      upVoteUserIds: [],
-      downVoteUserIds: [],
-      numberOfComments: 10,
     },
   },
   {
     id: '444',
     contents: {
       postType: 'article',
-      accessTokenId: ACCESS_TOKEN_ID,
-      accessMinimumTokenBalance: 50,
-      authorUserId: AUTHORID,
-      authorUserName: 'jasonzhu',
-      authorPublicKey: AUTHORID,
-      authorProfileImageUrl: '',
-      title: 'Web 2.5: Where we are truly headed',
       content:
         '<h1>Heading</h2><h2>Subheading</h2><p>Some paragrap</p><li>' +
         '<ul>List Item 1</ul><ul>List item 2</ul></li>',
-      creationDate: 1234,
-      category: 'category-3',
-      upVoteUserIds: [],
-      downVoteUserIds: [],
-      numberOfComments: 10,
     },
   },
   {
     id: '555',
     contents: {
       postType: 'article',
-      accessTokenId: ACCESS_TOKEN_ID,
-      accessMinimumTokenBalance: 100,
-      authorUserId: AUTHORID,
-      authorUserName: 'pauloalmeida',
-      authorPublicKey: AUTHORID,
-      authorProfileImageUrl: '',
-      title: 'Web 2.5: Where we are truly headed',
       content:
         '<h1>Heading</h2><h2>Subheading</h2><p>Some paragrap</p><li>' +
         '<ul>List Item 1</ul><ul>List item 2</ul></li>',
-      creationDate: 1234,
-      category: 'category-3',
-      upVoteUserIds: [],
-      downVoteUserIds: [],
-      numberOfComments: 10,
     },
   },
   {
     id: '666',
     contents: {
       postType: 'article',
-      accessTokenId: ACCESS_TOKEN_ID,
-      accessMinimumTokenBalance: 100,
-      authorUserId: AUTHORID,
-      authorUserName: 'metadiego',
-      authorPublicKey: AUTHORID,
-      authorProfileImageUrl: '',
-      title: 'Web 2.5: Where we are truly headed',
       content:
         '<h1>Heading</h2><h2>Subheading</h2><p>Some paragrap</p><li>' +
         '<ul>List Item 1</ul><ul>List item 2</ul></li>',
-      creationDate: 1234,
-      category: 'category-1',
-      upVoteUserIds: [],
-      downVoteUserIds: [],
-      numberOfComments: 10,
     },
   },
   {
     id: '777',
     contents: {
       postType: 'article',
-      accessTokenId: ACCESS_TOKEN_ID,
-      accessMinimumTokenBalance: 1000,
-      authorUserId: AUTHORID,
-      authorUserName: 'jinspe',
-      authorPublicKey: AUTHORID,
-      authorProfileImageUrl: '',
-      title: 'Web 2.5: Where we are truly headed',
       content:
         '<h1>Heading</h2><h2>Subheading</h2><p>Some paragrap</p><li>' +
         '<ul>List Item 1</ul><ul>List item 2</ul></li>',
-      creationDate: 1234,
-      category: 'category-2',
-      upVoteUserIds: [],
-      downVoteUserIds: [],
-      numberOfComments: 10,
     },
   },
 ];
@@ -313,25 +236,13 @@ const POLLS: Array<IpostPollWrapper> = [
   {
     id: '111',
     contents: {
-      postType: 'article',
-      accessTokenId: ACCESS_TOKEN_ID,
-      accessMinimumTokenBalance: 1,
-      authorUserId: AUTHORID,
-      authorUserName: 'metadiego',
-      authorPublicKey: AUTHORID,
-      authorProfileImageUrl: '',
-      title: 'Web 2.5: Where we are truly headed',
+      postType: 'poll',
       content: '<h1>What should we invest in?</h1>',
       options: [
         { id: '1', name: 'Bitcoin', voteUserIds: ['metadiego', 'john'] },
         { id: '2', name: 'Ethereum', voteUserIds: ['metadiego', 'john'] },
         { id: '3', name: 'Solana', voteUserIds: ['metadiego', 'john'] },
       ],
-      creationDate: 1234,
-      category: 'category-1',
-      upVoteUserIds: [],
-      downVoteUserIds: [],
-      numberOfComments: 10,
     },
   },
 ];

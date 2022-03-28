@@ -26,7 +26,7 @@ export function TokenRegistryProvider({
 
   useEffect(() => {
     new TokenListProvider()
-      .resolve(Strategy.Solana)
+      .resolve(Strategy.Static)
       .then((tokens: TokenListContainer) => {
         const tokenList = tokens
           .filterByClusterSlug(appConfig.SOLANA_NETWORK)
@@ -39,7 +39,7 @@ export function TokenRegistryProvider({
           }, new Map())
         );
       });
-  }, []);
+  }, [setTokenRegistry]);
 
   return (
     <TokenRegistryContext.Provider value={tokenRegistry}>

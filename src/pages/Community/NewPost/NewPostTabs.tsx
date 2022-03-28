@@ -19,9 +19,13 @@ import {
 
 type TnewPostTabs = {
   cId: string;
+  accessByTokenCollection: boolean;
 };
 
-export default function NewPostTabs({ cId }: TnewPostTabs): JSX.Element {
+export default function NewPostTabs({
+  cId,
+  accessByTokenCollection,
+}: TnewPostTabs): JSX.Element {
   const tabs = [
     { name: 'post' },
     { name: 'poll' },
@@ -35,8 +39,9 @@ export default function NewPostTabs({ cId }: TnewPostTabs): JSX.Element {
   const [postPreviewSubmission, setPostPreviewSubmission] =
     useState<IpostPreviewSubmission>({
       postType: 'article',
-      accessTokenId: cId,
-      accessMinimumTokenBalance: 0,
+      accessId: cId,
+      accessByTokenCollection,
+      minimumAccessBalance: 0,
       authorUserId: userInfo?.uid ?? '',
       authorUserName: userInfo?.uid ?? '',
       authorPublicKey: userInfo?.uid ?? '',

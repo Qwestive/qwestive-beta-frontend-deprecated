@@ -10,29 +10,41 @@ import LoadingDots from 'components/Util/LoadingDots';
 import PostPreviewCard from 'components/Posts/PostsReader/PostFeed/PostPreviewCard';
 
 export default function PostFeedTab(): JSX.Element {
-  const ownedTokens =
-    useRecoilValue(userInfoAtom)?.tokensOwned ?? new Map<string, number>();
+  const accountTokens = useRecoilValue(userInfoAtom)?.accountTokens;
   const userFinishedLoading = useRecoilValue(userFinishedLoadingAtom);
   const [loading, setLoading] = useState(true);
   const [postList, setPostList] = useState<IpostPreview[]>([]);
 
-  async function getPostFeed() {
+  async function buildPostFeed() {
     setLoading(true);
     try {
-      const tokenOwnedSlice = Array.from(ownedTokens.keys()).slice(0, 10);
-      const queryPosts = await queryPostFeed(tokenOwnedSlice);
-      setPostList(queryPosts);
+      const feedCommunityIds: string[] = [];
+      accountTokens?.fungibleAccountTokensByMint?.forEach((value) =>
+        feedCommunityIds.push(value.mint)
+      );
+      accountTokens?.nonFungibleAccountTokensByCollection?.forEach((value) =>
+        feedCommunityIds.push(value.id)
+      );
+      setPostList(await queryPostFeed(feedCommunityIds.slice(0, 10)));
     } catch (error: any) {
       toast.error(error?.message);
     }
     setLoading(false);
   }
 
+  function clearPostFeed() {
+    setPostList([]);
+  }
+
   useEffect(() => {
     if (userFinishedLoading) {
-      getPostFeed();
+      buildPostFeed();
     }
-  }, [ownedTokens, userFinishedLoading]);
+    // Clear post feed when component is unmounted.
+    return () => {
+      clearPostFeed();
+    };
+  }, [accountTokens, userFinishedLoading]);
 
   return (
     <div>

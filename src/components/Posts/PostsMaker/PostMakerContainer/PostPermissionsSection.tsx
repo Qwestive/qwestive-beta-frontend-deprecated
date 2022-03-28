@@ -87,7 +87,7 @@ export default function PostPermissionsSection({
               className="border border-gray-300 rounded-md block 
               focus:ring-0 text-color-primary text-sm  px-3 text-left 
               w-28 h-8"
-              value={postPreviewSubmission.accessMinimumTokenBalance}
+              value={postPreviewSubmission.minimumAccessBalance}
               min={0}
               step={0.0001}
               onChange={(e) =>
