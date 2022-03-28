@@ -22,7 +22,7 @@ export default function PostPreviewCard({
         downVotes={post.downVoteUserIds}
       />
       <Link
-        to={`/c/${post.accessTokenId}?post=${post.id}`}
+        to={`/c/${post.accessId}?post=${post.id}`}
         className="flex flex-row w-full justify-between my-auto">
         {/* Preview */}
         <div className="overflow-hidden">

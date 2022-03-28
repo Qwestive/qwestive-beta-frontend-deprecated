@@ -42,8 +42,8 @@ async function BuildUserSplTokenBalancesFromWallet(
     const ammountOwned =
       parsedAccountToken.parsed.info?.tokenAmount?.uiAmount ?? 0;
     const { ammount, decimals } = parsedAccountToken.parsed.info.tokenAmount;
-    console.log(parsedAccountToken);
     if (mint && ammountOwned !== 0) {
+      /// TODO(diego): fix the way the fungibility of a token is determined.
       const isFungible = ammount !== '1' && decimals !== 0;
       if (isFungible) {
         fungibleAccountTokens.set(mint, {

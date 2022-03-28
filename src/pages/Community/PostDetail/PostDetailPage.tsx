@@ -85,12 +85,7 @@ export default function PostDetailPage({
     <div className="flex flex-col w-8/12 max-w-10/12 mx-auto py-10">
       <Link
         className="flex flex-row"
-        to={
-          postPreview?.accessTokenId !== null &&
-          postPreview?.accessTokenId !== undefined
-            ? `/c/${postPreview?.accessTokenId}`
-            : '/'
-        }>
+        to={postPreview?.accessId ? `/c/${postPreview?.accessId}` : '/'}>
         <ArrowLeftIcon className="h-4 my-auto mx-1" /> Back
       </Link>
       {!isLoading && postFailedToLoad && <h1>Post failed to load</h1>}

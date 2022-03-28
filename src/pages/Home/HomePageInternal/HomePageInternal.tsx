@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 
 import ClassNamesLogic from 'components/Util/ClassNamesLogic';
-
-
 import CommunitiesTab from './CommunitiesTab';
 import PostFeedTab from './PostFeedTab';
 

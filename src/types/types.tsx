@@ -169,8 +169,9 @@ export type IpostContentType = IpostPoll | IpostArticle;
 
 export interface IpostPreviewSubmission {
   postType: TpostType;
-  accessTokenId: string;
-  accessMinimumTokenBalance: number;
+  accessId: string;
+  accessByTokenCollection: boolean;
+  minimumAccessBalance: number;
   authorUserId: string;
   authorUserName: string;
   authorPublicKey: string;

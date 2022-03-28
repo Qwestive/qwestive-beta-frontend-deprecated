@@ -66,7 +66,6 @@ export default function CommunityPage(): JSX.Element {
         setCommunity(await getTokenCommunity(cId));
       } catch (error: any) {
         toast.error(error?.message);
-        throw error;
       }
     }
     setLoadingPage(false);

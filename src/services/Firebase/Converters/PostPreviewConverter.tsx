@@ -9,8 +9,9 @@ export const postPreviewConverter = {
     // we do not wish DocumentData to contain.
     return {
       postType: post.postType,
-      accessTokenId: post.accessTokenId,
-      accessMinimumTokenBalance: post.accessMinimumTokenBalance,
+      accessId: post.accessId,
+      accessByTokenCollection: post.accessByTokenCollection,
+      minimumAccessBalance: post.minimumAccessBalance,
       authorUserId: post.authorUserId,
       authorUserName: post.authorUserName,
       authorPublicKey: post.authorPublicKey,
@@ -30,8 +31,9 @@ export const postPreviewConverter = {
     return {
       id: snapshot.id,
       postType: data.postType,
-      accessTokenId: data.accessTokenId,
-      accessMinimumTokenBalance: data.accessMinimumTokenBalance,
+      accessId: data.accessId,
+      accessByTokenCollection: data.accessByTokenCollection,
+      minimumAccessBalance: data.minimumAccessBalance,
       authorUserId: data.authorUserId,
       authorUserName: data.authorUserName,
       authorPublicKey: data.authorPublicKey,

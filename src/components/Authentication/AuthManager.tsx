@@ -59,12 +59,10 @@ export default function AuthManager({
               } catch (error) {
                 toast.error('Failed to update wallet holdings');
               }
-              setUserInfo(
-                Object.freeze({
-                  ...userDoc.data(),
-                  accountTokens,
-                })
-              );
+              setUserInfo({
+                ...userDoc.data(),
+                accountTokens,
+              });
               setUserFinishLoading(true);
             } else {
               throw new Error('User information not found');
