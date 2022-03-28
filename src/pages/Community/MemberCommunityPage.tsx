@@ -62,7 +62,6 @@ export default function MemberCommunityPage({
   }
 
   useEffect(() => {
-    console.log(postBatchList.length);
     getPostBatch();
   }, [currentPostSorting, currentCategory]);
 

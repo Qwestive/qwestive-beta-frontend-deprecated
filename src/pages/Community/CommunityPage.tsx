@@ -80,7 +80,6 @@ export default function CommunityPage(): JSX.Element {
 
   useEffect(() => {
     if (tokenRegistryHasLoaded) {
-      console.log('loading');
       handleLoadPage();
     }
   }, [cId, tokenRegistryHasLoaded, reloadToggle]);
