@@ -81,17 +81,22 @@ export default function PostDisplayList({
                   <p className="text-sm">Replies</p>
                 </div>
               </div>
-              <div className="space-y-3">
-                {postBatchList.map((postList) => (
-                  <div key={postList[0].id} className="my-3 space-y-3">
-                    {postList?.map((post) => (
-                      <div key={post.id}>
-                        <PostPreviewCard post={post} />
-                      </div>
-                    ))}
-                  </div>
-                ))}
-              </div>
+              {postBatchList.length !== 0 && (
+                <div className="space-y-3">
+                  {postBatchList.map(
+                    (postList) =>
+                      postList.length !== 0 && (
+                        <div key={postList[0].id} className="my-3 space-y-3">
+                          {postList?.map((post) => (
+                            <div key={post.id}>
+                              <PostPreviewCard post={post} />
+                            </div>
+                          ))}
+                        </div>
+                      )
+                  )}
+                </div>
+              )}
             </div>
           )}
           {/* Load More Posts Button */}

@@ -58,6 +58,7 @@ export default function CommunitiesTab(): JSX.Element {
         const communityData: TtokenCommunity[] = await Promise.all(
           communityDataPromises
         );
+        console.log(communityData);
         setTokenCommunities(communityData);
         setTokenCommunitySearchResults(communityData);
         setSearchPredicate('');

@@ -54,7 +54,7 @@ export async function queryPostPreviews(
 ): Promise<[IpostPreview[], QueryDocumentSnapshot<IpostPreview>]> {
   const postRef = collection(Firestore, 'postPreviews');
   const queryConstraints = [
-    where('accessTokenId', '==', cId),
+    where('accessId', '==', cId),
     orderBy('creationDate', 'desc'),
     limit(quantity),
   ];
@@ -95,7 +95,7 @@ export async function queryPostFeed(
 
   const postQuery = query(
     postRef,
-    where('accessTokenId', 'in', tokenIds),
+    where('accessId', 'in', tokenIds),
     orderBy('creationDate', 'desc'),
     limit(10)
   ).withConverter(postPreviewConverter);

@@ -56,7 +56,7 @@ export default function OwnedTokenGrid({
                   </p>
                   <p className="mt-1 text-gray-500 text-sm truncate">
                     You have
-                    {`${getCommunityTokensOwnedQuantity(community)} ${
+                    {` ${getCommunityTokensOwnedQuantity(community)} ${
                       community.type === EcommunityType.fungible
                         ? 'tokens'
                         : 'NFTs.'

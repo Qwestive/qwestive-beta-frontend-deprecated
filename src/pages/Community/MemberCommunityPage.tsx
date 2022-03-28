@@ -14,10 +14,12 @@ const BATCHLENGHT = 8;
 
 type TmemberCommunityPage = {
   community: ItokenCommunity | undefined;
+  setReloadToggle: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function MemberCommunityPage({
   community,
+  setReloadToggle,
 }: TmemberCommunityPage): JSX.Element {
   const [searchParams] = useSearchParams({});
   const [postId, setPostId] = useState(searchParams.get('post'));
@@ -60,6 +62,7 @@ export default function MemberCommunityPage({
   }
 
   useEffect(() => {
+    console.log(postBatchList.length);
     getPostBatch();
   }, [currentPostSorting, currentCategory]);
 
@@ -96,7 +99,9 @@ export default function MemberCommunityPage({
               getPostBatch={() => getPostBatch()}
             />
           )}
-          {postId === 'new-post' && <NewPostPage />}
+          {postId === 'new-post' && (
+            <NewPostPage setReloadCommunityPageToggle={setReloadToggle} />
+          )}
           {postId && postId !== 'new-post' && (
             <PostDetailPage postId={postId} />
           )}

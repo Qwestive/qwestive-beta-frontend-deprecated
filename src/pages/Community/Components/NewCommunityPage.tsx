@@ -7,10 +7,12 @@ import NewPostPage from '../NewPost/NewPostPage';
 
 type TnewCommunityPage = {
   community: TtokenCommunity | undefined;
+  setReloadToggle: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function NewCommunityPage({
   community,
+  setReloadToggle,
 }: TnewCommunityPage): JSX.Element {
   const [searchParams] = useSearchParams({});
   const [postId, setPostId] = useState(searchParams.get('post'));
@@ -22,7 +24,9 @@ export default function NewCommunityPage({
 
   return (
     <div>
-      {postId === 'new-post' && <NewPostPage />}
+      {postId === 'new-post' && (
+        <NewPostPage setReloadCommunityPageToggle={setReloadToggle} />
+      )}
       {postId !== 'new-post' && (
         <div className="mt-10">
           <div className="flex justify-center">
