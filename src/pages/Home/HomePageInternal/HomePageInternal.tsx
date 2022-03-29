@@ -13,7 +13,7 @@ export default function HomePageInternal(): JSX.Element {
   ];
 
   return (
-    <div className="max-w-2xl mx-auto mt-8 px-1 mb-5">
+    <div className="w-10/12 md:w-8/12 max-w-10/12 mx-auto py-10">
       <div className="border-b border-gray-500">
         <nav className="flex justify-center" aria-label="Tabs">
           {tabs.map((tab) => (

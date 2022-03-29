@@ -30,7 +30,7 @@ export default function PostDisplayList({
 }: TpostDisplayList): JSX.Element {
   return (
     <div>
-      <div className="mt-5 px-3">
+      <div className="w-full">
         {/* Filters buttons */}
         <div className="flex justify-between items-center">
           <div className="space-x-3 flex overflow-auto hideScrollBar">
@@ -77,7 +77,7 @@ export default function PostDisplayList({
             <div>
               <div className="p-3 flex justify-between">
                 <p className="text-sm">Posts</p>
-                <div className=" w-24 grid grid-cols-2 text-center">
+                <div className="grid grid-cols-2 text-center">
                   <p className="text-sm">Replies</p>
                 </div>
               </div>

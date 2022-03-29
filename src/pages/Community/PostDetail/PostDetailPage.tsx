@@ -82,7 +82,7 @@ export default function PostDetailPage({
   }, [postId]);
 
   return (
-    <div className="flex flex-col w-8/12 max-w-10/12 mx-auto py-10">
+    <div className="flex flex-col w-full mx-auto py-10">
       <Link
         className="flex flex-row"
         to={postPreview?.accessId ? `/c/${postPreview?.accessId}` : '/'}>

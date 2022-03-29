@@ -78,15 +78,15 @@ export default function MemberCommunityPage({
           currentCategory={currentCategory}
         />
       </div>
-      <div className="flex mx-auto gap-5 mt-2 mb-2 ">
-        <div className="items-center w-56 hidden md:block">
+      <div className="flex mx-auto gap-5 my-2">
+        <div className="items-center hidden md:block">
           <CategoriesLarge
             community={community}
             setCurrentCategory={setCurrentCategory}
             currentCategory={currentCategory}
           />
         </div>
-        <div className="w-full ">
+        <div>
           {!postId && (
             <PostDisplayList
               currentPostSorting={currentPostSorting}
