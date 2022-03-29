@@ -93,7 +93,7 @@ export default function PostPermissionsSection({
               onChange={(e) =>
                 setPostPreviewSubmission((prevState) => ({
                   ...prevState,
-                  accessMinimumTokenBalance: e.target.valueAsNumber,
+                  minimumAccessBalance: e.target.valueAsNumber,
                 }))
               }
             />

@@ -26,6 +26,7 @@ type TpostContainer = {
   postPreviewSubmission: IpostPreviewSubmission;
   setPostPreviewSubmission: Dispatch<SetStateAction<IpostPreviewSubmission>>;
   getPostContent: () => IpostContentType;
+  setReloadCommunityPageToggle: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function PostMakerContainer({
@@ -33,6 +34,7 @@ export default function PostMakerContainer({
   postPreviewSubmission,
   setPostPreviewSubmission,
   getPostContent,
+  setReloadCommunityPageToggle,
 }: TpostContainer): JSX.Element {
   const navigate = useNavigate();
   const [disableEdit, setDisableEdit] = useState(false);
@@ -57,7 +59,8 @@ export default function PostMakerContainer({
       setPostPreviewSubmission(savedPreview);
       const postId = await WritePost(savedPreview, postContent);
       toast.success('Post saved');
-      navigate(`/post/${postId}`);
+      setReloadCommunityPageToggle((prev) => !prev);
+      navigate(`/c/${postPreviewSubmission.accessId}?post=${postId}`);
     } catch (error: any) {
       toast.error(error?.message);
       setDisableEdit(false);

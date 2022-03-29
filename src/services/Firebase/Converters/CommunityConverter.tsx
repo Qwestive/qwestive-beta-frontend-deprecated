@@ -14,7 +14,7 @@ export const communityConverter = {
     // different from data stored in BE.
     return {
       id: snapshot.id,
-      isActive: (snapshot.data()?.categories?.length ?? 0) > 0,
+      isActive: true,
       categories: snapshot.data()?.categories ?? [],
     } as IcommunityData;
   },
