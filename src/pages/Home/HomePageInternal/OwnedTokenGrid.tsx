@@ -42,13 +42,13 @@ export default function OwnedTokenGrid({
                     </h3>
                     <span
                       className={ClassNamesLogic(
-                        community?.data?.isActive ?? false
+                        community?.communityData?.isActive ?? false
                           ? ' text-green-800 bg-green-100'
                           : 'bg-pink-100 text-pink-800',
                         'flex-shrink-0 inline-block px-2 py-0.5' +
                           'text-xs font-medium  rounded-full'
                       )}>
-                      {community?.data?.isActive ? 'Active' : 'New'}
+                      {community?.communityData?.isActive ? 'Active' : 'New'}
                     </span>
                   </div>
                   <p className="mt-1 text-gray-500 text-sm truncate">

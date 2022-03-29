@@ -52,7 +52,7 @@ export async function queryPostPreviews(
 
   let postQuery = query(
     postRef,
-    where('accessTokenId', '==', cId),
+    where('accessId', '==', cId),
     orderBy('creationDate', 'desc'),
     limit(10)
   );
@@ -63,7 +63,7 @@ export async function queryPostPreviews(
     if (['poll', 'bounty'].includes(sortingTypeQuery)) {
       postQuery = query(
         postRef,
-        where('accessTokenId', '==', cId),
+        where('accessId', '==', cId),
         where('category', '==', category),
         where('postType', '==', sortingTypeQuery),
         orderBy('creationDate', 'desc'),
@@ -72,7 +72,7 @@ export async function queryPostPreviews(
     } else {
       postQuery = query(
         postRef,
-        where('accessTokenId', '==', cId),
+        where('accessId', '==', cId),
         where('category', '==', category),
         orderBy('creationDate', 'desc'),
         limit(10)
@@ -81,7 +81,7 @@ export async function queryPostPreviews(
   } else if (['poll', 'bounty'].includes(sortingTypeQuery)) {
     postQuery = query(
       postRef,
-      where('accessTokenId', '==', cId),
+      where('accessId', '==', cId),
       where('postType', '==', sortingTypeQuery),
       orderBy('creationDate', 'desc'),
       limit(10)
@@ -110,7 +110,7 @@ export async function queryPostFeed(
 
   const postQuery = query(
     postRef,
-    where('accessTokenId', 'in', tokenIds),
+    where('accessId', 'in', tokenIds),
     orderBy('creationDate', 'desc'),
     limit(10)
   ).withConverter(postPreviewConverter);

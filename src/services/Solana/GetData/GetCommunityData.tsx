@@ -34,7 +34,7 @@ export async function GetFungibleCommunityData(
       type: EcommunityType.fungible,
       name: 'Solana',
       imageUrl: solanaLogo,
-      data: communityData,
+      communityData,
       tokenData: token,
       symbol: 'SOL',
     };
@@ -46,7 +46,7 @@ export async function GetFungibleCommunityData(
       type: EcommunityType.fungible,
       name: tokenInfo.name,
       imageUrl: tokenInfo.logoURI,
-      data: communityData,
+      communityData,
       tokenData: token,
       symbol: tokenInfo.symbol,
     };
@@ -56,7 +56,7 @@ export async function GetFungibleCommunityData(
     type: EcommunityType.fungible,
     name: 'Unknown',
     imageUrl: defaultUserProfileImage,
-    data: communityData,
+    communityData,
     tokenData: token,
     symbol: 'Unknown',
   };
@@ -83,9 +83,12 @@ export async function GetNonFunibleCommunityData(
     type: EcommunityType.nonfungible,
     name: data.collectionName,
     imageUrl: data.imageUrl,
-    data: communityData,
-    metadata: nftCollection.metadata,
-    tokensOwned: nftCollection.tokensOwned,
+    communityData,
+    collectionData: {
+      id: nftCollection.id,
+      metadata: nftCollection.metadata,
+      tokensOwned: nftCollection.tokensOwned,
+    },
   };
 }
 

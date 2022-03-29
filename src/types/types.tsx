@@ -94,7 +94,7 @@ export interface ItokenCommunity {
   type: EcommunityType;
   name: string;
   imageUrl: string | undefined;
-  data: IcommunityData | undefined;
+  communityData: IcommunityData | undefined;
 }
 
 export interface IfungibleTokenCommunity extends ItokenCommunity {
@@ -103,8 +103,7 @@ export interface IfungibleTokenCommunity extends ItokenCommunity {
 }
 
 export interface InonFungibleTokenCommunity extends ItokenCommunity {
-  metadata: InonFungibleTokenCollectionMetadata;
-  tokensOwned: Array<InonFungibleToken>;
+  collectionData: InonFungibleTokenCollection;
 }
 
 /* Data about a community stored in Qwestive DB. */

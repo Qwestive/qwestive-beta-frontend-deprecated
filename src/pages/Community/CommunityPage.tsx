@@ -41,7 +41,7 @@ export default function CommunityPage(): JSX.Element {
         type: EcommunityType.fungible,
         name: 'Solana',
         imageUrl: solanaLogo,
-        data: undefined,
+        communityData: undefined,
         symbol: 'SOL',
         tokenData: { isFungible: true, mint: 'SOL', ammountOwned: 0 },
       };
@@ -101,13 +101,13 @@ export default function CommunityPage(): JSX.Element {
       {!loadingPage &&
         hasAccess &&
         cId !== undefined &&
-        community?.data === undefined && (
+        community?.communityData === undefined && (
           <NewCommunityPage community={community} />
         )}
       {!loadingPage &&
         hasAccess &&
         cId !== undefined &&
-        community?.data !== undefined && (
+        community?.communityData !== undefined && (
           <MemberCommunityPage community={community} />
         )}
     </div>
