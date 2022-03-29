@@ -52,7 +52,7 @@ export default function MemberCommunityPage({
   }, [searchParams]);
 
   return (
-    <div className="w-max-100">
+    <div>
       <div className="items-center w-full block md:hidden">
         <CategoriesSmall
           community={community}
@@ -68,7 +68,7 @@ export default function MemberCommunityPage({
             currentCategory={currentCategory}
           />
         </div>
-        <div className="flex mx-auto gap-5 my-2">
+        <div>
           {!postId && (
             <PostDisplayList
               currentPostSorting={currentPostSorting}

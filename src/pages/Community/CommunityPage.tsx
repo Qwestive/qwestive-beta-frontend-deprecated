@@ -84,7 +84,7 @@ export default function CommunityPage(): JSX.Element {
   }, [cId, tokenRegistryHasLoaded]);
 
   return (
-    <div className="w-10/12 md:w-10/12 max-w-10/12 mx-auto py-10">
+    <div className="w-10/12 mx-auto py-10">
       {loadingPage && (
         <div>
           <div
