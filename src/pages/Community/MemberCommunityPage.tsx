@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { QueryDocumentSnapshot } from 'firebase/firestore';
 import { queryPostPreviews } from 'services/Firebase/GetData/PostUtils';
 import { IpostPreview, TpostSorting, ItokenCommunity } from 'types/types';
 import CategoriesLarge from './Categories/CategoriesLarge';
@@ -9,33 +10,50 @@ import PostDisplayList from './Components/PostDisplayList';
 import NewPostPage from './NewPost/NewPostPage';
 import PostDetailPage from './PostDetail/PostDetailPage';
 
+const BATCHLENGHT = 8;
+
 type TmemberCommunityPage = {
   community: ItokenCommunity | undefined;
+  setReloadToggle: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function MemberCommunityPage({
   community,
+  setReloadToggle,
 }: TmemberCommunityPage): JSX.Element {
   const [searchParams] = useSearchParams({});
   const [postId, setPostId] = useState(searchParams.get('post'));
+  const [postBatchList, setPostBatchList] = useState<Array<IpostPreview[]>>([]);
+  const [lastVisible, setLastVisible] = useState<
+    QueryDocumentSnapshot<IpostPreview> | undefined
+  >();
+  const [hasMorePost, setHasMorePost] = useState(false);
 
-  const [postList, setPostList] = useState<Array<IpostPreview> | undefined>();
   const [currentPostSorting, setCurrentPostSorting] =
     useState<TpostSorting>('New');
   const [currentCategory, setCurrentCategory] = useState('All Topics');
 
   const [postsLoading, setPostsLoading] = useState(true);
 
-  async function getPosts() {
+  async function getPostBatch() {
     if (community?.cid !== undefined) {
       setPostsLoading(true);
       try {
-        const qResult = await queryPostPreviews(
+        const [qBatchResult, lastVisibleFetch] = await queryPostPreviews(
           community.cid,
           currentPostSorting,
-          currentCategory
+          currentCategory,
+          lastVisible,
+          BATCHLENGHT
         );
-        setPostList(qResult);
+        setLastVisible(lastVisibleFetch);
+        if (qBatchResult.length === BATCHLENGHT) {
+          setPostBatchList([...postBatchList, qBatchResult.slice(0, -1)]);
+          setHasMorePost(true);
+        } else {
+          setPostBatchList([...postBatchList, qBatchResult]);
+          setHasMorePost(false);
+        }
       } catch (error: any) {
         toast.error(error?.message);
       }
@@ -44,7 +62,7 @@ export default function MemberCommunityPage({
   }
 
   useEffect(() => {
-    getPosts();
+    getPostBatch();
   }, [currentPostSorting, currentCategory]);
 
   useEffect(() => {
@@ -74,11 +92,15 @@ export default function MemberCommunityPage({
               currentPostSorting={currentPostSorting}
               setCurrentPostSorting={setCurrentPostSorting}
               communityId={community?.cid}
-              postList={postList}
+              postBatchList={postBatchList}
+              hasMorePost={hasMorePost}
               postsLoading={postsLoading}
+              getPostBatch={() => getPostBatch()}
             />
           )}
-          {postId === 'new-post' && <NewPostPage />}
+          {postId === 'new-post' && (
+            <NewPostPage setReloadCommunityPageToggle={setReloadToggle} />
+          )}
           {postId && postId !== 'new-post' && (
             <PostDetailPage postId={postId} />
           )}

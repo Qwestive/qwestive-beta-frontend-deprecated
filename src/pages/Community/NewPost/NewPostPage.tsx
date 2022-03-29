@@ -6,7 +6,13 @@ import { userInfoAtom } from 'services/recoil/userInfo';
 import NotAccessNewPost from './Components/NotAccessNewPost';
 import NewPostTabs from './NewPostTabs';
 
-export default function NewPostPage(): JSX.Element {
+type TnewPostPage = {
+  setReloadCommunityPageToggle: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export default function NewPostPage({
+  setReloadCommunityPageToggle,
+}: TnewPostPage): JSX.Element {
   const { cId } = useParams<'cId'>();
 
   const [hasAccess, setHasAccess] = useState(false);
@@ -41,6 +47,7 @@ export default function NewPostPage(): JSX.Element {
         <NewPostTabs
           cId={cId}
           accessByTokenCollection={hasAccessByTokenCollection}
+          setReloadCommunityPageToggle={setReloadCommunityPageToggle}
         />
       )}
       {!loadingPage && !hasAccess && <NotAccessNewPost />}

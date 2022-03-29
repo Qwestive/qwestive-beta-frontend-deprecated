@@ -30,6 +30,7 @@ export default function CommunityPage(): JSX.Element {
   };
   const [hasAccess, setHasAccess] = useState(false);
   const [loadingPage, setLoadingPage] = useState(true);
+  const [reloadToggle, setReloadToggle] = useState(false);
 
   const [community, setCommunity] = useState<TtokenCommunity | undefined>();
   const [tokenRegistryHasLoaded, setTokenRegistryHasLoaded] = useState(false);
@@ -81,7 +82,7 @@ export default function CommunityPage(): JSX.Element {
     if (tokenRegistryHasLoaded) {
       handleLoadPage();
     }
-  }, [cId, tokenRegistryHasLoaded]);
+  }, [cId, tokenRegistryHasLoaded, reloadToggle]);
 
   return (
     <div className="max-w-5xl mx-auto px-2">
@@ -102,13 +103,19 @@ export default function CommunityPage(): JSX.Element {
         hasAccess &&
         cId !== undefined &&
         community?.data === undefined && (
-          <NewCommunityPage community={community} />
+          <NewCommunityPage
+            community={community}
+            setReloadToggle={setReloadToggle}
+          />
         )}
       {!loadingPage &&
         hasAccess &&
         cId !== undefined &&
         community?.data !== undefined && (
-          <MemberCommunityPage community={community} />
+          <MemberCommunityPage
+            community={community}
+            setReloadToggle={setReloadToggle}
+          />
         )}
     </div>
   );
