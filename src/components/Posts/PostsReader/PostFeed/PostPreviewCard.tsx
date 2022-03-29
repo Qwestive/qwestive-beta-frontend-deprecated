@@ -23,14 +23,16 @@ export default function PostPreviewCard({
       />
       <Link
         to={`/c/${post.accessId}?post=${post.id}`}
-        className="flex flex-row w-full justify-between my-auto">
+        className="flex flex-row w-full my-auto">
         {/* Preview */}
-        <div className="overflow-hidden">
-          <div className="flex">
-            <p className="text-xl font-bold truncate">{post.title}</p>
-            <p className="text-gray-500 truncate mx-10 my-auto">
+        <div className="flex flex-col w-10/12">
+          <div className="px-2">
+            <span className="text-lg md:text-xl font-bold text-clip mr-2">
+              {post.title}
+            </span>{' '}
+            <span className="text-gray-500 text-xs whitespace-nowrap">
               {timeSince(post.creationDate)} ago
-            </p>
+            </span>
           </div>
           {post.category && (
             <div className="flex gap-5 mt-2 items-center">
@@ -43,7 +45,7 @@ export default function PostPreviewCard({
           )}
         </div>
         {/* Stats */}
-        <div className="w-24 grid grid-cols-2 text-center">
+        <div className="text-center justify-self-end">
           <p>{post.numberOfComments}</p>
         </div>
       </Link>
