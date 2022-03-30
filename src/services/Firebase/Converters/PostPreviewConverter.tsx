@@ -10,7 +10,6 @@ export const postPreviewConverter = {
     return {
       postType: post.postType,
       accessId: post.accessId,
-      accessByTokenCollection: post.accessByTokenCollection,
       minimumAccessBalance: post.minimumAccessBalance,
       authorUserId: post.authorUserId,
       authorUserName: post.authorUserName,
@@ -32,7 +31,6 @@ export const postPreviewConverter = {
       id: snapshot.id,
       postType: data.postType,
       accessId: data.accessId,
-      accessByTokenCollection: data.accessByTokenCollection,
       minimumAccessBalance: data.minimumAccessBalance,
       authorUserId: data.authorUserId,
       authorUserName: data.authorUserName,

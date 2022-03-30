@@ -17,8 +17,6 @@ export default function NewPostPage({
 
   const [hasAccess, setHasAccess] = useState(false);
   const [loadingPage, setLoadingPage] = useState(true);
-  const [hasAccessByTokenCollection, setHasAccessByTokenCollection] =
-    useState(false);
   const userAccountTokens = useRecoilValue(userInfoAtom)?.accountTokens;
 
   async function handleLoadPage() {
@@ -31,7 +29,6 @@ export default function NewPostPage({
         userAccountTokens?.nonFungibleAccountTokensByCollection?.get(cId)
           ?.tokensOwned ?? [];
       setHasAccess(tokenBalance > 0 || collectionTokens.length > 0);
-      setHasAccessByTokenCollection(tokenBalance === 0);
     }
     setLoadingPage(false);
   }
@@ -46,7 +43,6 @@ export default function NewPostPage({
       {!loadingPage && hasAccess && cId !== undefined && (
         <NewPostTabs
           cId={cId}
-          accessByTokenCollection={hasAccessByTokenCollection}
           setReloadCommunityPageToggle={setReloadCommunityPageToggle}
         />
       )}
