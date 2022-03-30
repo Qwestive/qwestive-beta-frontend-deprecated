@@ -29,7 +29,7 @@ export default function PostDisplayList({
   getPostBatch,
 }: TpostDisplayList): JSX.Element {
   return (
-    <div>
+    <div className="w-full">
       <div className="w-full">
         {/* Filters buttons */}
         <div className="flex justify-between items-center">

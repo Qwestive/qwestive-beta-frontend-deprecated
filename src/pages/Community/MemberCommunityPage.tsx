@@ -86,7 +86,7 @@ export default function MemberCommunityPage({
             currentCategory={currentCategory}
           />
         </div>
-        <div>
+        <div className="w-full">
           {!postId && (
             <PostDisplayList
               currentPostSorting={currentPostSorting}
