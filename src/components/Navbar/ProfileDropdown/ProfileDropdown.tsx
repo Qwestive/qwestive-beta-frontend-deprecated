@@ -51,7 +51,9 @@ export default function ProfileDropdown(): JSX.Element {
             className="
                       rounded-3xl
                       flex 
-                      py-px
+                      h-8
+                      px-1
+                      shadow-sm
                       dropdown-bg
                       border
                       border-gray-400
@@ -70,7 +72,7 @@ export default function ProfileDropdown(): JSX.Element {
                       dark:text-gray-400 
                       dark:hover:text-gray-200">
             <span className="sr-only">Open user menu</span>
-            <div className="flex ">
+            <div className="flex my-auto ">
               {(userInfo === undefined ||
                 userInfo?.profileImage === undefined) && (
                 <UserCircleIcon className="ml-1 h-6 w-6" />
@@ -125,7 +127,7 @@ export default function ProfileDropdown(): JSX.Element {
                       </p>
                       <p
                         className="text-center mt-0.5 truncate
-                      text-neutral-500 text-xs font-medium">
+                      text-color-secondary text-xs font-medium">
                         {userInfo.publicKey}
                       </p>
                     </div>

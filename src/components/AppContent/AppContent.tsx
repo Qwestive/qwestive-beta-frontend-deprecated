@@ -11,7 +11,8 @@ import ProfileSettingPage from 'pages/UserProfile/SelfProfile/ProfileSettingPage
 
 import CommunityPage from 'pages/Community/CommunityPage';
 import useDarkMode from 'components/Util/useDarkMode';
-
+import NotFoundPage from 'pages/Common/NotFoundPage';
+import LoginPage from 'pages/Common/LoginPage';
 import 'style/global.css';
 import 'react-toastify/dist/ReactToastify.css';
 import { loadingAppAtom } from 'services/recoil/appState';
@@ -33,6 +34,7 @@ export default function AppContent(): JSX.Element {
             <Route path="/Home" element={<HomePage />} />
             <Route path="/" element={<Navigate to="/Home" />} />
             <Route path="/user/:userName" element={<UserProfilePage />} />
+            <Route path="/login" element={<LoginPage />} />
             <Route
               path="/profile/settings"
               element={<OnlyAuthRoute element={<ProfileSettingPage />} />}
@@ -41,6 +43,8 @@ export default function AppContent(): JSX.Element {
               path="/c/:cId"
               element={<OnlyAuthRoute element={<CommunityPage />} />}
             />
+
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </>
       )}

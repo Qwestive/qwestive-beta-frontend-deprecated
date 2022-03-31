@@ -29,12 +29,12 @@ const Navbar = function Navbar(): JSX.Element {
             {/* Logo light mode */}
             <div className="hidden dark:block">
               <img
-                className="block lg:hidden h-7 w-auto"
+                className="block lg:hidden h-8 w-auto"
                 src={qwestiveLogoWhite}
                 alt="Qwestive"
               />
               <img
-                className="hidden lg:block h-7 w-auto"
+                className="hidden lg:block h-8 w-auto"
                 src={qwestiveLogoWhite}
                 alt="Qwestive"
               />
@@ -42,8 +42,8 @@ const Navbar = function Navbar(): JSX.Element {
           </Link>
         </div>
         <div className="flex-1 flex justify-end gap-2 py-1">
-          <Link className="" to="/login">
-            <button type="button" className="py-0.5 px-4 button-action ">
+          <Link to="/login">
+            <button type="button" className="h-8 px-5 button-action shadow-sm">
               Log In
             </button>
           </Link>

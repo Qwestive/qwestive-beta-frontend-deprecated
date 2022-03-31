@@ -12,9 +12,9 @@ import { FirebaseAuth, Firestore } from 'services/Firebase/FirebaseConfig';
 import {
   userFinishedLoadingAtom,
   loadingAppAtom,
+  loggingStateAtom,
 } from 'services/recoil/appState';
 import { getUserAccountTokens } from 'components/Authentication/TokenManager';
-/* eslint-disable @typescript-eslint/no-explicit-any */
 
 export default function AuthManager({
   children,
@@ -25,17 +25,24 @@ export default function AuthManager({
   const [userInfo, setUserInfo] = useRecoilState(userInfoAtom);
   const [, setUserFinishLoading] = useRecoilState(userFinishedLoadingAtom);
   const [, setLoadingApp] = useRecoilState(loadingAppAtom);
+  const [, setLoggingState] = useRecoilState(loggingStateAtom);
 
   async function trySigninWithWallet() {
     if (connected && publicKey) {
       try {
-        await SigninWithWallet({
-          uid: publicKey.toString(),
-          publicKey,
-          signMessage,
-        });
+        setLoggingState('receive');
+        await SigninWithWallet(
+          {
+            uid: publicKey.toString(),
+            publicKey,
+            signMessage,
+          },
+          setLoggingState
+        );
+        setLoggingState('');
       } catch (error: any) {
         toast.error(`Couldn't sign in: ${error?.message}`);
+        setLoggingState('');
       }
     }
   }
