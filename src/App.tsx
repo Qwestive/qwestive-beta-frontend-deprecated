@@ -15,10 +15,13 @@ import UserProfilePage from 'pages/UserProfile/UserProfilePage';
 import ProfileSettingPage from 'pages/UserProfile/SelfProfile/ProfileSettingPage';
 
 import CommunityPage from 'pages/Community/CommunityPage';
+import useDarkMode from 'components/Util/useDarkMode';
 
+import 'style/global.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App(): JSX.Element {
+  useDarkMode();
   return (
     <WalletProviders>
       <TokenRegistryProvider>

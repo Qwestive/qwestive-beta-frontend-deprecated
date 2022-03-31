@@ -1,0 +1,19 @@
+.dropdown-text-color {
+  @apply text-gray-800 dark:text-gray-200;
+}
+
+.dropdown-text {
+  @apply dropdown-text-color text-sm font-bold;
+}
+
+.dropdown-bg {
+  @apply bg-white dark:bg-gray-900;
+}
+
+.dropdown-bg-active {
+  @apply bg-gray-200 dark:bg-gray-700;
+}
+
+.nav-icons-size {
+  @apply h-5 w-5;
+}
