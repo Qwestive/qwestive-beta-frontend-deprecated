@@ -12,7 +12,8 @@ export function getCommunitySymbol(
   if (community?.type === EcommunityType.fungible) {
     return (community as IfungibleTokenCommunity).tokenData.mint;
   }
-  return (community as InonFungibleTokenCommunity).metadata.symbol;
+  return (community as InonFungibleTokenCommunity).collectionData.metadata
+    .symbol;
 }
 
 export function getCommunityTokensOwnedQuantity(
@@ -22,5 +23,6 @@ export function getCommunityTokensOwnedQuantity(
   if (community?.type === EcommunityType.fungible) {
     return (community as IfungibleTokenCommunity).tokenData.ammountOwned;
   }
-  return (community as InonFungibleTokenCommunity).tokensOwned.length;
+  return (community as InonFungibleTokenCommunity).collectionData.tokensOwned
+    .length;
 }

@@ -69,6 +69,7 @@ export default function CommunitiesTab(): JSX.Element {
     }
     setLoading(false);
   }
+
   useEffect(() => {
     if (userFinishedLoading) {
       generateCommunityList();

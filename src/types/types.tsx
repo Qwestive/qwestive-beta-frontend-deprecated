@@ -94,7 +94,7 @@ export interface ItokenCommunity {
   type: EcommunityType;
   name: string;
   imageUrl: string | undefined;
-  data: IcommunityData | undefined;
+  communityData: IcommunityData | undefined;
 }
 
 export interface IfungibleTokenCommunity extends ItokenCommunity {
@@ -103,8 +103,7 @@ export interface IfungibleTokenCommunity extends ItokenCommunity {
 }
 
 export interface InonFungibleTokenCommunity extends ItokenCommunity {
-  metadata: InonFungibleTokenCollectionMetadata;
-  tokensOwned: Array<InonFungibleToken>;
+  collectionData: InonFungibleTokenCollection;
 }
 
 /* Data about a community stored in Qwestive DB. */
@@ -170,7 +169,6 @@ export type IpostContentType = IpostPoll | IpostArticle;
 export interface IpostPreviewSubmission {
   postType: TpostType;
   accessId: string;
-  accessByTokenCollection: boolean;
   minimumAccessBalance: number;
   authorUserId: string;
   authorUserName: string;

@@ -22,8 +22,8 @@ export default function CategoriesSmall({
   const [categories, setCategories] = useState<Array<Icategories>>([]);
 
   useEffect(() => {
-    setCategories(community?.data?.categories ?? []);
-  }, [community?.data?.categories]);
+    setCategories(community?.communityData?.categories ?? []);
+  }, [community?.communityData?.categories]);
 
   return (
     <div

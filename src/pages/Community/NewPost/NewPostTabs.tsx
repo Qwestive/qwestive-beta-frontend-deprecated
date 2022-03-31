@@ -19,13 +19,11 @@ import {
 
 type TnewPostTabs = {
   cId: string;
-  accessByTokenCollection: boolean;
   setReloadCommunityPageToggle: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function NewPostTabs({
   cId,
-  accessByTokenCollection,
   setReloadCommunityPageToggle,
 }: TnewPostTabs): JSX.Element {
   const tabs = [
@@ -42,7 +40,6 @@ export default function NewPostTabs({
     useState<IpostPreviewSubmission>({
       postType: 'article',
       accessId: cId,
-      accessByTokenCollection,
       minimumAccessBalance: 0,
       authorUserId: userInfo?.uid ?? '',
       authorUserName: userInfo?.userName ?? '',

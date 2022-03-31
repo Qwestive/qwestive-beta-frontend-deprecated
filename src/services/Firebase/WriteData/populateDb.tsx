@@ -36,7 +36,6 @@ const POST_PREVIEWS: Array<IpostPreviewWrapper> = [
     contents: {
       postType: 'article',
       accessId: ACCESS_TOKEN_ID,
-      accessByTokenCollection: false,
       minimumAccessBalance: 1,
       authorUserId: AUTHORID,
       authorUserName: 'metadiego',
@@ -55,7 +54,6 @@ const POST_PREVIEWS: Array<IpostPreviewWrapper> = [
     contents: {
       postType: 'article',
       accessId: ACCESS_TOKEN_ID,
-      accessByTokenCollection: false,
       minimumAccessBalance: 1,
       authorUserId: AUTHORID,
       authorUserName: 'jisnpe',
@@ -74,7 +72,6 @@ const POST_PREVIEWS: Array<IpostPreviewWrapper> = [
     contents: {
       postType: 'article',
       accessId: ACCESS_TOKEN_ID,
-      accessByTokenCollection: false,
       minimumAccessBalance: 50,
       authorUserId: AUTHORID,
       authorUserName: 'seanHCode',
@@ -93,7 +90,6 @@ const POST_PREVIEWS: Array<IpostPreviewWrapper> = [
     contents: {
       postType: 'article',
       accessId: ACCESS_TOKEN_ID,
-      accessByTokenCollection: false,
       minimumAccessBalance: 30,
       authorUserId: AUTHORID,
       authorUserName: 'jasonzhu',
@@ -112,7 +108,6 @@ const POST_PREVIEWS: Array<IpostPreviewWrapper> = [
     contents: {
       postType: 'article',
       accessId: ACCESS_TOKEN_ID,
-      accessByTokenCollection: false,
       minimumAccessBalance: 1,
       authorUserId: AUTHORID,
       authorUserName: 'pauloalmeida',
@@ -131,7 +126,6 @@ const POST_PREVIEWS: Array<IpostPreviewWrapper> = [
     contents: {
       postType: 'article',
       accessId: ACCESS_TOKEN_ID,
-      accessByTokenCollection: false,
       minimumAccessBalance: 100,
       authorUserId: AUTHORID,
       authorUserName: 'metadiego',
@@ -150,7 +144,6 @@ const POST_PREVIEWS: Array<IpostPreviewWrapper> = [
     contents: {
       postType: 'article',
       accessId: ACCESS_TOKEN_ID,
-      accessByTokenCollection: false,
       minimumAccessBalance: 1,
       authorUserId: AUTHORID,
       authorUserName: 'jinspe',
