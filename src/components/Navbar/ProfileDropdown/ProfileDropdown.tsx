@@ -30,7 +30,7 @@ export default function ProfileDropdown(): JSX.Element {
   const userNavigation = [
     {
       name: 'My Profile',
-      href: '/user-settings',
+      href: `/user/${userInfo?.userName}`,
       icon: <UserIcon className="flex-initial nav-icons-size" />,
     },
   ];
@@ -50,7 +50,7 @@ export default function ProfileDropdown(): JSX.Element {
           <Menu.Button
             className="
                       rounded-3xl
-                      flex 
+                      flex
                       h-8
                       px-1
                       shadow-sm
@@ -72,7 +72,7 @@ export default function ProfileDropdown(): JSX.Element {
                       dark:text-gray-400 
                       dark:hover:text-gray-200">
             <span className="sr-only">Open user menu</span>
-            <div className="flex my-auto ">
+            <div className="flex my-auto items-center gap-1 ">
               {(userInfo === undefined ||
                 userInfo?.profileImage === undefined) && (
                 <UserCircleIcon className="ml-1 h-6 w-6" />
@@ -91,14 +91,20 @@ export default function ProfileDropdown(): JSX.Element {
                     alt=""
                   />
                 ))}
-              <div
-                className={ClassNamesLogic(
-                  open ? 'transform rotate-180' : '',
-                  'transition-transform duration-300 ease-in-out' +
-                    ' my-auto flex items-center h-4 w-4 ml-1 mr-1'
-                )}>
-                <ChevronDownIcon />
-              </div>
+              {userInfo === undefined ? (
+                <div
+                  className={ClassNamesLogic(
+                    open ? 'transform rotate-180' : '',
+                    'transition-transform duration-300 ease-in-out' +
+                      ' my-auto flex items-center h-4 w-4'
+                  )}>
+                  <ChevronDownIcon />
+                </div>
+              ) : (
+                <div className="w-24 truncate font-semibold text-xs">
+                  {userInfo?.userName}
+                </div>
+              )}
             </div>
           </Menu.Button>
           <Transition
@@ -150,9 +156,6 @@ export default function ProfileDropdown(): JSX.Element {
                       </Menu.Item>
                     </Link>
                   ))}
-                  <div className="px-3 mt-1 mb-1">
-                    <div className="border-t border-neutral-500" />
-                  </div>
                 </div>
               )}
               <Menu.Item disabled key="Dark mode">

@@ -1,11 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { userInfoAtom } from 'services/recoil/userInfo';
+import { useRecoilValue } from 'recoil';
 import qwestiveLogoBlack from 'assets/logoPng/Qwestive-black.png';
 import qwestiveLogoWhite from 'assets/logoPng/Qwestive-white.png';
 import ProfileDropdown from './ProfileDropdown/ProfileDropdown';
 
 // Main navigation bar for the app.
 const Navbar = function Navbar(): JSX.Element {
+  const userInfo = useRecoilValue(userInfoAtom);
   return (
     <nav className="h-10 container-0">
       <div className="flex items-center">
@@ -42,11 +45,15 @@ const Navbar = function Navbar(): JSX.Element {
           </Link>
         </div>
         <div className="flex-1 flex justify-end gap-2 py-1">
-          <Link to="/login">
-            <button type="button" className="h-8 px-5 button-action shadow-sm">
-              Log In
-            </button>
-          </Link>
+          {userInfo === undefined && (
+            <Link to="/login">
+              <button
+                type="button"
+                className="h-8 px-5 button-action shadow-sm">
+                Log In
+              </button>
+            </Link>
+          )}
           {/* Profile dropdown */}
           <div>
             <ProfileDropdown />

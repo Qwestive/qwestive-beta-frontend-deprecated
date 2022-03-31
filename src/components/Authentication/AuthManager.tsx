@@ -39,7 +39,6 @@ export default function AuthManager({
           },
           setLoggingState
         );
-        setLoggingState('');
       } catch (error: any) {
         toast.error(`Couldn't sign in: ${error?.message}`);
         setLoggingState('');
@@ -90,6 +89,7 @@ export default function AuthManager({
       } else {
         setUserInfo(undefined);
         setUserFinishLoading(true);
+        setLoggingState('');
       }
       setLoadingApp(false);
     });

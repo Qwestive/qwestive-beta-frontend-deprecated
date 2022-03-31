@@ -6,10 +6,6 @@ import WalletButton from 'components/Solana/SolanaWallet/WalletButton';
 import Spinner from 'components/Util/Spinner';
 import { userInfoAtom } from 'services/recoil/userInfo';
 
-/*
-Make it
-*/
-
 export default function LoginPage(): JSX.Element {
   const navigate = useNavigate();
   const loggingState = useRecoilValue(loggingStateAtom);
@@ -79,7 +75,7 @@ export default function LoginPage(): JSX.Element {
               <p
                 className="text-sm text-left mt-0.5 
               font-semibold mx-auto flex gap-2">
-                <Spinner classExtend="h-5" />
+                {loggingState !== 'authed' && <Spinner classExtend="h-5" />}
                 {logMessage}
               </p>
             </div>
