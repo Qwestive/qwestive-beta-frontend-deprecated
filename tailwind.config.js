@@ -27,7 +27,7 @@ module.exports = {
       colors: {
         'qwestive-white': '#FAF9FA',
         'qwestive-gray': '#A3A171',
-        'qwestive-purple': '#6560fb',
+        'qwestive-purple': '#6560fb', // very near indigo 500
         'qwestive-light-blue': '#e0f2fe',
         'qwestive-purple-hover': '#4c48c2',
         'landing-page-card-gray': '#ECEFF1',

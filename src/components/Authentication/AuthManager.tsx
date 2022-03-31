@@ -9,7 +9,10 @@ import { userConverter } from 'services/Firebase/Converters/UserConverter';
 import SigninWithWallet from 'services/Firebase/Authentication/SigninWithWallet';
 import SignoutWithWallet from 'services/Firebase/Authentication/SignoutWithWallet';
 import { FirebaseAuth, Firestore } from 'services/Firebase/FirebaseConfig';
-import { userFinishedLoadingAtom } from 'services/recoil/appState';
+import {
+  userFinishedLoadingAtom,
+  loadingAppAtom,
+} from 'services/recoil/appState';
 import { getUserAccountTokens } from 'components/Authentication/TokenManager';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -21,6 +24,7 @@ export default function AuthManager({
   const { publicKey, signMessage, disconnect, connected } = useWallet();
   const [userInfo, setUserInfo] = useRecoilState(userInfoAtom);
   const [, setUserFinishLoading] = useRecoilState(userFinishedLoadingAtom);
+  const [, setLoadingApp] = useRecoilState(loadingAppAtom);
 
   async function trySigninWithWallet() {
     if (connected && publicKey) {
@@ -80,6 +84,7 @@ export default function AuthManager({
         setUserInfo(undefined);
         setUserFinishLoading(true);
       }
+      setLoadingApp(false);
     });
   }, []);
 
