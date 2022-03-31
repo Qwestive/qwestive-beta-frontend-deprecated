@@ -3,36 +3,43 @@ import { useRecoilValue } from 'recoil';
 
 import { userInfoAtom } from 'services/recoil/userInfo';
 import CKeditorReader from 'components/Posts/PostsReader/PostReaderContent/CKeditorReader';
-import { IpollOption } from 'types/types';
+import { IpollOption, IpostPoll } from 'types/types';
+import {
+  AddPollVote,
+  RemovePollVote,
+} from 'services/Firebase/WriteData/UpdatePollVote';
+import { toast } from 'react-toastify';
 import ProgressBar from './ProgressBar';
 
 type IpollContainer = {
+  postId: string | undefined;
   title: string | undefined;
   author: string | undefined;
   creationDate: number | undefined;
-  contents: string | undefined;
-  options: Array<IpollOption> | undefined;
+  poll: IpostPoll;
 };
 
 /// Components which displays the rich text contents of a post.
+/// TODO(diego): perform input validation, for example, verify that the postId
+/// field is NEVER null, and if it is, show some error message in the UI.
 function PollContainer({
+  postId,
   title,
   author,
   creationDate,
-  contents,
-  options,
+  poll,
 }: IpollContainer): JSX.Element {
-  const [formattedDate, setFormattedDate] = useState('Unknown');
   const [pollOptions, setPollOptions] = useState<Array<IpollOption>>([]);
+  const [formattedDate, setFormattedDate] = useState('Unknown');
   const [hasVoted, setHasVoted] = useState(false);
   const [totalVotes, setTotalVotes] = useState(0);
   const userIdFiller = '_';
   const userId = useRecoilValue(userInfoAtom)?.uid ?? userIdFiller;
 
-  useEffect(() => {
+  const createPoll = () => {
     let voteFound = false;
     let voteCount = 0;
-    options?.forEach((option) => {
+    poll.options?.forEach((option) => {
       if (!voteFound) {
         voteFound = option?.voteUserIds?.indexOf(userId) !== -1;
       }
@@ -43,8 +50,12 @@ function PollContainer({
     if (creationDate !== undefined) {
       setFormattedDate(new Date(creationDate ?? 0).toLocaleDateString());
     }
-    setPollOptions(options ?? []);
-  }, []);
+    setPollOptions(poll.options ?? []);
+  };
+
+  useEffect(() => {
+    createPoll();
+  }, [poll]);
 
   /// Remove public key of current user from the voter array of all options.
   const removeVote = () => {
@@ -73,22 +84,31 @@ function PollContainer({
         name: currentPollOptions[idx].name,
         voteUserIds: [userId, ...currentPollOptions[idx].voteUserIds],
       });
+
       return filteredOptions;
     });
   };
 
-  const handleCastVote = (optionId: string): void => {
-    const option = options?.find((item) => item.id === optionId);
+  const handleCastVote = async (optionId: string): Promise<void> => {
+    const option = pollOptions?.find((item) => item.id === optionId);
     if (option === undefined) {
       throw new Error('Could not cast vote, invalid option ID');
     }
     const voters = option?.voteUserIds ?? [];
     if (userId !== userIdFiller && voters.indexOf(userId ?? '') === -1) {
-      /// TODO(diego): add backend logic and error handling.
       setTotalVotes(totalVotes + 1);
       setHasVoted(true);
       removeVote();
       addVote(option.id);
+    }
+    try {
+      await RemovePollVote(userId, postId as string);
+      await AddPollVote(userId, postId as string, option.id);
+    } catch (error: any) {
+      setTotalVotes(totalVotes - 1);
+      setHasVoted(false);
+      removeVote();
+      toast.error(`Failed to cast vote: ${error?.message}`);
     }
   };
 
@@ -102,11 +122,11 @@ function PollContainer({
         Created on: {formattedDate}
       </div>
       <div className="my-6">
-        <CKeditorReader content={contents} />
+        <CKeditorReader content={poll.content} />
       </div>
       {!hasVoted && (
         <div>
-          {options?.map((item) => (
+          {pollOptions?.map((item) => (
             <button
               key={item.id}
               className="py-2 px-4 my-1 w-full bg-gray-300 text-white

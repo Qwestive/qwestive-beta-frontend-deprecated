@@ -100,11 +100,11 @@ export default function PostDetailPage({
           <div className="bg-white rounded-md my-6 pt-6 px-6">
             {postPreview?.postType === POLL_TYPE && (
               <PollContainer
+                postId={postPreview?.id}
                 title={postPreview?.title}
                 author={postPreview?.authorPublicKey}
                 creationDate={postPreview?.creationDate}
-                contents={postContent?.content}
-                options={(postContent as IpostPoll)?.options}
+                poll={postContent as IpostPoll}
               />
             )}
             {postPreview?.postType === ARTICLE_TYPE && (
