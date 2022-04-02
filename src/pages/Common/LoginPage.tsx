@@ -40,11 +40,11 @@ export default function LoginPage(): JSX.Element {
   }, [userInfo]);
 
   return (
-    <div className="min-h-full page-frame">
+    <div className="container-0 mt-20">
       <main
         className="flex-grow flex flex-col 
       justify-center 
-       w-full mx-auto mt-8">
+       w-full mx-auto">
         <h1
           className="mt-4 text-xl text-center font-extrabold 
           text-color-0 leading-tight">
@@ -55,7 +55,7 @@ export default function LoginPage(): JSX.Element {
         font-semibold text-center text-color-secondary max-w-md mx-auto">
           Welcome !
         </p>
-        <div className="w-64 mx-auto mt-2">
+        <div className="mx-auto mt-2">
           <div className=" mx-auto">
             <div className="text-center font-bold text-color-0 text-lg">
               Login with your wallet.
@@ -65,7 +65,7 @@ export default function LoginPage(): JSX.Element {
             </div>
             <div
               className="mt-2 text-xs font-semibold text-center 
-              text-color-secondary">
+              text-color-secondary max-w-xs">
               We will ask you to sign an unique message with your wallet to
               verify that you own it.
             </div>

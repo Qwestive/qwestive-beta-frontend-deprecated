@@ -164,7 +164,7 @@ export default function ProfileDropdown(): JSX.Element {
                 </div>
               </Menu.Item>
 
-              <div className="px-3 mt-1 mb-1">
+              <div className="px-3 my-1">
                 <div className="border-t border-gray-500" />
               </div>
               {/* Logout/ Signin */}

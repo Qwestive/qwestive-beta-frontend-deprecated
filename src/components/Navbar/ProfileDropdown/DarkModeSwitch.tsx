@@ -8,9 +8,7 @@ import 'style/Components/headers.css';
 
 export default function DarkModeSwitch(): JSX.Element {
   const [colorTheme, setTheme] = useDarkMode();
-  const [enabled, setEnabled] = useState(
-    Boolean(colorTheme === 'light' ? 1 : 0)
-  );
+  const [enabled, setEnabled] = useState(colorTheme === 'light');
 
   return (
     <div
@@ -28,7 +26,7 @@ export default function DarkModeSwitch(): JSX.Element {
         checked={enabled}
         onChange={() => {
           setTheme(colorTheme);
-          setEnabled(Boolean(colorTheme === 'dark' ? 1 : 0));
+          setEnabled(colorTheme === 'dark');
         }}
         className={ClassNamesLogic(
           enabled ? 'bg-indigo-500' : 'bg-gray-200',
