@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 export default function NotFoundPage(): JSX.Element {
   return (
-    <div className="min-h-full page-frame ">
+    <div className="min-h-full page-frame max-w-7xl">
       <main className="pb-16 pt-16">
         <div className="text-center">
           <p

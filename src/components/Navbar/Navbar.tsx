@@ -10,16 +10,16 @@ import ProfileDropdown from './ProfileDropdown/ProfileDropdown';
 const Navbar = function Navbar(): JSX.Element {
   const userInfo = useRecoilValue(userInfoAtom);
   return (
-    <nav className="h-10 container-0">
-      <div className="flex items-center">
-        {/* Logo */}
+    <nav className="h-10 container-0 max-w-7xl">
+      <div className="flex gap-1 items-center">
         <div className="sm:flex-1" />
-        <div className="flex-none pb-1.5 pt-2.5">
+        {/* Logo */}
+        <div className="flex-none flex-shrink pb-1.5 pt-2.5">
           <Link to="/">
             {/* Logo dark mode */}
             <div className="block dark:hidden">
               <img
-                className="block lg:hidden h-8 w-auto"
+                className="block lg:hidden max-h-8 w-auto"
                 src={qwestiveLogoBlack}
                 alt="Qwestive"
               />
@@ -49,7 +49,7 @@ const Navbar = function Navbar(): JSX.Element {
             <Link to="/login">
               <button
                 type="button"
-                className="h-8 px-5 button-action shadow-sm">
+                className="h-8 px-5 whitespace-nowrap button-action shadow-sm">
                 Log In
               </button>
             </Link>

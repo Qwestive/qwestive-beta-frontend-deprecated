@@ -14,12 +14,10 @@ const BATCHLENGHT = 8;
 
 type TmemberCommunityPage = {
   community: ItokenCommunity | undefined;
-  setReloadToggle: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function MemberCommunityPage({
   community,
-  setReloadToggle,
 }: TmemberCommunityPage): JSX.Element {
   const [searchParams] = useSearchParams({});
   const [postId, setPostId] = useState(searchParams.get('post'));
@@ -103,7 +101,7 @@ export default function MemberCommunityPage({
         />
       </div>
       <div className="flex mx-auto gap-5 my-2">
-        <div className="items-center hidden md:block">
+        <div className="items-center hidden md:block w-52">
           <CategoriesLarge
             community={community}
             setCurrentCategory={setCurrentCategory}
@@ -122,9 +120,7 @@ export default function MemberCommunityPage({
               loadMorePosts={() => addBatchToPostBatchList()}
             />
           )}
-          {postId === 'new-post' && (
-            <NewPostPage setReloadCommunityPageToggle={setReloadToggle} />
-          )}
+          {postId === 'new-post' && <NewPostPage />}
           {postId && postId !== 'new-post' && (
             <PostDetailPage postId={postId} />
           )}

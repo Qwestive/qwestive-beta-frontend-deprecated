@@ -37,7 +37,7 @@ export default function CategoriesSmall({
             className="h-12"
             alt="tokenImage"
           />
-          <p className="text-color-primary text-xl font-extrabold truncate">
+          <p className="text-color-0 text-xl font-extrabold truncate">
             {community?.name ?? 'Unknown'}
           </p>
         </div>
@@ -49,7 +49,7 @@ export default function CategoriesSmall({
             <Menu.Button
               className="inline-flex justify-center w-full 
             rounded-md px-4 py-2 text-sm 
-            font-medium text-gray-700 ">
+            font-medium text-color-0 ">
               <ChevronDownIcon
                 className="mr-1 ml-2 h-5 w-5"
                 aria-hidden="true"
@@ -67,9 +67,9 @@ export default function CategoriesSmall({
             leaveTo="transform opacity-0 scale-95">
             <Menu.Items
               className="origin-top-right absolute right-0 mt-2 w-56 rounded-md 
-            shadow-lg bg-white ring-1 
+            shadow-lg surface-color-0 ring-1 
             ring-black ring-opacity-5
-             focus:outline-none
+             focus:outline-none text-color-1
              max-h-60 overflow-auto hideScrollBar
              ">
               <div className="py-1">
@@ -78,9 +78,9 @@ export default function CategoriesSmall({
                     type="button"
                     className={ClassNamesLogic(
                       currentCategory === 'All Topics'
-                        ? 'bg-gray-200'
-                        : 'hover:bg-gray-100',
-                      'py-1 w-full'
+                        ? 'bg-gray-200 dark:bg-gray-700'
+                        : ' hover:bg-gray-100 dark:hover:bg-gray-800',
+                      ' py-1 w-full'
                     )}
                     onClick={() => {
                       setCurrentCategory('All Topics');
@@ -89,7 +89,7 @@ export default function CategoriesSmall({
                     <div className="flex">
                       <p
                         className="px-4 w-52 truncate 
-                    overflow-hidden  text-left  ">
+                    overflow-hidden text-left  ">
                         All Topics
                       </p>
                     </div>
@@ -102,9 +102,9 @@ export default function CategoriesSmall({
                         type="button"
                         className={ClassNamesLogic(
                           currentCategory === category.name
-                            ? 'bg-gray-200'
-                            : 'hover:bg-gray-100',
-                          'py-1 w-full'
+                            ? 'bg-gray-200 dark:bg-gray-700'
+                            : 'hover:bg-gray-100 dark:hover:bg-gray-800',
+                          ' py-1 w-full truncate'
                         )}
                         onClick={() => {
                           setCurrentCategory(category.name);

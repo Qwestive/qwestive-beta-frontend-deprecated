@@ -123,8 +123,8 @@ export default function UserNameSetting({
     <div className="mt-10 px-1">
       <form onSubmit={handleSubmit}>
         <div className=" max-w-lg">
-          <p className="block text-sm font-medium text-color-primary px-1">
-            edit username between 4 and 20 characters
+          <p className="block text-sm font-medium text-color-0 px-1">
+            edit username between 4 and 20 characters or your publickey
           </p>
           <div>
             <input
@@ -134,7 +134,7 @@ export default function UserNameSetting({
               autoComplete="off"
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
-              className="text-field-input rounded-xl"
+              className="text-field-input rounded-xl w-full max-w-sm"
             />
           </div>
         </div>
@@ -156,7 +156,9 @@ export default function UserNameSetting({
             </button>
           )}
         </div>
-        <div className="px-1">{availabilityMessage}</div>
+        <div className="px-1 text-color-0 break-words">
+          {availabilityMessage}
+        </div>
         <div className="flex gap-3 mt-8">
           {loadingSubmit ? (
             <p>loading...</p>

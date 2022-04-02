@@ -77,22 +77,20 @@ export default function CommunitiesTab(): JSX.Element {
   }, [tokenRegistry.size, userFinishedLoading, userAccountTokens]);
 
   return (
-    <div>
+    <div className="">
       {/* Search Bar  */}
-      <div className="flex-1 flex items-center justify-center mt-6">
-        <div className="w-full relative">
+      <div className="flex-1 flex items-center justify-center mt-5">
+        <div className="w-full max-w-2xl relative">
           <div
             className="absolute inset-y-0 left-0 pl-3 flex 
             items-center pointer-events-none">
-            <SearchIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+            <SearchIcon className="h-5 w-5 text-gray-500" aria-hidden="true" />
           </div>
           <input
             name="search"
-            className="text-lg block w-full pl-10 pr-3 py-3 border 
-              border-gray-300 rounded-md leading-5 bg-white 
-              placeholder-gray-500 focus:outline-none 
-              focus:placeholder-gray-400 focus:ring-2 focus:ring-gray-500 
-              focus:border-gray-500 "
+            className="
+            w-full pl-10 pr-3 py-2
+            rounded-3xl text-field-input"
             placeholder="Search"
             autoComplete="off"
             value={searchPredicate}
@@ -102,20 +100,22 @@ export default function CommunitiesTab(): JSX.Element {
         </div>
       </div>
       {/* Token Grid  */}
-      {loading ? (
-        <div>
-          <div
-            className="text-color-primary gap-2 items-baseline 
+      <div className="mt-5">
+        {loading ? (
+          <div>
+            <div
+              className="text-color-0 gap-2 items-baseline 
           flex justify-center mt-10">
-            <div className="text-center text-2xl font-semibold ">
-              Scanning your wallet
+              <div className="text-center text-2xl font-semibold ">
+                Scanning your wallet
+              </div>
+              <LoadingDots classNameExtend="h-2 w-2" />
             </div>
-            <LoadingDots classNameExtend="h-2 w-2" />
           </div>
-        </div>
-      ) : (
-        <OwnedTokenGrid ownedTokenCommunities={tokenCommunitySearchResults} />
-      )}
+        ) : (
+          <OwnedTokenGrid ownedTokenCommunities={tokenCommunitySearchResults} />
+        )}
+      </div>
     </div>
   );
 }

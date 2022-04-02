@@ -77,7 +77,7 @@ export default function PollPostMaker({
         />
       ))}
       {pollOptions.length === MAX_POLL_OPTIONS && (
-        <div className="mx-4 mb-3 text-color-primary">
+        <div className="mx-4 mb-3 text-color-1">
           You&apos;ve reached the maximum allowed number of
           {` ${MAX_POLL_OPTIONS} poll options`}.
         </div>

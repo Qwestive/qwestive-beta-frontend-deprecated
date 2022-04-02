@@ -25,7 +25,7 @@ export default function LoginPage(): JSX.Element {
         setLogMessage('Verifying the signature');
         break;
       case 'authed':
-        setLogMessage('Welcome !');
+        setLogMessage('Scanning your wallet');
         break;
       default:
         setLogMessage('');
@@ -40,7 +40,7 @@ export default function LoginPage(): JSX.Element {
   }, [userInfo]);
 
   return (
-    <div className="container-0 mt-20">
+    <div className="container-0 max-w-7xl mt-20">
       <main
         className="flex-grow flex flex-col 
       justify-center 
@@ -75,7 +75,7 @@ export default function LoginPage(): JSX.Element {
               <p
                 className="text-sm text-left mt-0.5 
               font-semibold mx-auto flex gap-2">
-                {loggingState !== 'authed' && <Spinner classExtend="h-5" />}
+                <Spinner classExtend="h-5" />
                 {logMessage}
               </p>
             </div>

@@ -15,23 +15,24 @@ export default function PostPermissionsSection({
 }: TpostPermissionsSection): JSX.Element {
   const [postPublic, setPostPublic] = useState(false);
   return (
-    <div className="p-px border-t py-2">
+    <div className="p-px border-t border-gray-200 dark:border-gray-700 py-2">
       <div className="flex justify-between">
         <div
-          className="px-3 text-color-primary 
+          className="text-color-1 
             text-base font-medium flex items-center gap-2">
           <EyeIcon className="h-4" />
           Who can see this post ?
         </div>
         <div
-          className="flex justify-end gap-4 px-3
-            text-color-primary text-sm  ">
+          className="sm:flex justify-end gap-4 px-3
+            text-color-1 text-sm  ">
           {/* Public Button */}
           <button type="button" onClick={() => setPostPublic(true)}>
-            <div className="flex gap-1 items-center">
+            <div className="px-1 flex gap-1 items-center">
               <div className="transform scale-75">
                 <div
                   className="rounded-full border-2 border-gray-900
+                  dark:border-gray-100
                     p-0.5">
                   <div
                     className={ClassNamesLogic(
@@ -54,11 +55,11 @@ export default function PostPermissionsSection({
                 accessMinimumTokenBalance: 0,
               }));
             }}>
-            <div className="flex gap-1 items-center">
+            <div className="flex px-1 gap-1 items-center">
               <div className="transform scale-75">
                 <div
                   className="rounded-full border-2 border-gray-900
-                    p-0.5">
+                  dark:border-gray-100 p-0.5">
                   <div
                     className={ClassNamesLogic(
                       postPublic ? 'bg-transparant' : 'bg-qwestive-purple',
@@ -76,7 +77,7 @@ export default function PostPermissionsSection({
         <div className="mt-3 px-3">
           <div className="flex items-center gap-3">
             <p
-              className="text-color-primary 
+              className="text-color-1 
                 text-base font-medium">
               Only to people who hold at least
             </p>
@@ -84,8 +85,8 @@ export default function PostPermissionsSection({
               type="number"
               name="tokenrequirement"
               id="tokenrequirement"
-              className="border border-gray-300 rounded-md block 
-              focus:ring-0 text-color-primary text-sm  px-3 text-left 
+              className="text-field-input border 
+               rounded-xl block text-color-primary text-sm px-3 text-left 
               w-28 h-8"
               value={postPreviewSubmission.minimumAccessBalance}
               min={0}

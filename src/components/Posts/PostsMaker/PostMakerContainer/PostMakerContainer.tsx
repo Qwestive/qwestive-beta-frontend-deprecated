@@ -5,8 +5,10 @@ import React, {
   Dispatch,
   SetStateAction,
 } from 'react';
+import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { toggleReloadCommunityAtom } from 'services/recoil/appState';
 import WritePost from 'services/Firebase/WriteData/WritePost';
 import PostSaveVerification from 'functions/InputVerification/PostSaveVerification';
 import { IpostPreviewSubmission, IpostContentType } from 'types/types';
@@ -26,7 +28,6 @@ type TpostContainer = {
   postPreviewSubmission: IpostPreviewSubmission;
   setPostPreviewSubmission: Dispatch<SetStateAction<IpostPreviewSubmission>>;
   getPostContent: () => IpostContentType;
-  setReloadCommunityPageToggle: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function PostMakerContainer({
@@ -34,10 +35,12 @@ export default function PostMakerContainer({
   postPreviewSubmission,
   setPostPreviewSubmission,
   getPostContent,
-  setReloadCommunityPageToggle,
 }: TpostContainer): JSX.Element {
   const navigate = useNavigate();
   const [disableEdit, setDisableEdit] = useState(false);
+  const [, setToggleReloadCommunity] = useRecoilState(
+    toggleReloadCommunityAtom
+  );
 
   async function handlePublish() {
     setDisableEdit(true);
@@ -59,7 +62,7 @@ export default function PostMakerContainer({
       setPostPreviewSubmission(savedPreview);
       const postId = await WritePost(savedPreview, postContent);
       toast.success('Post saved');
-      setReloadCommunityPageToggle((prev) => !prev);
+      setToggleReloadCommunity((prev) => !prev);
       navigate(`/c/${postPreviewSubmission.accessId}?post=${postId}`);
     } catch (error: any) {
       toast.error(error?.message);
@@ -68,15 +71,15 @@ export default function PostMakerContainer({
   }
 
   return (
-    <div>
+    <div className="pb-3">
       {/* Title */}
-      <div className="p-px">
+      <div className="mt-2">
         <input
           type="text"
           name="title"
           id="title"
-          className="border border-transparent focus:border-qwestive-purple
-         block w-full text-2xl font-semibold px-3"
+          className="text-field-input
+          rounded-xl border py-1 w-full text-xl font-bold px-3"
           placeholder="Title"
           value={postPreviewSubmission.title}
           maxLength={MAXTITLELENGTH}
@@ -90,18 +93,21 @@ export default function PostMakerContainer({
       </div>
 
       {/* Content */}
-      <div>{children}</div>
+      <div className="my-4">{children}</div>
       {/* Category */}
-      <div className="p-px border-t">
-        <div className="flex justify-start gap-3 items-center px-3">
-          <p className="text-color-primary text-base font-medium"># Topic</p>
+      <div className=" border-t border-gray-200 dark:border-gray-700">
+        <div className="flex justify-start gap-3 items-center ">
+          <p className="text-color-1 text-base font-medium whitespace-nowrap">
+            # Topic
+          </p>
           <input
             type="text"
             name="topic"
             id="topic"
-            className="border border-transparent block 
-                focus:ring-0 focus:border-transparent 
-                text-color-primary text-base px-3 text-left"
+            className="min-w-0 border border-transparent 
+            text-field-input rounded-xl py-1 my-1
+               focus:border-transparent 
+                 text-base text-left"
             placeholder="example: infos"
             value={postPreviewSubmission.category}
             maxLength={MAXCATEGORYLENGTH}
@@ -120,9 +126,7 @@ export default function PostMakerContainer({
         setPostPreviewSubmission={setPostPreviewSubmission}
       />
       {/* Action Buttons */}
-      <div
-        className="flex justify-between pt-4 text-xs 
-      sm:text-base bg-gray-100">
+      <div className="mt-5">
         <ActionButtonSection
           disableEdit={disableEdit}
           handlePublish={() => handlePublish()}

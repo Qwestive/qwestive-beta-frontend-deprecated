@@ -15,3 +15,8 @@ export const loggingStateAtom = atom<TloggingState>({
   key: 'loggingState',
   default: '',
 });
+
+export const toggleReloadCommunityAtom = atom<boolean>({
+  key: 'loggingState',
+  default: false,
+});

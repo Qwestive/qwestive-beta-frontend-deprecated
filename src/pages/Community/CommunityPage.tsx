@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
 import { useRecoilValue } from 'recoil';
-import LoadingDots from 'components/Util/LoadingDots';
 import { userInfoAtom } from 'services/recoil/userInfo';
+import { getTokenCommunityData } from 'services/Solana/GetData/GetCommunityData';
+import { toggleReloadCommunityAtom } from 'services/recoil/appState';
+import LoadingDots from 'components/Util/LoadingDots';
+
 import {
   IfungibleToken,
   InonFungibleTokenCollection,
   TtokenCommunity,
 } from 'types/types';
-import { getTokenCommunityData } from 'services/Solana/GetData/GetCommunityData';
+
 import NonMemberCommunityPage from './Components/NonMemberCommunityPage';
 import NewCommunityPage from './Components/NewCommunityPage';
 import MemberCommunityPage from './MemberCommunityPage';
@@ -26,9 +28,9 @@ export default function CommunityPage(): JSX.Element {
       InonFungibleTokenCollection
     >(),
   };
+  const toggleReloadCommunity = useRecoilValue(toggleReloadCommunityAtom);
   const [hasAccess, setHasAccess] = useState(false);
   const [loadingPage, setLoadingPage] = useState(true);
-  const [reloadToggle, setReloadToggle] = useState(false);
 
   const [community, setCommunity] = useState<TtokenCommunity | undefined>();
   const [tokenRegistryHasLoaded, setTokenRegistryHasLoaded] = useState(false);
@@ -69,16 +71,16 @@ export default function CommunityPage(): JSX.Element {
     if (tokenRegistryHasLoaded) {
       handleLoadPage();
     }
-  }, [cId, tokenRegistryHasLoaded, reloadToggle]);
+  }, [cId, tokenRegistryHasLoaded, toggleReloadCommunity]);
 
   return (
-    <div className="w-10/12 mx-auto py-10">
+    <div className="page-frame max-w-7xl">
       {loadingPage && (
         <div>
           <div
-            className="text-color-primary gap-2 items-baseline 
+            className="text-color-0 gap-2 items-baseline 
           flex justify-center mt-10">
-            <div className="text-center text-2xl font-semibold ">Loading</div>
+            <div className="text-center text-2xl font-semibold">Loading</div>
             <LoadingDots classNameExtend="h-2 w-2" />
           </div>
         </div>
@@ -90,19 +92,13 @@ export default function CommunityPage(): JSX.Element {
         hasAccess &&
         cId !== undefined &&
         community?.communityData === undefined && (
-          <NewCommunityPage
-            community={community}
-            setReloadToggle={setReloadToggle}
-          />
+          <NewCommunityPage community={community} />
         )}
       {!loadingPage &&
         hasAccess &&
         cId !== undefined &&
         community?.communityData !== undefined && (
-          <MemberCommunityPage
-            community={community}
-            setReloadToggle={setReloadToggle}
-          />
+          <MemberCommunityPage community={community} />
         )}
     </div>
   );

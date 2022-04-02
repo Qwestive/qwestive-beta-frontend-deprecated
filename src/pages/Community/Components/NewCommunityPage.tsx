@@ -7,12 +7,10 @@ import NewPostPage from '../NewPost/NewPostPage';
 
 type TnewCommunityPage = {
   community: TtokenCommunity | undefined;
-  setReloadToggle: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function NewCommunityPage({
   community,
-  setReloadToggle,
 }: TnewCommunityPage): JSX.Element {
   const [searchParams] = useSearchParams({});
   const [postId, setPostId] = useState(searchParams.get('post'));
@@ -25,10 +23,12 @@ export default function NewCommunityPage({
   return (
     <div>
       {postId === 'new-post' && (
-        <NewPostPage setReloadCommunityPageToggle={setReloadToggle} />
+        <div className="max-w-3xl mx-auto pb-5">
+          <NewPostPage />
+        </div>
       )}
       {postId !== 'new-post' && (
-        <div className="mt-10">
+        <div className="mt-10 pb-10">
           <div className="flex justify-center">
             <div className="py-2 gap-2 text-center">
               <img
@@ -37,7 +37,7 @@ export default function NewCommunityPage({
                 alt="tokenImage"
               />
               <p
-                className="text-color-primary  text-center 
+                className="text-color-0  text-center 
           text-xl font-extrabold truncate mt-2">
                 {community?.name ?? 'Unknown'}
               </p>
@@ -50,15 +50,17 @@ export default function NewCommunityPage({
           </div>
           <div>
             <p
-              className="text-center mt-10 font-bold text-2xl 
+              className="text-color-0 text-center mt-10 font-bold text-2xl 
             max-w-lg mx-auto">
               This is a new community, be the first to post something!
             </p>
             <div className="flex justify-center mt-10 transform scale-125">
               <Link to={`/c/${community?.cid}?post=new-post`}>
-                <button type="button" className="btn-filled rounded-3xl py-2.5">
+                <button
+                  type="button"
+                  className="button-action rounded-3xl py-2.5 px-5">
                   <p className="flex items-center gap-1 ">
-                    <PlusIcon className="h-5" /> Post
+                    <PlusIcon className="h-5 -ml-1" /> Post
                   </p>
                 </button>
               </Link>

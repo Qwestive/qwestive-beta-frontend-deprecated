@@ -58,7 +58,7 @@ export default function UserInfoForm(): JSX.Element {
       <div className="space-y-8 divide-y divide-gray-200">
         <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
           <div className="sm:col-span-4">
-            <p className="block text-sm font-medium text-color-primary px-1">
+            <p className="block text-sm font-medium text-color-0 px-1">
               Display name
             </p>
             <div className="mt-1 ">
@@ -67,7 +67,7 @@ export default function UserInfoForm(): JSX.Element {
                 name="username"
                 id="displayname"
                 autoComplete="off"
-                className="text-field-input rounded-xl"
+                className="text-field-input rounded-xl w-full max-w-sm"
                 maxLength={DISPLAYNAMEMAXLENGTH}
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
@@ -76,15 +76,13 @@ export default function UserInfoForm(): JSX.Element {
           </div>
 
           <div className="sm:col-span-6">
-            <p className="block text-sm font-medium text-color-primary px-1">
-              About
-            </p>
+            <p className="block text-sm font-medium text-color-0 px-1">About</p>
             <div className="mt-1">
               <textarea
                 id="about"
                 name="about"
                 rows={3}
-                className="text-field-input rounded-xl"
+                className="text-field-input rounded-xl w-full max-w-lg"
                 autoComplete="off"
                 maxLength={BIOMAXLENGTH}
                 value={bio}
@@ -95,16 +93,14 @@ export default function UserInfoForm(): JSX.Element {
           </div>
 
           <div className="sm:col-span-6">
-            <p className="block text-sm font-medium text-color-primary px-1">
-              Link
-            </p>
+            <p className="block text-sm font-medium text-color-0 px-1">Link</p>
             <div className="mt-1 ">
               <input
                 type="text"
                 name="link"
                 id="link"
                 autoComplete="off"
-                className="text-field-input rounded-xl"
+                className="text-field-input rounded-xl w-full max-w-lg"
                 value={personalLink}
                 onChange={(e) => setPersonalLink(e.target.value)}
               />
