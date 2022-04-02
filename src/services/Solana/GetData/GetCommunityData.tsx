@@ -97,7 +97,6 @@ export async function getTokenCommunityData(
   userAccountTokens: AccountTokensByMintOrCollection,
   cId: string
 ): Promise<TtokenCommunity> {
-  /// TODO: handle the case where cid === SOL.
   try {
     const tokenData = await GetTokenData(cId, userAccountTokens);
     if (tokenData.isFungible) {

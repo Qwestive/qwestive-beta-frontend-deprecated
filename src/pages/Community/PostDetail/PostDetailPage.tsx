@@ -20,6 +20,7 @@ import TipModalContainer from 'components/Posts/PostsReader/PostReaderAction/Tip
 import PollContainer from 'components/Posts/PostsReader/PostReaderContent/PollContainer';
 import RichTextContainer from 'components/Posts/PostsReader/PostReaderContent/RichTextContainer';
 import CommentSection from 'components/Posts/PostsReader/PostComment/CommentSection';
+import LoadingDots from 'components/Util/LoadingDots';
 
 /// Component which shows all of the information inside a post.
 ///
@@ -88,6 +89,14 @@ export default function PostDetailPage({
         to={postPreview?.accessId ? `/c/${postPreview?.accessId}` : '/'}>
         <ArrowLeftIcon className="h-4 my-auto mx-1" /> Back
       </Link>
+      {isLoading && (
+        <div
+          className="text-color-primary gap-2 items-baseline flex
+            justify-center mt-10">
+          <div className="text-center text-2xl font-semibold ">Loading</div>
+          <LoadingDots classNameExtend="h-2 w-2" />
+        </div>
+      )}
       {!isLoading && postFailedToLoad && <h1>Post failed to load</h1>}
       {!isLoading && !postFailedToLoad && (
         <>
