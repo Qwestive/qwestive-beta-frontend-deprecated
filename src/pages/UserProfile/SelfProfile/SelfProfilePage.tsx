@@ -26,7 +26,7 @@ export default function SelfProfilePage(): JSX.Element {
   }
 
   return (
-    <div className="page-frame">
+    <div className="page-frame pb-5 max-w-5xl">
       <div>
         <img
           className="h-32 w-full mx-auto object-cover lg:h-48"
