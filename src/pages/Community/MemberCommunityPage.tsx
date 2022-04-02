@@ -35,34 +35,58 @@ export default function MemberCommunityPage({
 
   const [postsLoading, setPostsLoading] = useState(true);
 
-  async function getPostBatch() {
+  /// Builds a list of post previews for current state of the component.
+  async function getPostPreviews(
+    useStartSnap: boolean
+  ): Promise<
+    [IpostPreview[], QueryDocumentSnapshot<IpostPreview> | undefined]
+  > {
+    try {
+      return queryPostPreviews(
+        community?.cid as string,
+        currentPostSorting,
+        currentCategory,
+        useStartSnap ? lastVisible : undefined,
+        BATCHLENGHT
+      );
+    } catch (error: any) {
+      toast.error(`Failed to retrieve posts: ${error.message}`);
+    }
+    return [[], undefined];
+  }
+
+  /// Updates post batch list optionally including or not including the
+  /// pre-existing batch in the updated list.
+  async function updatePostBatchList(includePreviousBatch: boolean) {
     if (community?.cid !== undefined) {
       setPostsLoading(true);
-      try {
-        const [qBatchResult, lastVisibleFetch] = await queryPostPreviews(
-          community.cid,
-          currentPostSorting,
-          currentCategory,
-          lastVisible,
-          BATCHLENGHT
-        );
-        setLastVisible(lastVisibleFetch);
-        if (qBatchResult.length === BATCHLENGHT) {
-          setPostBatchList([...postBatchList, qBatchResult.slice(0, -1)]);
-          setHasMorePost(true);
-        } else {
-          setPostBatchList([...postBatchList, qBatchResult]);
-          setHasMorePost(false);
-        }
-      } catch (error: any) {
-        toast.error(error?.message);
-      }
+      const [qBatchResult, lastVisibleFetch] = await getPostPreviews(
+        includePreviousBatch
+      );
+
+      setLastVisible(lastVisibleFetch);
+      setHasMorePost(qBatchResult.length === BATCHLENGHT);
+      setPostBatchList([
+        ...(includePreviousBatch ? postBatchList : []),
+        qBatchResult,
+      ]);
       setPostsLoading(false);
     }
   }
 
+  /// Adds a new batch of post retuned from post query to existing post
+  /// batch list.
+  async function addBatchToPostBatchList() {
+    updatePostBatchList(true);
+  }
+
+  /// Restarts the post batch list with posts returned from post query.
+  async function createNewPostBatchList() {
+    updatePostBatchList(false);
+  }
+
   useEffect(() => {
-    getPostBatch();
+    createNewPostBatchList();
   }, [currentPostSorting, currentCategory]);
 
   useEffect(() => {
@@ -95,7 +119,7 @@ export default function MemberCommunityPage({
               postBatchList={postBatchList}
               hasMorePost={hasMorePost}
               postsLoading={postsLoading}
-              getPostBatch={() => getPostBatch()}
+              loadMorePosts={() => addBatchToPostBatchList()}
             />
           )}
           {postId === 'new-post' && (

@@ -6,7 +6,6 @@ import { useRecoilValue } from 'recoil';
 import LoadingDots from 'components/Util/LoadingDots';
 import { userInfoAtom } from 'services/recoil/userInfo';
 import {
-  EcommunityType,
   IfungibleToken,
   InonFungibleTokenCollection,
   TtokenCommunity,
@@ -16,7 +15,6 @@ import NonMemberCommunityPage from './Components/NonMemberCommunityPage';
 import NewCommunityPage from './Components/NewCommunityPage';
 import MemberCommunityPage from './MemberCommunityPage';
 import { useTokenRegistry } from '../../components/Solana/TokenRegistry';
-import solanaLogo from '../../assets/solanaLogo.svg';
 
 export default function CommunityPage(): JSX.Element {
   const { cId } = useParams<'cId'>();
@@ -36,17 +34,6 @@ export default function CommunityPage(): JSX.Element {
   const [tokenRegistryHasLoaded, setTokenRegistryHasLoaded] = useState(false);
 
   async function getTokenCommunity(cid: string): Promise<TtokenCommunity> {
-    if (cid === 'SOL') {
-      return {
-        cid,
-        type: EcommunityType.fungible,
-        name: 'Solana',
-        imageUrl: solanaLogo,
-        communityData: undefined,
-        symbol: 'SOL',
-        tokenData: { isFungible: true, mint: 'SOL', ammountOwned: 0 },
-      };
-    }
     return getTokenCommunityData(tokenRegistry, userAccountTokens, cid);
   }
 

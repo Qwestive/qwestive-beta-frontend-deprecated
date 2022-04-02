@@ -3,6 +3,9 @@ import { IpollOption } from 'types/types';
 import CKeditorMaker from './CKeditorMaker';
 import PollOption from './PollOption';
 
+/// Maximum allowed number of poll options to include in a poll.
+const MAX_POLL_OPTIONS = 10;
+
 type TpollPostMaker = {
   MAXARTICLELENGTH: number;
   richTextContent: string;
@@ -34,8 +37,10 @@ export default function PollPostMaker({
   }
 
   function handleAddOption() {
-    const newOption = buildNewOption();
-    setPollOptions([...pollOptions, newOption]);
+    if (pollOptions.length < MAX_POLL_OPTIONS) {
+      const newOption = buildNewOption();
+      setPollOptions([...pollOptions, newOption]);
+    }
   }
 
   const updateOption = (id: string, name: string) => {
@@ -71,12 +76,20 @@ export default function PollPostMaker({
           removeOption={(id: string) => handleRemoveOption(id)}
         />
       ))}
-      <button
-        type="button"
-        className="mx-4 mb-3 btn-link"
-        onClick={() => handleAddOption()}>
-        Add Option
-      </button>
+      {pollOptions.length === MAX_POLL_OPTIONS && (
+        <div className="mx-4 mb-3 text-color-primary">
+          You&apos;ve reached the maximum allowed number of
+          {` ${MAX_POLL_OPTIONS} poll options`}.
+        </div>
+      )}
+      {pollOptions.length < MAX_POLL_OPTIONS && (
+        <button
+          type="button"
+          className="mx-4 mb-3 btn-link"
+          onClick={() => handleAddOption()}>
+          Add Option
+        </button>
+      )}
     </div>
   );
 }
