@@ -14,7 +14,7 @@ type TpostDisplayList = {
   postBatchList: Array<IpostPreview[]>;
   hasMorePost: boolean;
   postsLoading: boolean;
-  getPostBatch: () => Promise<void>;
+  loadMorePosts: () => Promise<void>;
 };
 
 const postSortingTypes = ['New', 'Top', 'Poll', 'Bounty'] as TpostSorting[];
@@ -26,7 +26,7 @@ export default function PostDisplayList({
   postBatchList,
   hasMorePost,
   postsLoading,
-  getPostBatch,
+  loadMorePosts,
 }: TpostDisplayList): JSX.Element {
   return (
     <div className="w-full">
@@ -105,7 +105,7 @@ export default function PostDisplayList({
               <button
                 type="button"
                 className="btn-filled"
-                onClick={getPostBatch}
+                onClick={loadMorePosts}
                 disabled={postsLoading}>
                 {postsLoading ? (
                   <div

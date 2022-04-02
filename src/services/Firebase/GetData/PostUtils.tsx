@@ -61,11 +61,13 @@ export async function queryPostPreviews(
 
   const sortingTypeQuery = sortingType.toLowerCase();
 
-  if (!(category === 'All Topics'))
+  if (!(category === 'All Topics')) {
     queryConstraints.push(where('category', '==', category));
+  }
 
-  if (['poll', 'bounty'].includes(sortingTypeQuery))
+  if (['poll', 'bounty'].includes(sortingTypeQuery)) {
     queryConstraints.push(where('postType', '==', sortingTypeQuery));
+  }
 
   if (startSnap !== undefined) queryConstraints.push(startAt(startSnap));
 
