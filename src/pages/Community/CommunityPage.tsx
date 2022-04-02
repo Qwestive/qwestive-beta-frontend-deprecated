@@ -6,18 +6,15 @@ import { useRecoilValue } from 'recoil';
 import LoadingDots from 'components/Util/LoadingDots';
 import { userInfoAtom } from 'services/recoil/userInfo';
 import {
-  EcommunityType,
   IfungibleToken,
   InonFungibleTokenCollection,
   TtokenCommunity,
 } from 'types/types';
 import { getTokenCommunityData } from 'services/Solana/GetData/GetCommunityData';
-import { getCommunityData } from 'services/Firebase/GetData/CommunityUtil';
 import NonMemberCommunityPage from './Components/NonMemberCommunityPage';
 import NewCommunityPage from './Components/NewCommunityPage';
 import MemberCommunityPage from './MemberCommunityPage';
 import { useTokenRegistry } from '../../components/Solana/TokenRegistry';
-import solanaLogo from '../../assets/solanaLogo.svg';
 
 export default function CommunityPage(): JSX.Element {
   const { cId } = useParams<'cId'>();
