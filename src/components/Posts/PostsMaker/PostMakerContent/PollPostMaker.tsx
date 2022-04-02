@@ -37,8 +37,8 @@ export default function PollPostMaker({
   }
 
   function handleAddOption() {
-    const newOption = buildNewOption();
     if (pollOptions.length < MAX_POLL_OPTIONS) {
+      const newOption = buildNewOption();
       setPollOptions([...pollOptions, newOption]);
     }
   }
