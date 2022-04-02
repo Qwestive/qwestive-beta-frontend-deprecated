@@ -81,8 +81,8 @@ function HomePageExternal(): JSX.Element {
   return (
     <div className="flex flex-col">
       <div
-        className="flex flex-col items-center 
-        min-h-screen w-10/12 mx-auto">
+        className="flex flex-col items-center min-h-screen 
+          w-10/12 mx-auto">
         <div className="flex flex-col items-center my-auto">
           <h1
             className="text-center text-6xl 
@@ -99,7 +99,7 @@ function HomePageExternal(): JSX.Element {
           </p>
           <div className="flex space-x-3 mt-8">
             <a
-              href="https://discord.gg/fU853QRU"
+              href="https://discord.gg/x6d8yDBQ"
               target="_blank"
               rel="noreferrer">
               <img className="h-8" src={discordLogo} alt="" />
@@ -120,30 +120,30 @@ function HomePageExternal(): JSX.Element {
         </div>
       </div>
       <div
-        className="p-10 pt-0 text-center text-3xl font-extrabold flex 
-        flex-col mx-auto w-10/12 md:flex-row">
+        className="flex md:flex-row flex-col mx-auto p-10 pt-0 
+          text-center text-3xl font-extrabold items-center">
         <div
           ref={section2aRef}
           className={`bg-gradient-to-r text-transparent bg-clip-text
-          from-purple-500 to-blue-500 my-10 ${
+          from-purple-500 to-blue-500 my-10 px-6 ${
             section2aFadeIn ? 'animate-fadeIn' : 'opacity-0'
           }`}>
-          1. Connect your wallet
+          1. Connect your <br /> wallet
         </div>
         <div
           ref={section2bRef}
           className={`bg-gradient-to-r text-transparent bg-clip-text
-            from-blue-500 to-gray-500 my-10 ${
+            from-blue-500 to-gray-500 my-10 px-10 ${
               section2bFadeIn ? 'animate-fadeIn' : 'opacity-0'
             }`}>
-          2. Access your token&apos;s community
+          2. Access your token&apos;s <br /> community
         </div>
         <div
           ref={section2cRef}
-          className={`text-color-secondary  my-10 ${
+          className={`text-color-secondary my-10 px-10 ${
             section2cFadeIn ? 'animate-fadeIn' : 'opacity-0'
           }`}>
-          3. Post, like, share value!
+          3. Post, like, share <br /> value!
         </div>
       </div>
       {appConfig.LANDING_PAGE_SHOW_COMMUNITIES_SECTION && (
@@ -165,7 +165,7 @@ function HomePageExternal(): JSX.Element {
       )}
       <div
         ref={section4Ref}
-        className={`w-11/12 md:w-10/12 mx-auto px-6 pb-4 md:pb-0
+        className={`w-11/12 md:w-9/12 mx-auto px-6 pb-4 md:pb-0
         bg-landing-page-card-gray rounded-lg
         ${
           section4FadeIn ? 'animate-fadeInSlide' : 'opacity-0 translate-y-300'
@@ -180,7 +180,7 @@ function HomePageExternal(): JSX.Element {
       </div>
       <div
         ref={section5Ref}
-        className={`w-11/12 md:w-10/12 mx-auto px-6 pb-4 md:pb-0 mt-10
+        className={`w-11/12 md:w-9/12 mx-auto px-6 pb-4 md:pb-0 mt-10
         bg-landing-page-card-gray rounded-lg
         ${
           section5FadeIn ? 'animate-fadeInSlide' : 'opacity-0 translate-y-300'
@@ -195,7 +195,7 @@ function HomePageExternal(): JSX.Element {
       </div>
       <div
         ref={section6Ref}
-        className={`w-11/12 md:w-10/12 mx-auto px-6 pb-4 md:pb-0 mt-10
+        className={`w-11/12 md:w-9/12 mx-auto px-6 pb-4 md:pb-0 mt-10
         bg-landing-page-card-gray rounded-lg
         ${
           section6FadeIn ? 'animate-fadeInSlide' : 'opacity-0 translate-y-300'
@@ -209,7 +209,7 @@ function HomePageExternal(): JSX.Element {
       </div>
       <div
         ref={section7Ref}
-        className={`w-11/12 md:w-10/12 mx-auto px-6 pb-4 md:pb-0 mt-10
+        className={`w-11/12 md:w-9/12 mx-auto px-6 pb-4 md:pb-0 mt-10
         bg-landing-page-card-gray rounded-lg
         ${
           section7FadeIn ? 'animate-fadeInSlide' : 'opacity-0 translate-y-300'
@@ -264,7 +264,7 @@ function HomePageExternal(): JSX.Element {
             Email Us
           </a>
           <a
-            href="https://discord.gg/fU853QRU"
+            href="https://discord.gg/x6d8yDBQ"
             target="_blank"
             rel="noreferrer">
             Discord
