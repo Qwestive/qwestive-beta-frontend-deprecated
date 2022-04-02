@@ -9,10 +9,10 @@ interface IfeatureCard {
 /// Component which displays a card with text and an image.
 function FeatureCard({ title, contents, imgUrl }: IfeatureCard): JSX.Element {
   return (
-    <div className="flex flex-col w-full mx-auto md:flex-row md:w-10/12">
-      <div className="flex flex-col w-full md:w-1/3 mt-10">
+    <div className="flex flex-col w-full mx-auto md:flex-row md:w-10/12 py-4">
+      <div className="flex flex-col w-full md:w-1/3 my-auto">
         <h2
-          className="text-color-primary text-2xl 
+          className="text-color-primary text-3xl 
           tracking-tight leading-10 font-extrabold mb-4">
           {title}
         </h2>
