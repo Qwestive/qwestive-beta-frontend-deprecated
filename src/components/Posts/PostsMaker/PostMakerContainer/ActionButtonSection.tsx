@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom';
 
 type TpostTitleSection = {
   disableEdit: boolean;
-  handleSave: () => void;
+  handlePublish: () => void;
 };
 
 /// Component with buttons to publish or cancel publish of a post.
 export default function ActionButtonSection({
   disableEdit,
-  handleSave,
+  handlePublish,
 }: TpostTitleSection): JSX.Element {
   const navigate = useNavigate();
 
@@ -18,7 +18,7 @@ export default function ActionButtonSection({
       <button
         type="button"
         className="btn-filled rounded-3xl px-6 py-2"
-        onClick={() => handleSave()}
+        onClick={() => handlePublish()}
         disabled={disableEdit}>
         {disableEdit ? <p>Loading ...</p> : <p>Publish</p>}
       </button>

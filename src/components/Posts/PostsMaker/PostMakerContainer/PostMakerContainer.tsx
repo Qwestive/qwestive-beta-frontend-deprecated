@@ -39,7 +39,7 @@ export default function PostMakerContainer({
   const navigate = useNavigate();
   const [disableEdit, setDisableEdit] = useState(false);
 
-  async function handleSave() {
+  async function handlePublish() {
     setDisableEdit(true);
     try {
       const postContent = getPostContent();
@@ -125,7 +125,7 @@ export default function PostMakerContainer({
       sm:text-base bg-gray-100">
         <ActionButtonSection
           disableEdit={disableEdit}
-          handleSave={() => handleSave()}
+          handlePublish={() => handlePublish()}
         />
       </div>
     </div>

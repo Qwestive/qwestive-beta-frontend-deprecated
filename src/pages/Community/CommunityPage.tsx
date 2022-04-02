@@ -12,6 +12,7 @@ import {
   TtokenCommunity,
 } from 'types/types';
 import { getTokenCommunityData } from 'services/Solana/GetData/GetCommunityData';
+import { getCommunityData } from 'services/Firebase/GetData/CommunityUtil';
 import NonMemberCommunityPage from './Components/NonMemberCommunityPage';
 import NewCommunityPage from './Components/NewCommunityPage';
 import MemberCommunityPage from './MemberCommunityPage';
@@ -36,17 +37,6 @@ export default function CommunityPage(): JSX.Element {
   const [tokenRegistryHasLoaded, setTokenRegistryHasLoaded] = useState(false);
 
   async function getTokenCommunity(cid: string): Promise<TtokenCommunity> {
-    if (cid === 'SOL') {
-      return {
-        cid,
-        type: EcommunityType.fungible,
-        name: 'Solana',
-        imageUrl: solanaLogo,
-        communityData: undefined,
-        symbol: 'SOL',
-        tokenData: { isFungible: true, mint: 'SOL', ammountOwned: 0 },
-      };
-    }
     return getTokenCommunityData(tokenRegistry, userAccountTokens, cid);
   }
 
