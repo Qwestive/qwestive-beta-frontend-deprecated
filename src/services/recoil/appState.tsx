@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import { TloggingState } from 'types/types';
+import { TlogInState } from 'types/types';
 
 export const userFinishedLoadingAtom = atom<boolean>({
   key: 'finishedLoading',
@@ -11,12 +11,12 @@ export const loadingAppAtom = atom<boolean>({
   default: true,
 });
 
-export const loggingStateAtom = atom<TloggingState>({
-  key: 'loggingState',
+export const logInStateAtom = atom<TlogInState>({
+  key: 'logInState',
   default: '',
 });
 
 export const toggleReloadCommunityAtom = atom<boolean>({
-  key: 'loggingState',
+  key: 'toggleReloadCommunity',
   default: false,
 });

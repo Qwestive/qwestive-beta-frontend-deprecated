@@ -86,7 +86,7 @@ export default function PostPermissionsSection({
               name="tokenrequirement"
               id="tokenrequirement"
               className="text-field-input border 
-               rounded-xl block text-color-primary text-sm px-3 text-left 
+               rounded-xl block text-sm px-3 text-left 
               w-28 h-8"
               value={postPreviewSubmission.minimumAccessBalance}
               min={0}

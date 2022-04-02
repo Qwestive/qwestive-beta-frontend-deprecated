@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import { loggingStateAtom } from 'services/recoil/appState';
+import { logInStateAtom } from 'services/recoil/appState';
 import { useNavigate } from 'react-router-dom';
 import WalletButton from 'components/Solana/SolanaWallet/WalletButton';
 import Spinner from 'components/Util/Spinner';
@@ -8,13 +8,13 @@ import { userInfoAtom } from 'services/recoil/userInfo';
 
 export default function LoginPage(): JSX.Element {
   const navigate = useNavigate();
-  const loggingState = useRecoilValue(loggingStateAtom);
+  const logInState = useRecoilValue(logInStateAtom);
   const [logMessage, setLogMessage] = useState('');
 
   const userInfo = useRecoilValue(userInfoAtom);
 
   useEffect(() => {
-    switch (loggingState) {
+    switch (logInState) {
       case 'receive':
         setLogMessage('Waiting for message');
         break;
@@ -31,7 +31,7 @@ export default function LoginPage(): JSX.Element {
         setLogMessage('');
         break;
     }
-  }, [loggingState]);
+  }, [logInState]);
 
   useEffect(() => {
     if (userInfo !== undefined) {

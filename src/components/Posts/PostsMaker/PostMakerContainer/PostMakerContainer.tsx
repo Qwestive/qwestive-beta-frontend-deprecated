@@ -71,7 +71,7 @@ export default function PostMakerContainer({
   }
 
   return (
-    <div className="pb-3">
+    <div className="pb-2">
       {/* Title */}
       <div className="mt-2">
         <input
@@ -95,7 +95,7 @@ export default function PostMakerContainer({
       {/* Content */}
       <div className="my-4">{children}</div>
       {/* Category */}
-      <div className=" border-t border-gray-200 dark:border-gray-700">
+      <div className="border-t border-gray-200 dark:border-gray-700">
         <div className="flex justify-start gap-3 items-center ">
           <p className="text-color-1 text-base font-medium whitespace-nowrap">
             # Topic

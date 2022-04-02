@@ -1,7 +1,7 @@
 import { httpsCallable } from 'firebase/functions';
 import { PublicKey } from '@solana/web3.js';
 import { SetterOrUpdater } from 'recoil';
-import { TloggingState } from 'types/types';
+import { TlogInState } from 'types/types';
 import { FirebaseFunctions, FirebaseAuth } from '../FirebaseConfig';
 import SignMessageForServer from './SignMessageForServer';
 /*
@@ -21,7 +21,7 @@ interface IwalletPropForSignin {
 
 async function SigninWithWalletProcess(
   walletProp: IwalletPropForSignin,
-  setLoggingState: SetterOrUpdater<TloggingState>
+  setLogInState: SetterOrUpdater<TlogInState>
 ) {
   const userCheckin = httpsCallable(
     FirebaseFunctions,
@@ -29,7 +29,7 @@ async function SigninWithWalletProcess(
   );
   /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   const result: any = await userCheckin({ uid: walletProp.uid });
-  setLoggingState('sign');
+  setLogInState('sign');
   if (result.data.message !== undefined) {
     // return nonce to sign if user exist
     await SignMessageForServer(
@@ -39,7 +39,7 @@ async function SigninWithWalletProcess(
         publicKey: walletProp.publicKey,
         signMessage: walletProp.signMessage,
       },
-      setLoggingState
+      setLogInState
     );
   } else {
     throw new Error('Failed to retrieve CustomToken');
@@ -53,7 +53,7 @@ if not we start the signin process
 */
 export default async function SigninWithWallet(
   walletProp: IwalletPropForSignin,
-  setLoggingState: SetterOrUpdater<TloggingState>
+  setLogInState: SetterOrUpdater<TlogInState>
 ): Promise<void> {
   const user = FirebaseAuth.currentUser;
   if (user) {
@@ -62,10 +62,10 @@ export default async function SigninWithWallet(
       // new wallet connection different from auth one
 
       await FirebaseAuth.signOut();
-      await SigninWithWalletProcess(walletProp, setLoggingState);
+      await SigninWithWalletProcess(walletProp, setLogInState);
     }
     // else do nothing account is cached already
   } else {
-    await SigninWithWalletProcess(walletProp, setLoggingState);
+    await SigninWithWalletProcess(walletProp, setLogInState);
   }
 }

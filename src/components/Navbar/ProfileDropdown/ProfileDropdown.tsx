@@ -183,7 +183,7 @@ export default function ProfileDropdown(): JSX.Element {
                             className="flex-initial transform 
                               rotate-180 nav-icons-size"
                           />
-                          <p className="pl-2">Signin/Login</p>
+                          <p className="pl-2">Sign In</p>
                         </div>
                       </div>
                     )}
@@ -206,7 +206,7 @@ export default function ProfileDropdown(): JSX.Element {
                           className="flex-initial transform 
                               rotate-180 nav-icons-size"
                         />
-                        <p className="pl-2">Signout</p>
+                        <p className="pl-2">Sign Out</p>
                       </div>
                     </div>
                   )}
