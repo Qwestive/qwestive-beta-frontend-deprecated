@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import WalletButton from 'components/Solana/SolanaWallet/WalletButton';
+import { Link } from 'react-router-dom';
 import telegramLogo from 'assets/telegramLogo.svg';
 import twitterLogo from 'assets/twitterLogo.svg';
 import discordLogo from 'assets/discordLogo.svg';
@@ -93,7 +93,7 @@ function HomePageExternal(): JSX.Element {
               Token gated community spaces
             </span>
           </h1>
-          <p className="text-color-primary text-2xl text-center mt-10 w-10/12">
+          <p className="text-color-0 text-2xl text-center mt-10 w-10/12">
             A space for token-communities to discuss, coordinate, and share
             value, through seamless off-chain and on-chain experiences.
           </p>
@@ -117,6 +117,11 @@ function HomePageExternal(): JSX.Element {
               <img className="h-8" src={telegramLogo} alt="" />
             </a>
           </div>
+          <Link className="mt-5" to="/login">
+            <button type="button" className="button-action py-2 px-5">
+              Launch app
+            </button>
+          </Link>
         </div>
       </div>
       <div
@@ -238,7 +243,13 @@ function HomePageExternal(): JSX.Element {
                 Connect your wallet. <br /> Your communities are waiting.
               </span>
             </h3>
-            <WalletButton />
+            <div className="flex justify-center">
+              <Link className="mt-5" to="/login">
+                <button type="button" className="button-action py-2 px-5">
+                  Launch app
+                </button>
+              </Link>
+            </div>
           </div>
         </div>
       )}
@@ -255,7 +266,8 @@ function HomePageExternal(): JSX.Element {
         />
         <div
           className="w-full flex flex-row justify-center space-x-8 mt-10 mb-20
-          bg-gradient-to-r from-green-400 to-purple-500 text-transparent 
+          bg-gradient-to-r from-green-400 to-purple-500 
+          text-transparent 
           bg-clip-text flex-wrap">
           <a
             href="mailto: contact@qwestive.io"

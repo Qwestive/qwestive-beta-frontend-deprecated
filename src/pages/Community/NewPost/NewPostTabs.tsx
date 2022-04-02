@@ -19,13 +19,9 @@ import {
 
 type TnewPostTabs = {
   cId: string;
-  setReloadCommunityPageToggle: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function NewPostTabs({
-  cId,
-  setReloadCommunityPageToggle,
-}: TnewPostTabs): JSX.Element {
+export default function NewPostTabs({ cId }: TnewPostTabs): JSX.Element {
   const tabs = [
     { name: 'post' },
     { name: 'poll' },
@@ -103,13 +99,13 @@ export default function NewPostTabs({
     <div>
       <div
         className="text-xl mt-1 
-      font-bold 
-      text-color-primary">
+       font-extrabold 
+      text-color-0">
         New post
       </div>
-      <div className="bg-white">
+      <div className="mt-4 mb-5 surface-color-0 rounded-xl shadow-xl">
         {/* Small tabs dropdown */}
-        <div className="mt-4 sm:hidden">
+        <div className="p-1 sm:hidden">
           <Listbox
             value={currentTab}
             onChange={(idx) => {
@@ -119,13 +115,12 @@ export default function NewPostTabs({
               <div className="relative">
                 <Listbox.Button
                   className="relative w-full 
-                  border
-                border-gray-200 
-                bg-white
-                text-color-primary
+                  border rounded-xl
+                border-gray-300
+                dark:border-gray-600 
+                surface-color-0 text-color-1
                  shadow-sm pl-3 pr-10 py-2 
-                text-left 
-                font-medium text-sm">
+                text-left font-medium text-sm">
                   <span className="block truncate capitalize">
                     {tabs[currentTab].name}
                   </span>
@@ -133,11 +128,7 @@ export default function NewPostTabs({
                     className="absolute 
                   inset-y-0 right-0 flex items-center 
                   pr-2 pointer-events-none">
-                    <ChevronDownIcon
-                      className="h-5 w-5 
-                      "
-                      aria-hidden="true"
-                    />
+                    <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
                   </span>
                 </Listbox.Button>
                 <Transition
@@ -149,12 +140,14 @@ export default function NewPostTabs({
                   <Listbox.Options
                     className="absolute z-40 
                     mt-1 w-full 
-                    border-neutral-300 
-                    bg-white
-                    text-color-primary
-                    dark:text-neutral-200
+                    shadow-xl py-2
+                     border
+                    border-gray-300 
+                    dark:border-gray-600 
+                    surface-color-0 text-color-1
+                    dark:text-gray-700
                      max-h-60 
-                    rounded-md py-1 
+                    rounded-xl 
                   focus:outline-none
                   font-medium text-sm
                   ">
@@ -163,7 +156,9 @@ export default function NewPostTabs({
                         key={tab.name}
                         className={({ active }) =>
                           ClassNamesLogic(
-                            active ? 'bg-gray-100 ' : '',
+                            active
+                              ? 'hover:bg-gray-100 dark:hover:bg-gray-800 '
+                              : '',
                             'select-none relative py-2 pl-8 pr-4'
                           )
                         }
@@ -196,7 +191,7 @@ export default function NewPostTabs({
           </Listbox>
         </div>
         {/* Large tabs */}
-        <div className="mt-4 hidden sm:block bg-white">
+        <div className="mb-4 rounded-2xl hidden sm:block">
           <div className=" ">
             <nav className="-mb-px flex" aria-label="Tabs">
               {tabs.map((tab, idx) => (
@@ -205,12 +200,13 @@ export default function NewPostTabs({
                   type="button"
                   className={ClassNamesLogic(
                     idx === currentTab
-                      ? 'border-gray-900 text-color-primary'
-                      : 'border-transparant ' +
+                      ? 'border-gray-900 dark:border-gray-100' +
+                          ' border-b-2 text-color-1'
+                      : ' border-b border-gray-300 dark:border-gray-500' +
                           ' text-color-secondary' +
-                          ' hover:text-gray-700 hover:border-gray-400',
-                    'w-full py-4 px-1 text-center border-b-2 ' +
-                      'font-bold text-base'
+                          ' hover:border-gray-900 dark:hover:border-gray-100 ' +
+                          ' hover:text-gray-700 dark:hover:text-gray-100',
+                    'w-full py-4 px-1 text-center font-bold text-base'
                   )}
                   onClick={() => {
                     switchPostContentType(idx);
@@ -222,12 +218,11 @@ export default function NewPostTabs({
           </div>
         </div>
         {/* Tab Content */}
-        <div className="mt-0.5">
+        <div className="mt-0.5 px-3">
           <PostMakerContainer
             postPreviewSubmission={postPreviewSubmission}
             setPostPreviewSubmission={setPostPreviewSubmission}
-            getPostContent={() => getPostContent()}
-            setReloadCommunityPageToggle={setReloadCommunityPageToggle}>
+            getPostContent={() => getPostContent()}>
             <div>
               {/* Article */}
               <div className={currentTab === 0 ? 'block' : 'hidden'}>

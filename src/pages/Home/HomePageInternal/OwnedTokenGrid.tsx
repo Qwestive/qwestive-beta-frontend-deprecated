@@ -16,13 +16,13 @@ export default function OwnedTokenGrid({
   ownedTokenCommunities,
 }: IownedTokenGrid): JSX.Element {
   return (
-    <div className="mt-5">
+    <div className="mt-5 max-w-3xl mx-auto">
       <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 ">
         {ownedTokenCommunities.map((community) => (
           <Link to={`/c/${community.cid}`} key={community.cid}>
             <li
               className="col-span-1 
-            bg-white hover:bg-gray-50
+              surface-color-0-active
             rounded-lg shadow 
             divide-y divide-gray-200">
               <div
@@ -36,7 +36,7 @@ export default function OwnedTokenGrid({
                 <div className="flex-1 truncate">
                   <div className="flex items-center space-x-3">
                     <h3
-                      className="text-color-primary text-lg 
+                      className="text-color-1 text-lg 
                   font-medium truncate">
                       {community.name}
                     </h3>
@@ -51,10 +51,10 @@ export default function OwnedTokenGrid({
                       {community?.communityData?.isActive ? 'Active' : 'New'}
                     </span>
                   </div>
-                  <p className="mt-1 text-gray-500 text-sm truncate">
+                  <p className="mt-1 text-color-secondary text-sm truncate">
                     {getCommunitySymbol(community)}
                   </p>
-                  <p className="mt-1 text-gray-500 text-sm truncate">
+                  <p className="mt-1 text-color-secondary text-sm truncate">
                     You have
                     {` ${getCommunityTokensOwnedQuantity(community)} ${
                       community.type === EcommunityType.fungible

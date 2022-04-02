@@ -20,16 +20,18 @@ function PollOption({
       <input
         type="text"
         name="option"
-        className="border border-transparent border-gray-100
-          focus:border-qwestive-purple block w-full text-md px-3 rounded-md"
+        className="
+        text-field-input block w-full text-md px-3 rounded-xl"
         placeholder="Option Name"
         maxLength={MAXTITLELENGTH}
         onChange={(e) => setOptionName(optionId, e.target.value)}
       />
-      <TrashIcon
-        className="h-4 my-auto mx-2"
-        onClick={() => removeOption(optionId)}
-      />
+      <button
+        type="button"
+        className="text-color-1 hover:text-red-700 dark:hover:text-red-700"
+        onClick={() => removeOption(optionId)}>
+        <TrashIcon className="h-6 my-auto mx-2" />
+      </button>
     </div>
   );
 }

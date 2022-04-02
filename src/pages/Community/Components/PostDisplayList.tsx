@@ -29,7 +29,7 @@ export default function PostDisplayList({
   loadMorePosts,
 }: TpostDisplayList): JSX.Element {
   return (
-    <div className="w-full">
+    <div className="w-full py-3">
       <div className="w-full">
         {/* Filters buttons */}
         <div className="flex justify-between items-center">
@@ -40,8 +40,10 @@ export default function PostDisplayList({
                 type="button"
                 className={ClassNamesLogic(
                   currentPostSorting === sortingType
-                    ? ' bg-gray-900 text-white'
-                    : 'bg-gray-300 text-color-primary hover:bg-gray-400',
+                    ? 'bg-gray-900 dark:bg-gray-100 ' +
+                        'text-gray-100 dark:text-gray-900'
+                    : 'bg-gray-300 dark:bg-gray-600 ' +
+                        'text-color-1 hover:bg-gray-400 dark:hover:bg-gray-500',
                   'rounded-3xl px-4 py-1 font-medium'
                 )}
                 onClick={() => setCurrentPostSorting(sortingType)}>
@@ -52,9 +54,11 @@ export default function PostDisplayList({
           {/* Large screen post button */}
           <div className="hidden sm:block">
             <Link to={`/c/${communityId}?post=new-post`}>
-              <button type="button" className="btn-filled rounded-3xl py-2.5">
+              <button
+                type="button"
+                className="button-action px-5 rounded-3xl py-2.5">
                 <div className="flex items-center gap-1 -ml-1 ">
-                  <PlusIcon className="h-5" /> Post
+                  <PlusIcon className="h-5 -ml-1" /> Post
                 </div>
               </button>
             </Link>
@@ -124,9 +128,11 @@ export default function PostDisplayList({
         {/* Small screen post button */}
         <div className="block sm:hidden absolute bottom-10 right-5 z-10">
           <Link to={`/c/${communityId}?post=new-post`}>
-            <button type="button" className="btn-filled rounded-3xl py-2.5">
+            <button
+              type="button"
+              className="button-action px-4 rounded-3xl py-2.5">
               <div className="flex items-center gap-1 ">
-                <PlusIcon className="h-5" /> Post
+                <PlusIcon className="h-5 -ml-1" /> Post
               </div>
             </button>
           </Link>

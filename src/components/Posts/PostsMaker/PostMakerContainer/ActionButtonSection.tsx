@@ -14,17 +14,17 @@ export default function ActionButtonSection({
   const navigate = useNavigate();
 
   return (
-    <div className="flex justify-start gap-3 pr-2 pt-4">
+    <div className="flex justify-start gap-3">
       <button
         type="button"
-        className="btn-filled rounded-3xl px-6 py-2"
+        className="button-action shadow-md rounded-3xl px-6 py-2"
         onClick={() => handlePublish()}
         disabled={disableEdit}>
         {disableEdit ? <p>Loading ...</p> : <p>Publish</p>}
       </button>
       <button
         type="button"
-        className="btn-transparent px-6 rounded-3xl py-2"
+        className="button-cancel shadow-md px-6 rounded-3xl py-2"
         onClick={() => navigate(-1)}
         disabled={disableEdit}>
         Cancel

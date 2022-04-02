@@ -9,9 +9,12 @@ import { userConverter } from 'services/Firebase/Converters/UserConverter';
 import SigninWithWallet from 'services/Firebase/Authentication/SigninWithWallet';
 import SignoutWithWallet from 'services/Firebase/Authentication/SignoutWithWallet';
 import { FirebaseAuth, Firestore } from 'services/Firebase/FirebaseConfig';
-import { userFinishedLoadingAtom } from 'services/recoil/appState';
+import {
+  userFinishedLoadingAtom,
+  loadingAppAtom,
+  logInStateAtom,
+} from 'services/recoil/appState';
 import { getUserAccountTokens } from 'components/Authentication/TokenManager';
-/* eslint-disable @typescript-eslint/no-explicit-any */
 
 export default function AuthManager({
   children,
@@ -21,17 +24,24 @@ export default function AuthManager({
   const { publicKey, signMessage, disconnect, connected } = useWallet();
   const [userInfo, setUserInfo] = useRecoilState(userInfoAtom);
   const [, setUserFinishLoading] = useRecoilState(userFinishedLoadingAtom);
+  const [, setLoadingApp] = useRecoilState(loadingAppAtom);
+  const [, setLogInState] = useRecoilState(logInStateAtom);
 
   async function trySigninWithWallet() {
     if (connected && publicKey) {
       try {
-        await SigninWithWallet({
-          uid: publicKey.toString(),
-          publicKey,
-          signMessage,
-        });
+        setLogInState('receive');
+        await SigninWithWallet(
+          {
+            uid: publicKey.toString(),
+            publicKey,
+            signMessage,
+          },
+          setLogInState
+        );
       } catch (error: any) {
         toast.error(`Couldn't sign in: ${error?.message}`);
+        setLogInState('');
       }
     }
   }
@@ -79,7 +89,9 @@ export default function AuthManager({
       } else {
         setUserInfo(undefined);
         setUserFinishLoading(true);
+        setLogInState('');
       }
+      setLoadingApp(false);
     });
   }, []);
 

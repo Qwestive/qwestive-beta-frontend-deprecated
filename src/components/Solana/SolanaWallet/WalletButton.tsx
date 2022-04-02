@@ -1,7 +1,7 @@
 import React from 'react';
 import { WalletMultiButton as ReactUIWalletMultiButton } from '@solana/wallet-adapter-react-ui';
 
-import 'style/wallet.css';
+import 'style/Components/wallet.css';
 
 /*
 TODO:

@@ -9,7 +9,7 @@ export default function ProfileSettingPage(): JSX.Element {
   const [isEditingUserName, setIsEditingUserName] = useState<boolean>(false);
 
   return (
-    <div className="mx-auto max-w-5xl">
+    <div className="page-frame max-w-5xl pb-8">
       {isEditingUserName ? (
         <UserNameSetting setIsEditingUserName={setIsEditingUserName} />
       ) : (

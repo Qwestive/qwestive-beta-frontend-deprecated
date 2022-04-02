@@ -121,6 +121,7 @@ export interface IcommunityData {
 /*
  * Auth types
  */
+export type TlogInState = '' | 'receive' | 'sign' | 'verify' | 'authed';
 
 export interface ImessageToSign {
   uid: string;

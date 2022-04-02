@@ -44,20 +44,20 @@ export default function CategoriesLarge({
             className="h-12"
             alt="tokenImage"
           />
-          <p className="text-color-primary text-xl font-extrabold truncate">
+          <p className="text-color-0 text-xl font-extrabold truncate">
             {community?.name ?? 'Unknown'}
           </p>
         </div>
       </div>
       {/* Community Categories */}
-      <div className="text-base text-color-primary mt-8">
+      <div className="text-base text-color-0 mt-8">
         <p className="font-bold px-4">CATEGORIES</p>
         <div className="mt-3 space-y-1.5">
           <div
             className={
               currentCategory === 'All Topics'
-                ? 'bg-gray-300'
-                : 'hover:bg-gray-200'
+                ? 'bg-gray-300 dark:bg-gray-700'
+                : 'hover:bg-gray-200 dark:hover:bg-gray-800'
             }>
             <button
               type="button"
@@ -74,8 +74,8 @@ export default function CategoriesLarge({
               key={category.name}
               className={ClassNamesLogic(
                 currentCategory === category.name
-                  ? 'bg-gray-300'
-                  : 'hover:bg-gray-200'
+                  ? 'bg-gray-300 dark:bg-gray-700'
+                  : 'hover:bg-gray-200 dark:hover:bg-gray-800'
               )}>
               <button
                 type="button"

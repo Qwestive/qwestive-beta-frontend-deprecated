@@ -51,7 +51,7 @@ export default function PostFeedTab(): JSX.Element {
       {loading && (
         <div>
           <div
-            className="text-primary gap-2 items-baseline 
+            className="text-color-0 gap-2 items-baseline 
           flex justify-center mt-10">
             <div className="text-center text-2xl font-semibold ">
               Scanning your wallet
@@ -79,10 +79,8 @@ export default function PostFeedTab(): JSX.Element {
       )}
       {!loading && postList.length === 0 && (
         <div className="mt-10 text-center">
-          <p className="text-xl font-bold text-color-primary">
-            Your feed is empty
-          </p>
-          <p className="text-lg font-semibold text-color-primary">
+          <p className="text-xl font-bold text-color-0">Your feed is empty</p>
+          <p className="text-lg font-semibold text-color-0">
             Create new communities or buy new tokens
           </p>
         </div>

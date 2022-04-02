@@ -13,7 +13,7 @@ export default function HomePageInternal(): JSX.Element {
   ];
 
   return (
-    <div className="w-10/12 md:w-8/12 max-w-10/12 mx-auto py-10">
+    <div className="page-frame max-w-5xl">
       <div className="border-b border-gray-500">
         <nav className="flex justify-center" aria-label="Tabs">
           {tabs.map((tab) => (
@@ -22,10 +22,11 @@ export default function HomePageInternal(): JSX.Element {
               key={tab.name}
               className={ClassNamesLogic(
                 currentTab === tab.idx
-                  ? 'border-qwestive-purple text-color-primary font-bold'
-                  : 'border-transparent text-color-primary font-medium' +
-                      'hover:text-gray-700 hover:border-gray-300',
-                'flex-1 whitespace-nowrap pt-4 pb-2 px-1 border-b-4 text-lg'
+                  ? 'border-qwestive-purple font-bold'
+                  : 'border-transparent hover:border-gray-300' +
+                      ' dark:hover:border-gray-700',
+                'flex-1 text-color-0 whitespace-nowrap pt-4 pb-2 px-1' +
+                  ' border-b-2 text-lg'
               )}
               aria-current={currentTab === tab.idx ? 'page' : undefined}
               onClick={() => setCurrentTab(tab.idx)}>

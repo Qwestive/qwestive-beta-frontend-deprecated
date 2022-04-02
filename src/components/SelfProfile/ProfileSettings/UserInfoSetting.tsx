@@ -22,11 +22,11 @@ export default function UserInfoSetting({
 }: TsetUserNameEditing): JSX.Element {
   const userInfo = useRecoilValue(userInfoAtom);
   return (
-    <div className="max-w-5xl">
+    <div className="max-w-5xl mx-auto">
       <CoverImageSetting />
       <ProfileImageSetting />
       <div className="mt-2 flex items-center gap-2">
-        <p className="text-color-primary">@{userInfo?.userName}</p>
+        <p className="text-color-0 truncate">@{userInfo?.userName}</p>
         <button
           type="button"
           className="btn-filled rounded-3xl"

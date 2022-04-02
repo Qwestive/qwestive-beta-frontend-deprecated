@@ -1,5 +1,7 @@
 import { httpsCallable } from 'firebase/functions';
 import { PublicKey } from '@solana/web3.js';
+import { SetterOrUpdater } from 'recoil';
+import { TlogInState } from 'types/types';
 import { FirebaseFunctions, FirebaseAuth } from '../FirebaseConfig';
 import SignMessageForServer from './SignMessageForServer';
 /*
@@ -17,21 +19,28 @@ interface IwalletPropForSignin {
   signMessage: ((message: Uint8Array) => Promise<Uint8Array>) | undefined;
 }
 
-async function SigninWithWalletProcess(walletProp: IwalletPropForSignin) {
+async function SigninWithWalletProcess(
+  walletProp: IwalletPropForSignin,
+  setLogInState: SetterOrUpdater<TlogInState>
+) {
   const userCheckin = httpsCallable(
     FirebaseFunctions,
     'authentication-userCheckIn'
   );
   /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   const result: any = await userCheckin({ uid: walletProp.uid });
+  setLogInState('sign');
   if (result.data.message !== undefined) {
     // return nonce to sign if user exist
-    await SignMessageForServer({
-      uid: walletProp.uid,
-      message: result.data.message,
-      publicKey: walletProp.publicKey,
-      signMessage: walletProp.signMessage,
-    });
+    await SignMessageForServer(
+      {
+        uid: walletProp.uid,
+        message: result.data.message,
+        publicKey: walletProp.publicKey,
+        signMessage: walletProp.signMessage,
+      },
+      setLogInState
+    );
   } else {
     throw new Error('Failed to retrieve CustomToken');
   }
@@ -43,7 +52,8 @@ and if he is auth with the connected wallet
 if not we start the signin process
 */
 export default async function SigninWithWallet(
-  walletProp: IwalletPropForSignin
+  walletProp: IwalletPropForSignin,
+  setLogInState: SetterOrUpdater<TlogInState>
 ): Promise<void> {
   const user = FirebaseAuth.currentUser;
   if (user) {
@@ -52,10 +62,10 @@ export default async function SigninWithWallet(
       // new wallet connection different from auth one
 
       await FirebaseAuth.signOut();
-      await SigninWithWalletProcess(walletProp);
+      await SigninWithWalletProcess(walletProp, setLogInState);
     }
     // else do nothing account is cached already
   } else {
-    await SigninWithWalletProcess(walletProp);
+    await SigninWithWalletProcess(walletProp, setLogInState);
   }
 }
