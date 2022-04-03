@@ -56,7 +56,7 @@ export default function CategoriesLarge({
           <div
             className={ClassNamesLogic(
               currentCategory === 'All'
-                ? 'bg-qwestive-gray-2 dark:bg-gray-700'
+                ? 'bg-qwestive-gray-100 dark:bg-gray-700'
                 : 'hover:bg-gray-200 dark:hover:bg-gray-800',
               'rounded-md'
             )}>
@@ -75,7 +75,7 @@ export default function CategoriesLarge({
               key={category.name}
               className={ClassNamesLogic(
                 currentCategory === category.name
-                  ? 'rounded-lg bg-qwestive-gray-2 dark:bg-gray-700'
+                  ? 'rounded-lg bg-qwestive-gray-100 dark:bg-gray-700'
                   : 'rounded-lg hover:bg-gray-200 dark:hover:bg-gray-800',
                 'rounded-md'
               )}>

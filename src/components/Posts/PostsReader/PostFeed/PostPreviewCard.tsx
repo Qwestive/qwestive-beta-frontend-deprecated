@@ -35,8 +35,8 @@ export default function PostPreviewCard({
           {post.category && (
             <div className="flex gap-5 mt-2 items-center">
               <p
-                className="bg-qwestive-light-blue px-2 rounded-md truncate
-                my-auto">
+                className="bg-qwestivepurple-50 text-qwestive-purple px-2
+                 rounded-md truncate my-auto">
                 {post.category}
               </p>
             </div>

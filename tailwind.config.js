@@ -25,14 +25,20 @@ module.exports = {
         sans: ['Inter var', ...defaultTheme.fontFamily.sans],
       },
       colors: {
-        'qwestive-gray-1': '#f9f9fa',
-        'qwestive-gray-2': '#dae2e8',
         'qwestive-white': '#FAF9FA',
-        'qwestive-purple': '#6560fb', // very near indigo 500
-        'qwestive-purple-1': '#E7E3FC',
-        'qwestive-purple-hover': '#4c48c2',
-        'qwestive-light-blue': '#e0f2fe',
         'landing-page-card-gray': '#ECEFF1',
+        'qwestive-purple': '#6560fb', // very near indigo 500
+        'qwestive-purple-hover': '#4c48c2',
+        qwestivepurple: {
+          50: '#E7E3FC',
+        },
+        qwestivegray: {
+          50: '#f9f9fa',
+          100: '#dae2e8',
+        },
+        qwestiveblue: {
+          100: '#a8cae9'
+        },
         amber: {
           50: '#fffbeb',
           100: '#fef3c7',

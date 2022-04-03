@@ -218,7 +218,7 @@ function CommentContainer({
         </div>
       </div>
       <div
-        className="mx-2 pl-6 border-solid border-l-8 border-qwestive-purple-1
+        className="mx-2 pl-6 border-solid border-l-8 border-qwestivepurple-50
          rounded-sm hover:border-qwestive-purple">
         {childComments.map((item) => (
           <div key={item.comment.id}>
