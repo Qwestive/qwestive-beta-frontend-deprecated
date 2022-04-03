@@ -1,12 +1,16 @@
 import React from 'react';
 
-import { EcommunityType, TtokenCommunity } from 'types/types';
+import {
+  EcommunityType,
+  InonFungibleTokenCommunity,
+  TtokenCommunity,
+} from 'types/types';
 import { getCommunitySymbol } from 'types/TypesUtil';
 
 type TnonMemberCommunityPage = {
   community: TtokenCommunity | undefined;
 };
-// TODO: design
+// TODO: improve design
 export default function NonMemberCommunityPage({
   community,
 }: TnonMemberCommunityPage): JSX.Element {
@@ -17,17 +21,63 @@ export default function NonMemberCommunityPage({
       </div>
       {community !== undefined && (
         <div className="space-y-3 mt-3">
-          <p>{community.name}</p>
-          <p>{getCommunitySymbol(community)}</p>
+          <p className="text-3xl">{community.name}</p>
           <img
             src={community.imageUrl}
-            className="mx-auto h-32"
+            className="mx-auto h-32 w-32 rounded-full"
             alt="logoUri"
           />
-          {/* Show cid (public key for tokens - not NFT Collections) */}
-          {community.type === EcommunityType.fungible && <p>{community.cid}</p>}
         </div>
       )}
+      <div className="max-w-sm my-6 mx-auto">
+        <p className="text-color-primary">
+          To gain access to a Qwestive community, your wallet balance must
+          contain the underlying token to which the community is associated.
+        </p>
+        <div className="flex flex-col content-start my-2 text-color-secondary">
+          <p className="font-bold">Token Details:</p>
+          {community?.type === EcommunityType.fungible ? (
+            <>
+              <div>
+                <span className="font-semibold">Type:</span> Fungible
+              </div>
+              <div>
+                <span className="font-semibold">Name:</span> {community?.name}
+              </div>
+              <div>
+                <span className="font-semibold">Symbol:</span>{' '}
+                {getCommunitySymbol(community)}
+              </div>
+              <div className="break-all">
+                <span className="font-semibold">Mint ID:</span>
+                <br /> {community?.cid}
+              </div>
+            </>
+          ) : (
+            <>
+              <div>
+                <span className="font-semibold">Type:</span> Non-Fungible
+              </div>
+              <div>
+                <span className="font-semibold">Name:</span> {community?.name}
+              </div>
+              <div>
+                <span className="font-semibold">Symbol:</span>{' '}
+                {getCommunitySymbol(community)}
+              </div>
+              <div className="break-all">
+                <span className="font-semibold">Creator Public Keys:</span>
+                <br />
+                {(
+                  community as InonFungibleTokenCommunity
+                ).collectionData.metadata.creators.map((item) => (
+                  <h1>{item}</h1>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

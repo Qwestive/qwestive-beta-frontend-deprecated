@@ -35,10 +35,6 @@ export default function CommunityPage(): JSX.Element {
   const [community, setCommunity] = useState<TtokenCommunity | undefined>();
   const [tokenRegistryHasLoaded, setTokenRegistryHasLoaded] = useState(false);
 
-  async function getTokenCommunity(cid: string): Promise<TtokenCommunity> {
-    return getTokenCommunityData(tokenRegistry, userAccountTokens, cid);
-  }
-
   async function handleLoadPage() {
     setLoadingPage(true);
     if (cId !== undefined) {
@@ -53,7 +49,9 @@ export default function CommunityPage(): JSX.Element {
         } else {
           throw new Error('You do not have access to this community');
         }
-        setCommunity(await getTokenCommunity(cId));
+        setCommunity(
+          await getTokenCommunityData(tokenRegistry, userAccountTokens, cId)
+        );
       } catch (error: any) {
         toast.error(error?.message);
       }
