@@ -13,9 +13,7 @@ export default function PostPreviewCard({
   post,
 }: TpostPreviewCard): JSX.Element {
   return (
-    <div
-      className="p-5 bg-white hover:bg-gray-50 flex flex-row w-full
-      rounded-xl">
+    <div className="p-5 w-full flex flex-row card-active">
       <PostVoteButtons
         postId={post.id}
         upVotes={post.upVoteUserIds}

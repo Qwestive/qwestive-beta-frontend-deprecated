@@ -61,7 +61,7 @@ export async function queryPostPreviews(
 
   const sortingTypeQuery = sortingType.toLowerCase();
 
-  if (!(category === 'All Topics')) {
+  if (!(category === 'All')) {
     queryConstraints.push(where('category', '==', category));
   }
 

@@ -26,6 +26,14 @@
   @apply surface-color-0 hover:bg-gray-50 dark:hover:bg-gray-800;
 }
 
+.card {
+  @apply surface-color-0 rounded-2xl shadow-lg;
+}
+
+.card-active {
+  @apply surface-color-0-active rounded-2xl shadow-lg;
+}
+
 /* Button */
 .button-action {
   @apply inline-flex items-center rounded-3xl font-semibold text-white 
