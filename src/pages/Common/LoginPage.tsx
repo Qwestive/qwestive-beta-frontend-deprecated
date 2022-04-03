@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { logInStateAtom } from 'services/recoil/appState';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import WalletButton from 'components/Solana/SolanaWallet/WalletButton';
 import Spinner from 'components/Util/Spinner';
 import { userInfoAtom } from 'services/recoil/userInfo';
 
 export default function LoginPage(): JSX.Element {
   const navigate = useNavigate();
+  const location = useLocation();
   const logInState = useRecoilValue(logInStateAtom);
   const [logMessage, setLogMessage] = useState('');
 
@@ -35,7 +36,11 @@ export default function LoginPage(): JSX.Element {
 
   useEffect(() => {
     if (userInfo !== undefined) {
-      navigate('/');
+      /// Once logged in, redirect to user to the requested URL or the homepage
+      /// if no particular URL was requested.
+      const redirectPath =
+        location.pathname === '/login' ? '/' : location.pathname;
+      navigate(redirectPath);
     }
   }, [userInfo]);
 
