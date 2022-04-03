@@ -40,11 +40,11 @@ export default function PostDisplayList({
                 type="button"
                 className={ClassNamesLogic(
                   currentPostSorting === sortingType
-                    ? 'bg-gray-900 dark:bg-gray-100 ' +
+                    ? 'bg-black dark:bg-gray-100 ' +
                         'text-gray-100 dark:text-gray-900'
-                    : 'bg-gray-300 dark:bg-gray-600 ' +
+                    : 'bg-qwestivegray-100 dark:bg-gray-600 ' +
                         'text-color-1 hover:bg-gray-400 dark:hover:bg-gray-500',
-                  'rounded-3xl px-4 py-1 font-medium'
+                  'rounded-3xl px-4 py-1'
                 )}
                 onClick={() => setCurrentPostSorting(sortingType)}>
                 {sortingType}

@@ -16,15 +16,11 @@ export default function OwnedTokenGrid({
   ownedTokenCommunities,
 }: IownedTokenGrid): JSX.Element {
   return (
-    <div className="mt-5 max-w-3xl mx-auto">
+    <div className="max-w-3xl mx-auto py-5">
       <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 ">
         {ownedTokenCommunities.map((community) => (
           <Link to={`/c/${community.cid}`} key={community.cid}>
-            <li
-              className="col-span-1 
-              surface-color-0-active
-            rounded-lg shadow 
-            divide-y divide-gray-200">
+            <li className="col-span-1 card">
               <div
                 className="w-full flex items-center justify-between 
             p-6 space-x-6">
@@ -43,7 +39,7 @@ export default function OwnedTokenGrid({
                     <span
                       className={ClassNamesLogic(
                         community?.communityData?.isActive ?? false
-                          ? ' text-green-800 bg-green-100'
+                          ? 'text-green-800 bg-green-100'
                           : 'bg-pink-100 text-pink-800',
                         'flex-shrink-0 inline-block px-2 py-0.5' +
                           'text-xs font-medium  rounded-full'

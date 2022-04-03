@@ -106,7 +106,7 @@ export default function PostDetailPage({
             tipReceiverPublicKey={tipReceiverPublicKey ?? ''}
             tipReceiverUserName={tipReceiverUserName ?? ''}
           />
-          <div className="bg-white rounded-md my-6 pt-6 px-6">
+          <div className="my-6 pt-6 px-6 card">
             {postPreview?.postType === POLL_TYPE && (
               <PollContainer
                 postId={postPreview?.id}

@@ -130,8 +130,8 @@ function PollContainer({
             <button
               key={item.id}
               className="py-2 px-4 my-1 w-full bg-gray-300 text-white
-              font-semibold rounded-lg hover:bg-qwestive-purple 
-              focus:outline-none focus:ring-2 focus:ring-qwestive-purple"
+              font-semibold rounded-lg hover:bg-qwestiveblue-100
+              focus:outline-none focus:ring-2 focus:ring-qwestiveblue-100"
               type="button"
               onClick={() => handleCastVote(item.id)}>
               {item.name}

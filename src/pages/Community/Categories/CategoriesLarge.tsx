@@ -54,19 +54,20 @@ export default function CategoriesLarge({
         <p className="font-bold px-4">CATEGORIES</p>
         <div className="mt-3 space-y-1.5">
           <div
-            className={
-              currentCategory === 'All Topics'
-                ? 'bg-gray-300 dark:bg-gray-700'
-                : 'hover:bg-gray-200 dark:hover:bg-gray-800'
-            }>
+            className={ClassNamesLogic(
+              currentCategory === 'All'
+                ? 'bg-qwestivegray-100 dark:bg-gray-700'
+                : 'hover:bg-gray-200 dark:hover:bg-gray-800',
+              'rounded-md'
+            )}>
             <button
               type="button"
               className="w-full"
               onClick={() => {
-                setCurrentCategory('All Topics');
+                setCurrentCategory('All');
                 setSearchParams('');
               }}>
-              <p className="px-4 font-medium text-left">All Topics</p>
+              <p className="px-4 font-bold text-left">All</p>
             </button>
           </div>
           {categoriesSubset.map((category) => (
@@ -74,8 +75,9 @@ export default function CategoriesLarge({
               key={category.name}
               className={ClassNamesLogic(
                 currentCategory === category.name
-                  ? 'bg-gray-300 dark:bg-gray-700'
-                  : 'hover:bg-gray-200 dark:hover:bg-gray-800'
+                  ? 'rounded-lg bg-qwestivegray-100 dark:bg-gray-700'
+                  : 'rounded-lg hover:bg-gray-200 dark:hover:bg-gray-800',
+                'rounded-md'
               )}>
               <button
                 type="button"
@@ -87,7 +89,7 @@ export default function CategoriesLarge({
                 <div className="flex">
                   <p
                     className="px-4 w-52 truncate 
-                  overflow-hidden font-medium text-left  ">
+                  overflow-hidden text-left">
                     {category.name}
                   </p>
                   <p className="pr-3">{category.count}</p>
@@ -98,7 +100,7 @@ export default function CategoriesLarge({
           {categoriesSubset.length < categories.length && (
             <button
               type="button"
-              className="px-3 text-qwestive-purple font-medium underline"
+              className="px-3 text-qwestive-purple underline"
               onClick={() => {
                 setCategoriesSubset(
                   categories?.slice(0, (categoriesViewCounter + 1) * 5)
@@ -122,7 +124,6 @@ export default function CategoriesLarge({
             </button>
           )}
         </div>
-        <div className="border-b border-gray-900 pt-3" />
       </div>
     </div>
   );

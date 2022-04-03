@@ -18,11 +18,11 @@ function ProgressBar({ name, percentProgress }: IprogressBar): JSX.Element {
     <div
       className={ClassNamesLogic(
         Math.round(percentProgress) === 0 && 'p-2',
-        'w-full mt-2 bg-gray-200 rounded-md dark:bg-gray-700'
+        'w-full mt-2 bg-qwestivegray-100 rounded-md dark:bg-gray-700'
       )}>
       {percentProgress > 0 ? (
         <div
-          className="bg-qwestive-purple p-3 rounded-md truncate text-sm"
+          className="bg-qwestiveblue-100 p-3 rounded-md truncate text-sm"
           style={{ width: `${progress}%`, transitionDuration: '2s' }}>
           <span className="animate-fadeIn text-white">{`${name}: ${Math.round(
             percentProgress

@@ -29,7 +29,7 @@ export default function MemberCommunityPage({
 
   const [currentPostSorting, setCurrentPostSorting] =
     useState<TpostSorting>('New');
-  const [currentCategory, setCurrentCategory] = useState('All Topics');
+  const [currentCategory, setCurrentCategory] = useState('All');
 
   const [postsLoading, setPostsLoading] = useState(true);
 
