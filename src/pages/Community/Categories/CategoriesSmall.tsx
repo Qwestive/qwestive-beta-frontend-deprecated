@@ -77,20 +77,20 @@ export default function CategoriesSmall({
                   <button
                     type="button"
                     className={ClassNamesLogic(
-                      currentCategory === 'All Topics'
+                      currentCategory === 'All'
                         ? 'bg-gray-200 dark:bg-gray-700'
                         : ' hover:bg-gray-100 dark:hover:bg-gray-800',
                       ' py-1 w-full'
                     )}
                     onClick={() => {
-                      setCurrentCategory('All Topics');
+                      setCurrentCategory('All');
                       setSearchParams('');
                     }}>
                     <div className="flex">
                       <p
                         className="px-4 w-52 truncate 
                     overflow-hidden text-left  ">
-                        All Topics
+                        All
                       </p>
                     </div>
                   </button>
