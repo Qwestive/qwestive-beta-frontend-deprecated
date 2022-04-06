@@ -10,7 +10,7 @@ export function getCommunitySymbol(
 ): string {
   if (community === undefined) return '';
   if (community?.type === EcommunityType.fungible) {
-    return (community as IfungibleTokenCommunity).tokenData.mint;
+    return (community as IfungibleTokenCommunity).symbol;
   }
   return (community as InonFungibleTokenCommunity).collectionData.metadata
     .symbol;
