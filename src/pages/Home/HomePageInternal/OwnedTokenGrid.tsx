@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import { PlusIcon } from '@heroicons/react/outline';
 import ClassNamesLogic from 'components/Util/ClassNamesLogic';
 import { EcommunityType, TtokenCommunity } from 'types/types';
 import {
@@ -20,7 +20,7 @@ export default function OwnedTokenGrid({
       <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 ">
         {ownedTokenCommunities.map((community) => (
           <Link to={`/c/${community.cid}`} key={community.cid}>
-            <li className="col-span-1 card">
+            <li className="col-span-1 card-active border-color-1">
               <div
                 className="w-full flex items-center justify-between 
             p-6 space-x-6">
@@ -63,6 +63,33 @@ export default function OwnedTokenGrid({
             </li>
           </Link>
         ))}
+        <Link to="/new-community" key="new-community">
+          <li className="col-span-1 card-active border-color-1 py-1.5">
+            <div
+              className="w-full flex items-center justify-between 
+            p-6 space-x-6">
+              <div
+                className="h-16 w-16 rounded-full flex-shrink-0 
+                border-color-1
+              flex items-center justify-center">
+                <PlusIcon
+                  className="h-10 text-indigo-500 
+                dark:text-indigo-400"
+                />
+              </div>
+              <div className="flex-1 truncate">
+                <div className="flex items-center space-x-3">
+                  <h3
+                    className="text-indigo-500 
+                    dark:text-indigo-400 text-lg 
+                  font-medium truncate">
+                    Add a new space
+                  </h3>
+                </div>
+              </div>
+            </div>
+          </li>
+        </Link>
       </ul>
     </div>
   );

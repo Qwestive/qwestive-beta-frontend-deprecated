@@ -80,6 +80,35 @@ export interface AccountTokensByMintOrCollection {
  * is different from the data of a community for a non-fungible token.
  */
 
+/* TBD */
+interface IcommunityInfo {
+  displayName: string;
+  image: string;
+}
+
+interface IsolTokenRequirement {
+  mint: string;
+  amount: number;
+}
+
+// TBD
+interface IsolNFTRequirement {
+  name: string;
+}
+
+export type Trequirement = IsolTokenRequirement | IsolNFTRequirement;
+
+export interface ICustomCommunity {
+  id: string;
+  name: string;
+  info: IcommunityInfo;
+  tokens: Array<string>; // for query
+  requirements: Map<string, Trequirement>;
+  managers: Array<string>;
+  categories: [];
+}
+/* TBD */
+
 export enum EcommunityType {
   fungible = 'fungible',
   nonfungible = 'nonfungible',

@@ -1,4 +1,11 @@
-import { doc, getDoc } from 'firebase/firestore';
+import {
+  doc,
+  getDoc,
+  query,
+  getDocs,
+  collection,
+  where,
+} from 'firebase/firestore';
 import { Icategory, IcommunityData } from 'types/types';
 import { Firestore } from '../FirebaseConfig';
 import { communityConverter } from '../Converters/CommunityConverter';
@@ -27,4 +34,15 @@ export async function getPostCategories(
     return communityDoc.data().categories;
   }
   return undefined;
+}
+
+export async function checkCommunityNameExist(
+  communityName: string
+): Promise<boolean> {
+  const communityQuery = query(
+    collection(Firestore, 'customCommunities'),
+    where('name', '==', communityName)
+  );
+  const communitySnapshot = await getDocs(communityQuery);
+  return communitySnapshot.docs.length !== 0;
 }

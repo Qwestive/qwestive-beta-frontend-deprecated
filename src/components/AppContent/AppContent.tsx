@@ -4,18 +4,19 @@ import { useRecoilValue } from 'recoil';
 import OnlyAuthRoute from 'components/Authentication/OnlyAuthRoute';
 import Spinner from 'components/Util/Spinner';
 import Navbar from 'components/Navbar/Navbar';
+import useDarkMode from 'components/Util/useDarkMode';
+import { loadingAppAtom } from 'services/recoil/appState';
 
 import HomePage from 'pages/Home/HomePage';
 import UserProfilePage from 'pages/UserProfile/UserProfilePage';
 import ProfileSettingPage from 'pages/UserProfile/SelfProfile/ProfileSettingPage';
-
 import CommunityPage from 'pages/Community/CommunityPage';
-import useDarkMode from 'components/Util/useDarkMode';
+import CreateCommunityPage from 'pages/CreateCommunity/CreateCommunityPage';
 import NotFoundPage from 'pages/Common/NotFoundPage';
 import LoginPage from 'pages/Common/LoginPage';
+
 import 'style/global.css';
 import 'react-toastify/dist/ReactToastify.css';
-import { loadingAppAtom } from 'services/recoil/appState';
 
 export default function AppContent(): JSX.Element {
   useDarkMode();
@@ -42,6 +43,11 @@ export default function AppContent(): JSX.Element {
             <Route
               path="/c/:cId"
               element={<OnlyAuthRoute element={<CommunityPage />} />}
+            />
+
+            <Route
+              path="/new-community"
+              element={<OnlyAuthRoute element={<CreateCommunityPage />} />}
             />
 
             <Route path="*" element={<NotFoundPage />} />

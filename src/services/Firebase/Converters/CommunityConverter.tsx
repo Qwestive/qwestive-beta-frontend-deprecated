@@ -1,5 +1,5 @@
 import { DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
-import { IcommunityData } from '../../../types/types';
+import { IcommunityData } from 'types/types';
 
 export const communityConverter = {
   toFirestore: (community: IcommunityData): DocumentData => {
