@@ -85,11 +85,11 @@ function HomePageExternal(): JSX.Element {
           w-10/12 mx-auto">
         <div className="flex flex-col items-center my-auto">
           <h1
-            className="text-center text-6xl 
-            lg:text-7xl font-black text-white">
+            className="text-5xl lg:text-7xl font-black text-white
+            text-center">
             <span
               className="bg-gradient-to-r text-transparent 
-            bg-clip-text from-green-400 to-purple-500">
+            bg-clip-text from-green-400 to-purple-500 max-w-10/12">
               Community Relationship Management for Web3
             </span>
           </h1>
@@ -127,7 +127,7 @@ function HomePageExternal(): JSX.Element {
           from-purple-500 to-blue-500 my-10 px-6 w-10/12 md:w-1/3 ${
             section2aFadeIn ? 'animate-fadeIn' : 'opacity-0'
           }`}>
-          1. Connect your <br /> wallet
+          1. Connect your <br /> Wallet
         </div>
         <div
           ref={section2bRef}
@@ -135,14 +135,14 @@ function HomePageExternal(): JSX.Element {
             from-blue-500 to-gray-500 my-10 px-10 w-10/12 md:w-1/3 ${
               section2bFadeIn ? 'animate-fadeIn' : 'opacity-0'
             }`}>
-          2. Create your <br /> community
+          2. Create your <br /> Community
         </div>
         <div
           ref={section2cRef}
           className={`text-color-secondary my-10 px-10 w-1/3 w-10/12 md:w-1/3 ${
             section2cFadeIn ? 'animate-fadeIn' : 'opacity-0'
           }`}>
-          3. Measure &amp; Manage <br /> with data!
+          3. Measure &amp; Manage <br /> with Data!
         </div>
       </div>
       {appConfig.LANDING_PAGE_SHOW_COMMUNITIES_SECTION && (
