@@ -184,7 +184,7 @@ function HomePageExternal(): JSX.Element {
           title="Keep track of each member's activities &amp; contributions"
           contents="Super-charge your engagement with actionable understanding
            of who's who in your community and how each member is interacting in
-           it"
+           it."
           imgUrl={userProfiles}
         />
       </div>
