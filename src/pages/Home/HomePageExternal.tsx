@@ -89,7 +89,7 @@ function HomePageExternal(): JSX.Element {
             text-center">
             <span
               className="bg-gradient-to-r text-transparent 
-            bg-clip-text from-green-400 to-purple-500 max-w-10/12">
+            bg-clip-text from-green-400 to-purple-500">
               Community Relationship Management for Web3
             </span>
           </h1>
