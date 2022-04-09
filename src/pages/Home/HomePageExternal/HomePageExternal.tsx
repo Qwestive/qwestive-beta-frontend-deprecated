@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { Link } from 'react-router-dom';
 import telegramLogo from 'assets/telegramLogo.svg';
 import twitterLogo from 'assets/twitterLogo.svg';
 import discordLogo from 'assets/discordLogo.svg';
 import discussionCardImage from 'assets/discussionCardImage.svg';
-import pollCardImage from 'assets/pollCardImage.svg';
-import bountyCardImage from 'assets/bountyCardImage.svg';
 import tipCardImage from 'assets/tipCardImage.svg';
-import CommunityCarousel from './CommunityCarousel';
+import crmTable from 'assets/crmTable.svg';
+import userProfiles from 'assets/userProfiles.svg';
+import appConfig from 'config.js';
+import WalletButton from 'components/Solana/SolanaWallet/WalletButton';
 import FeatureCard from './FeatureCard';
-import appConfig from '../../../config.js';
+import CommunityCarousel from './CommunityCarousel';
 
 function HomePageExternal(): JSX.Element {
   const [section2aFadeIn, setSection2aFadeIn] = useState(false);
@@ -85,17 +85,13 @@ function HomePageExternal(): JSX.Element {
           w-10/12 mx-auto">
         <div className="flex flex-col items-center my-auto">
           <h1
-            className="text-center text-6xl 
-            lg:text-7xl font-black text-white">
-            <span
-              className="bg-gradient-to-r text-transparent 
-            bg-clip-text from-green-400 to-purple-500">
-              Token gated community spaces
-            </span>
+            className="text-5xl lg:text-7xl font-black
+            text-center break-words bg-gradient-to-r text-transparent 
+            bg-clip-text from-pink-700 to-purple-500">
+            Community <br /> Relationship Management for Web3
           </h1>
-          <p className="text-color-0 text-2xl text-center mt-10 w-10/12">
-            A space for token-communities to discuss, coordinate, and share
-            value, through seamless off-chain and on-chain experiences.
+          <p className="text-color-primary text-2xl text-center mt-10 w-10/12">
+            The hub to monitor and coordinate all your token communities.
           </p>
           <div className="flex space-x-3 mt-8">
             <a
@@ -117,11 +113,6 @@ function HomePageExternal(): JSX.Element {
               <img className="h-8" src={telegramLogo} alt="" />
             </a>
           </div>
-          <Link className="mt-5" to="/login">
-            <button type="button" className="button-action py-2 px-5">
-              Launch app
-            </button>
-          </Link>
         </div>
       </div>
       <div
@@ -130,25 +121,25 @@ function HomePageExternal(): JSX.Element {
         <div
           ref={section2aRef}
           className={`bg-gradient-to-r text-transparent bg-clip-text
-          from-purple-500 to-blue-500 my-10 px-6 ${
+          from-pink-700 to-purple-500 my-10 px-6 w-10/12 md:w-1/3 ${
             section2aFadeIn ? 'animate-fadeIn' : 'opacity-0'
           }`}>
-          1. Connect your <br /> wallet
+          1. Connect your <br /> Wallet
         </div>
         <div
           ref={section2bRef}
           className={`bg-gradient-to-r text-transparent bg-clip-text
-            from-blue-500 to-gray-500 my-10 px-10 ${
+            from-purple-500 to-gray-500 my-10 px-10 w-10/12 md:w-1/3 ${
               section2bFadeIn ? 'animate-fadeIn' : 'opacity-0'
             }`}>
-          2. Access your token&apos;s <br /> community
+          2. Create your <br /> Community
         </div>
         <div
           ref={section2cRef}
-          className={`text-color-secondary my-10 px-10 ${
+          className={`text-color-secondary my-10 px-10 w-1/3 w-10/12 md:w-1/3 ${
             section2cFadeIn ? 'animate-fadeIn' : 'opacity-0'
           }`}>
-          3. Post, like, share <br /> value!
+          3. Measure &amp; Manage <br /> with Data!
         </div>
       </div>
       {appConfig.LANDING_PAGE_SHOW_COMMUNITIES_SECTION && (
@@ -176,11 +167,10 @@ function HomePageExternal(): JSX.Element {
           section4FadeIn ? 'animate-fadeInSlide' : 'opacity-0 translate-y-300'
         }`}>
         <FeatureCard
-          title="Facilitated discussions"
-          contents="Escape the endless notifications &amp; chaos from Discord. 
-          Just see the important stuff that you need to know with forum style
-          discussion threads."
-          imgUrl={discussionCardImage}
+          title="Get deep insights of your community"
+          contents="Say goodbye to spreadsheets. Say hello to automated
+           on-chain &amp; off-chain insights on your community."
+          imgUrl={crmTable}
         />
       </div>
       <div
@@ -191,11 +181,11 @@ function HomePageExternal(): JSX.Element {
           section5FadeIn ? 'animate-fadeInSlide' : 'opacity-0 translate-y-300'
         }`}>
         <FeatureCard
-          title="Token Gated Polls &amp; Votes"
-          contents="Off-chain polls and on-chain votes which facillitate the 
-          decision making process for the community and allow the participation
-          of all stake holders, the token holders."
-          imgUrl={pollCardImage}
+          title="Keep track of each member's activities &amp; contributions"
+          contents="Super-charge your engagement with actionable understanding
+           of who's who in your community and how each member is interacting in
+           it"
+          imgUrl={userProfiles}
         />
       </div>
       <div
@@ -206,10 +196,10 @@ function HomePageExternal(): JSX.Element {
           section6FadeIn ? 'animate-fadeInSlide' : 'opacity-0 translate-y-300'
         }`}>
         <FeatureCard
-          title="On-Chain Bounties and Contests"
-          contents="On-chain bounties and contests empower the community by 
-          allowing members to coordinate and reward important contributions."
-          imgUrl={bountyCardImage}
+          title="Hold facilitated discussions"
+          contents="A streamlined alternative to Discord that allows you to 
+          hold private, well-organized discussions with each of your members."
+          imgUrl={discussionCardImage}
         />
       </div>
       <div
@@ -220,9 +210,9 @@ function HomePageExternal(): JSX.Element {
           section7FadeIn ? 'animate-fadeInSlide' : 'opacity-0 translate-y-300'
         }`}>
         <FeatureCard
-          title="Giveaways, Tips, and more!"
-          contents="Communities are empowered with simple, blockchain-enabled
-          tools to exchange value among members!"
+          title="Reward and manage your community"
+          contents="Manage and coordinate your community through easy to use
+           blockchain interactions like Airdrops, Votes and Bounties!"
           imgUrl={tipCardImage}
         />
       </div>
@@ -239,17 +229,11 @@ function HomePageExternal(): JSX.Element {
               text-white w-full md:w-1/2 mb-10 md:mb-0">
               <span
                 className="bg-gradient-to-r text-transparent 
-              bg-clip-text from-green-400 to-purple-500">
+              bg-clip-text from-pink-700 to-purple-500">
                 Connect your wallet. <br /> Your communities are waiting.
               </span>
             </h3>
-            <div className="flex justify-center">
-              <Link className="mt-5" to="/login">
-                <button type="button" className="button-action py-2 px-5">
-                  Launch app
-                </button>
-              </Link>
-            </div>
+            <WalletButton />
           </div>
         </div>
       )}
@@ -261,13 +245,12 @@ function HomePageExternal(): JSX.Element {
             : 'w-full mt-20 opacity-0 translate-y-300'
         }>
         <div
-          className="w-full bg-gradient-to-r from-green-400 
+          className="w-full bg-gradient-to-r from-pink-700
           to-purple-500 pt-1 mt-10"
         />
         <div
           className="w-full flex flex-row justify-center space-x-8 mt-10 mb-20
-          bg-gradient-to-r from-green-400 to-purple-500 
-          text-transparent 
+          bg-gradient-to-r from-pink-700 to-purple-500 text-transparent 
           bg-clip-text flex-wrap">
           <a
             href="mailto: contact@qwestive.io"
