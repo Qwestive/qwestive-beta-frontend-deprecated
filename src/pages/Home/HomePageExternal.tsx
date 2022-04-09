@@ -87,7 +87,7 @@ function HomePageExternal(): JSX.Element {
           <h1
             className="text-5xl lg:text-7xl font-black
             text-center break-words bg-gradient-to-r text-transparent 
-            bg-clip-text from-green-400 to-purple-500">
+            bg-clip-text from-pink-700 to-purple-500">
             Community <br /> Relationship Management for Web3
           </h1>
           <p className="text-color-primary text-2xl text-center mt-10 w-10/12">
@@ -121,7 +121,7 @@ function HomePageExternal(): JSX.Element {
         <div
           ref={section2aRef}
           className={`bg-gradient-to-r text-transparent bg-clip-text
-          from-purple-500 to-blue-500 my-10 px-6 w-10/12 md:w-1/3 ${
+          from-pink-700 to-purple-500 my-10 px-6 w-10/12 md:w-1/3 ${
             section2aFadeIn ? 'animate-fadeIn' : 'opacity-0'
           }`}>
           1. Connect your <br /> Wallet
@@ -129,7 +129,7 @@ function HomePageExternal(): JSX.Element {
         <div
           ref={section2bRef}
           className={`bg-gradient-to-r text-transparent bg-clip-text
-            from-blue-500 to-gray-500 my-10 px-10 w-10/12 md:w-1/3 ${
+            from-purple-500 to-gray-500 my-10 px-10 w-10/12 md:w-1/3 ${
               section2bFadeIn ? 'animate-fadeIn' : 'opacity-0'
             }`}>
           2. Create your <br /> Community
@@ -229,7 +229,7 @@ function HomePageExternal(): JSX.Element {
               text-white w-full md:w-1/2 mb-10 md:mb-0">
               <span
                 className="bg-gradient-to-r text-transparent 
-              bg-clip-text from-green-400 to-purple-500">
+              bg-clip-text from-pink-700 to-purple-500">
                 Connect your wallet. <br /> Your communities are waiting.
               </span>
             </h3>
@@ -245,12 +245,12 @@ function HomePageExternal(): JSX.Element {
             : 'w-full mt-20 opacity-0 translate-y-300'
         }>
         <div
-          className="w-full bg-gradient-to-r from-green-400 
+          className="w-full bg-gradient-to-r from-pink-700
           to-purple-500 pt-1 mt-10"
         />
         <div
           className="w-full flex flex-row justify-center space-x-8 mt-10 mb-20
-          bg-gradient-to-r from-green-400 to-purple-500 text-transparent 
+          bg-gradient-to-r from-pink-700 to-purple-500 text-transparent 
           bg-clip-text flex-wrap">
           <a
             href="mailto: contact@qwestive.io"
