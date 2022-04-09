@@ -85,13 +85,10 @@ function HomePageExternal(): JSX.Element {
           w-10/12 mx-auto">
         <div className="flex flex-col items-center my-auto">
           <h1
-            className="text-5xl lg:text-7xl font-black text-white
-            text-center">
-            <span
-              className="bg-gradient-to-r text-transparent 
+            className="text-5xl lg:text-7xl font-black
+            text-center break-words bg-gradient-to-r text-transparent 
             bg-clip-text from-green-400 to-purple-500">
-              Community Relationship Management for Web3
-            </span>
+            Community <br /> Relationship Management for Web3
           </h1>
           <p className="text-color-primary text-2xl text-center mt-10 w-10/12">
             The hub to monitor and coordinate all your token communities.
