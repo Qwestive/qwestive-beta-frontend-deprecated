@@ -1,41 +1,132 @@
-import React, { useState } from 'react';
-import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
+import React, { useState, useEffect } from 'react';
+import { CheckIcon, SelectorIcon, TrashIcon } from '@heroicons/react/solid';
 import { Combobox } from '@headlessui/react';
 import ClassNamesLogic from 'components/Util/ClassNamesLogic';
+import { useRecoilValue } from 'recoil';
+import { userInfoAtom } from 'services/recoil/userInfo';
+import { IfungibleToken, InonFungibleTokenCollection } from 'types/types';
+import { useTokenRegistry } from 'components/Solana/TokenRegistry';
+import solanaLogo from 'assets/solanaLogo.svg';
+import defaultUserProfileImage from 'assets/defaultUserProfileImage.png';
+import {
+  GetOnChainNftMetadata,
+  GetOffChainNftMetadata,
+} from 'services/Solana/GetData/GetTokenData';
 
 type TtokenList = {
-  id: number;
+  id: string;
   name: string;
   imageUrl: string;
+  symbol: string;
+  isNFT: boolean;
 };
 
-export default function ConnectedTokens(): JSX.Element {
-  const people = [
-    {
-      id: 1,
-      name: 'Leslie Alexander',
-      imageUrl:
-        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    },
-    {
-      id: 2,
-      name: 'jess Alexander',
-      imageUrl:
-        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    },
-    // More users...
-  ];
-  const [query, setQuery] = useState('');
-  const [selectedPerson, setSelectedPerson] = useState();
-  const [selectedPersonList, setSelectedPersonList] = useState<TtokenList[]>(
-    []
-  );
+type TconnectedTokens = {
+  setRequirements: React.Dispatch<React.SetStateAction<Set<string>>>;
+};
 
-  const filteredPeople =
+export default function ConnectedTokens({
+  setRequirements,
+}: TconnectedTokens): JSX.Element {
+  const [query, setQuery] = useState('');
+  const [selectedTokenList, setSelectedTokenList] = useState<TtokenList[]>([]);
+
+  const [tokenList, setTokenList] = useState<TtokenList[]>([]);
+
+  const userInfo = useRecoilValue(userInfoAtom);
+  const tokenRegistry = useTokenRegistry();
+  const [tokenRegistryHasLoaded, setTokenRegistryHasLoaded] = useState(false);
+
+  async function generateTokenOwnedList() {
+    const fungibleAccountTokensByMint =
+      userInfo?.accountTokens.fungibleAccountTokensByMint ??
+      new Map<string, IfungibleToken>();
+
+    const nonFungibleAccountTokensByCollection =
+      userInfo?.accountTokens.nonFungibleAccountTokensByCollection ??
+      new Map<string, InonFungibleTokenCollection>();
+
+    function getRandomInt(max: number) {
+      return Math.floor(Math.random() * max);
+    }
+
+    nonFungibleAccountTokensByCollection.forEach(async (nftCollection) => {
+      const collectionToken =
+        nftCollection.tokensOwned[
+          getRandomInt(nftCollection.tokensOwned.length)
+        ];
+      const { uri } = await GetOnChainNftMetadata(collectionToken.mint);
+      const data = await GetOffChainNftMetadata(uri);
+      setTokenList((prev) => [
+        ...prev,
+        {
+          id: nftCollection.id,
+          name: data.collectionName,
+          imageUrl: data.imageUrl ?? defaultUserProfileImage,
+          symbol: data.collectionName,
+          isNFT: true,
+        },
+      ]);
+    });
+
+    fungibleAccountTokensByMint.forEach((token) => {
+      if (token.mint === 'SOL') {
+        setTokenList((prev) => [
+          ...prev,
+          {
+            id: token.mint,
+            name: 'Solana',
+            imageUrl: solanaLogo,
+            symbol: 'SOL',
+            isNFT: false,
+          },
+        ]);
+      } else {
+        const tokenInfo = tokenRegistry.get(token.mint);
+        if (tokenInfo !== undefined) {
+          setTokenList((prev) => [
+            ...prev,
+            {
+              id: token.mint,
+              name: tokenInfo.name,
+              imageUrl: tokenInfo.logoURI ?? defaultUserProfileImage,
+              symbol: tokenInfo.symbol,
+              isNFT: false,
+            },
+          ]);
+        } else {
+          setTokenList((prev) => [
+            ...prev,
+            {
+              id: token.mint,
+              name: 'Unknown',
+              imageUrl: defaultUserProfileImage,
+              symbol: 'Unknown',
+              isNFT: false,
+            },
+          ]);
+        }
+      }
+    });
+  }
+
+  useEffect(() => {
+    if (tokenRegistry.size !== 0 && !tokenRegistryHasLoaded) {
+      setTokenRegistryHasLoaded(true);
+    }
+  }, [tokenRegistry]);
+
+  useEffect(() => {
+    if (tokenRegistryHasLoaded) {
+      generateTokenOwnedList();
+    }
+  }, [tokenRegistryHasLoaded]);
+
+  const filteredToken =
     query === ''
-      ? people
-      : people.filter((person) => {
-          return person.name.toLowerCase().includes(query.toLowerCase());
+      ? tokenList
+      : tokenList.filter((token) => {
+          return token.name.toLowerCase().includes(query.toLowerCase());
         });
 
   return (
@@ -46,179 +137,150 @@ export default function ConnectedTokens(): JSX.Element {
           People who hold any token below will be able to access
         </h3>
       </div>
-      {selectedPersonList.map((se, idx) => (
+      {selectedTokenList.map((se, idx) => (
         // eslint-disable-next-line react/no-array-index-key
-        <div key={idx}>
-          <Combobox
-            as="div"
-            value={selectedPersonList[idx]}
-            onChange={(val) => {
-              setSelectedPersonList((prev) => {
-                console.log(selectedPersonList);
-                const temp = prev;
-                temp[idx].name = val.name;
-                temp[idx].imageUrl = val.imageUrl;
-                return temp;
-              });
-            }}>
-            <div className="relative mt-1 max-w-lg">
-              <Combobox.Input
-                className="
+        <div key={idx} className="flex gap-2 items-center">
+          <div className="w-full max-w-md">
+            <Combobox
+              as="div"
+              value={selectedTokenList[idx]}
+              onChange={(val) => {
+                setSelectedTokenList((prev) => {
+                  const temp = prev;
+                  temp[idx].name = val.name; // .name;
+                  temp[idx].id = val.id;
+                  temp[idx].imageUrl = val.imageUrl;
+                  temp[idx].isNFT = val.isNFT;
+                  temp[idx].symbol = val.symbol;
+                  setRequirements((prevReq) => {
+                    const tReq = prevReq;
+                    tReq.add(val.id);
+                    return tReq;
+                  });
+                  return temp;
+                });
+              }}>
+              <div className="relative ">
+                <Combobox.Input
+                  className="
             text-field-input
             w-full rounded-xl border 
              py-2 pl-3 pr-10 shadow-sm text-base sm:text-sm"
-                onChange={(event) => setQuery(event.target.value)}
-                displayValue={(person: any) => person.name}
-              />
-              <Combobox.Button
-                className="absolute inset-y-0 
-          right-0 flex items-center rounded-r-md px-2 focus:outline-none">
-                <SelectorIcon
-                  className="h-5 w-5 text-gray-500"
-                  aria-hidden="true"
+                  onChange={(event) => setQuery(event.target.value)}
+                  displayValue={(person: any) => person.name}
                 />
-              </Combobox.Button>
+                <Combobox.Button
+                  className="absolute inset-y-0 
+          right-0 flex items-center rounded-r-md px-2 focus:outline-none">
+                  <SelectorIcon
+                    className="h-5 w-5 text-gray-500"
+                    aria-hidden="true"
+                  />
+                </Combobox.Button>
 
-              {filteredPeople.length > 0 && (
-                <Combobox.Options
-                  className="absolute z-10 
+                {filteredToken.length > 0 && (
+                  <Combobox.Options
+                    className="absolute z-10 
             mt-1 max-h-56 w-full overflow-auto rounded-xl 
             surface-color-0 border-color-0
             py-1 shadow-lg ring-1 ring-black ring-opacity-5 
             focus:outline-none text-base sm:text-sm">
-                  {filteredPeople.map((person) => (
-                    <Combobox.Option
-                      key={person.id}
-                      value={person}
-                      className={({ active }) =>
-                        ClassNamesLogic(
-                          'relative cursor-default select-none py-2 pl-3 pr-9',
-                          active ? 'bg-indigo-600 text-white' : 'text-color-1'
-                        )
-                      }>
-                      {({ active, selected }) => (
-                        <>
-                          <div className="flex items-center">
-                            <img
-                              src={person.imageUrl}
-                              alt=""
-                              className="h-6 w-6 flex-shrink-0 rounded-full"
-                            />
-                            <span
-                              className={ClassNamesLogic(
-                                'ml-3 truncate',
-                                selected && 'font-semibold'
-                              )}>
-                              {person.name}
-                            </span>
-                          </div>
-                          {selected && (
-                            <span
-                              className={ClassNamesLogic(
-                                'absolute inset-y-0 right-0' +
-                                  ' flex items-center pr-4',
-                                active ? 'text-white' : 'text-indigo-600'
-                              )}>
-                              <CheckIcon
-                                className="h-5 w-5"
-                                aria-hidden="true"
+                    {filteredToken.map((token) => (
+                      <Combobox.Option
+                        key={token.id}
+                        value={token}
+                        className={({ active }) =>
+                          ClassNamesLogic(
+                            'relative select-none py-2 pl-3 pr-9',
+                            active ? 'bg-indigo-600 text-white' : 'text-color-1'
+                          )
+                        }>
+                        {({ active, selected }) => (
+                          <>
+                            <div className="flex items-center">
+                              <img
+                                src={token.imageUrl}
+                                alt=""
+                                className="h-6 w-6 flex-shrink-0 rounded-full"
                               />
-                            </span>
-                          )}
-                        </>
-                      )}
-                    </Combobox.Option>
-                  ))}
-                </Combobox.Options>
-              )}
-            </div>
-          </Combobox>
+                              <div
+                                className="flex gap-2 items-baseline 
+                              truncate">
+                                <span
+                                  className={ClassNamesLogic(
+                                    'ml-3',
+                                    selected && 'font-semibold'
+                                  )}>
+                                  {token.name}
+                                </span>
+                                {!token.isNFT && (
+                                  <span
+                                    className="font-normal text-xs truncate 
+                                text-color-secondary">
+                                    {token.id}
+                                  </span>
+                                )}
+                                {token.isNFT && (
+                                  <span
+                                    className="font-normal text-xs truncate 
+                                text-color-secondary">
+                                    NFT
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                            {selected && (
+                              <span
+                                className={ClassNamesLogic(
+                                  'absolute inset-y-0 right-0' +
+                                    ' flex items-center pr-4',
+                                  active ? 'text-white' : 'text-indigo-600'
+                                )}>
+                                <CheckIcon
+                                  className="h-5 w-5"
+                                  aria-hidden="true"
+                                />
+                              </span>
+                            )}
+                          </>
+                        )}
+                      </Combobox.Option>
+                    ))}
+                  </Combobox.Options>
+                )}
+              </div>
+            </Combobox>
+          </div>
+          <div>
+            <button
+              type="button"
+              className="text-color-1 hover:text-red-700 
+                dark:hover:text-red-700"
+              onClick={() => {
+                setSelectedTokenList((prev) => {
+                  const temp = prev.filter((item, id) => id !== idx);
+                  return temp;
+                });
+              }}>
+              <TrashIcon className="h-6 my-auto mx-2" />
+            </button>
+          </div>
         </div>
       ))}
 
-      <div>
-        <Combobox as="div" value={selectedPerson} onChange={setSelectedPerson}>
-          <div className="relative mt-1 max-w-lg">
-            <Combobox.Input
-              className="
-              text-field-input
-              w-full rounded-xl border 
-               py-2 pl-3 pr-10 shadow-sm text-base sm:text-sm"
-              onChange={(event) => setQuery(event.target.value)}
-              displayValue={(person: any) => person.name}
-            />
-            <Combobox.Button
-              className="absolute inset-y-0 
-            right-0 flex items-center rounded-r-md px-2 focus:outline-none">
-              <SelectorIcon
-                className="h-5 w-5 text-gray-500"
-                aria-hidden="true"
-              />
-            </Combobox.Button>
-
-            {filteredPeople.length > 0 && (
-              <Combobox.Options
-                className="absolute z-10 
-              mt-1 max-h-56 w-full overflow-auto rounded-xl 
-              surface-color-0 border-color-0
-              py-1 shadow-lg ring-1 ring-black ring-opacity-5 
-              focus:outline-none text-base sm:text-sm">
-                {filteredPeople.map((person) => (
-                  <Combobox.Option
-                    key={person.id}
-                    value={person}
-                    className={({ active }) =>
-                      ClassNamesLogic(
-                        'relative cursor-default select-none py-2 pl-3 pr-9',
-                        active ? 'bg-indigo-600 text-white' : 'text-color-1'
-                      )
-                    }>
-                    {({ active, selected }) => (
-                      <>
-                        <div className="flex items-center">
-                          <img
-                            src={person.imageUrl}
-                            alt=""
-                            className="h-6 w-6 flex-shrink-0 rounded-full"
-                          />
-                          <span
-                            className={ClassNamesLogic(
-                              'ml-3 truncate',
-                              selected && 'font-semibold'
-                            )}>
-                            {person.name}
-                          </span>
-                        </div>
-                        {selected && (
-                          <span
-                            className={ClassNamesLogic(
-                              'absolute inset-y-0 right-0' +
-                                ' flex items-center pr-4',
-                              active ? 'text-white' : 'text-indigo-600'
-                            )}>
-                            <CheckIcon className="h-5 w-5" aria-hidden="true" />
-                          </span>
-                        )}
-                      </>
-                    )}
-                  </Combobox.Option>
-                ))}
-              </Combobox.Options>
-            )}
-          </div>
-        </Combobox>
-      </div>
       <div>
         <button
           type="button"
           className="button-neutral px-3 h-9"
           onClick={() =>
-            setSelectedPersonList((prev) => [
+            setSelectedTokenList((prev) => [
               ...prev,
               {
-                id: prev.length,
+                id: '',
                 name: '',
                 imageUrl: '',
+                symbol: '',
+                isNFT: false,
               },
             ])
           }>

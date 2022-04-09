@@ -88,12 +88,12 @@ interface IcommunityInfo {
 
 interface IsolTokenRequirement {
   mint: string;
-  amount: number;
 }
 
 // TBD
 interface IsolNFTRequirement {
-  name: string;
+  id: string;
+  metadata: InonFungibleTokenCollectionMetadata;
 }
 
 export type Trequirement = IsolTokenRequirement | IsolNFTRequirement;
@@ -103,7 +103,7 @@ export interface ICustomCommunity {
   name: string;
   info: IcommunityInfo;
   tokens: Array<string>; // for query
-  requirements: Map<string, Trequirement>;
+  requirements: string[];
   managers: Array<string>;
   categories: [];
 }

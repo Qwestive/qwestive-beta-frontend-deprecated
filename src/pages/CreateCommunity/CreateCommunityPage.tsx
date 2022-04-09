@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ICustomCommunity, Trequirement } from 'types/types';
+import { ICustomCommunity } from 'types/types';
 import { toast } from 'react-toastify';
 import { userInfoAtom } from 'services/recoil/userInfo';
 import { useRecoilValue } from 'recoil';
@@ -24,7 +24,7 @@ export default function CreateCommunityPage(): JSX.Element {
     name: '',
     info: { displayName: '', image: '' },
     tokens: [],
-    requirements: new Map<string, Trequirement>(),
+    requirements: [],
     managers: [],
     categories: [],
   });
@@ -45,6 +45,12 @@ export default function CreateCommunityPage(): JSX.Element {
     );
   }
 
+  /* Tokens requirements */
+
+  const [requirements, setRequirements] = useState<Set<string>>(
+    new Set<string>()
+  );
+
   /* Submit */
   const [submitLoading, setSubmitLoading] = useState(false);
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -52,6 +58,15 @@ export default function CreateCommunityPage(): JSX.Element {
     event.preventDefault();
     const communityBeingChecked = community;
     communityBeingChecked.managers.unshift(userInfo?.publicKey ?? '');
+    const managersSubmitted = Array.from(
+      new Set(
+        communityBeingChecked.managers.filter((mana) => mana.length === 44)
+      )
+    );
+    communityBeingChecked.managers = managersSubmitted;
+    communityBeingChecked.tokens = Array.from(requirements);
+    communityBeingChecked.requirements = Array.from(requirements);
+
     try {
       if (!(await checkCommunityName(communityBeingChecked.name))) {
         throw new Error('Name not valid');
@@ -91,7 +106,7 @@ export default function CreateCommunityPage(): JSX.Element {
         <div
           className="surface-color-0 border-color-1
         p-3 sm:p-6 shadow-lg rounded-2xl">
-          <ConnectedTokens />
+          <ConnectedTokens setRequirements={setRequirements} />
         </div>
         {/* Social Verification */}
         <div

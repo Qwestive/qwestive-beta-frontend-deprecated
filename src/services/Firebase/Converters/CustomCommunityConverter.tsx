@@ -8,7 +8,7 @@ export const customCommunityConverter = {
       info: community.info,
       tokens: community.tokens, // for query
       // maybe not allow undefined
-      requirements: Object.fromEntries(community.requirements),
+      requirements: community.requirements,
       managers: community.managers,
       categories: [],
     };
