@@ -1,14 +1,16 @@
+import { defaultUserProfileImage } from 'assets/userImages';
 import React from 'react';
 
 import {
   EcommunityType,
   InonFungibleTokenCommunity,
   TtokenCommunity,
+  ICustomCommunity,
 } from 'types/types';
 import { getCommunitySymbol } from 'types/TypesUtil';
 
 type TnonMemberCommunityPage = {
-  community: TtokenCommunity | undefined;
+  community: TtokenCommunity | ICustomCommunity | undefined;
 };
 // TODO: improve design
 export default function NonMemberCommunityPage({
@@ -23,7 +25,11 @@ export default function NonMemberCommunityPage({
         <div className="space-y-3 mt-3">
           <p className="text-3xl">{community.name}</p>
           <img
-            src={community.imageUrl}
+            src={
+              community.imageUrl === ''
+                ? defaultUserProfileImage
+                : community.imageUrl
+            }
             className="mx-auto h-32 w-32 rounded-full"
             alt="logoUri"
           />
@@ -48,6 +54,7 @@ export default function NonMemberCommunityPage({
                 <span className="font-semibold">Symbol:</span>{' '}
                 {getCommunitySymbol(community)}
               </div>
+
               <div className="break-all">
                 <span className="font-semibold">Mint ID:</span>
                 <br /> {community?.cid}

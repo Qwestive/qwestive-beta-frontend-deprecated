@@ -64,3 +64,17 @@ export async function getCustomCommunities(
   });
   return customCommunityList;
 }
+
+export async function getCustomCommunityData(
+  cId: string
+): Promise<ICustomCommunity | undefined> {
+  const communityRef = doc(Firestore, 'customCommunities', cId).withConverter(
+    customCommunityConverter
+  );
+  const communityDoc = await getDoc(communityRef);
+
+  if (communityDoc.exists()) {
+    return communityDoc.data();
+  }
+  return undefined;
+}

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { PlusIcon } from '@heroicons/react/solid';
 import { Link, useSearchParams } from 'react-router-dom';
-import { TtokenCommunity } from 'types/types';
+import { TtokenCommunity, ICustomCommunity } from 'types/types';
 import { getCommunitySymbol } from 'types/TypesUtil';
 import NewPostPage from '../NewPost/NewPostPage';
 
 type TnewCommunityPage = {
-  community: TtokenCommunity | undefined;
+  community: TtokenCommunity | ICustomCommunity | undefined;
 };
 
 export default function NewCommunityPage({

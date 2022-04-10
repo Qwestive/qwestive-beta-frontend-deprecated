@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { PlusIcon } from '@heroicons/react/outline';
 import ClassNamesLogic from 'components/Util/ClassNamesLogic';
+import { defaultUserProfileImage } from 'assets/userImages';
 import { EcommunityType, TtokenCommunity, ICustomCommunity } from 'types/types';
 import {
   getCommunitySymbol,
@@ -73,7 +74,11 @@ export default function OwnedTokenGrid({
             p-6 space-x-6">
                 <img
                   className="h-16 w-16 rounded-full flex-shrink-0"
-                  src={community.imageUrl}
+                  src={
+                    community.imageUrl === ''
+                      ? defaultUserProfileImage
+                      : community.imageUrl
+                  }
                   alt=""
                 />
                 <div className="flex-1 truncate">

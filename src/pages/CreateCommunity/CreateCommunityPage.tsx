@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ICustomCommunity, EcommunityType } from 'types/types';
 import { toast } from 'react-toastify';
 import { userInfoAtom } from 'services/recoil/userInfo';
@@ -18,6 +18,7 @@ import CommunityManagers from './Components/CommunityManagers';
 
 export default function CreateCommunityPage(): JSX.Element {
   const userInfo = useRecoilValue(userInfoAtom);
+  const naigate = useNavigate();
 
   const [community, setCommunity] = useState<ICustomCommunity>({
     cid: '',
@@ -76,6 +77,7 @@ export default function CreateCommunityPage(): JSX.Element {
       checkCommunityInput(communityBeingChecked);
       await CreateCustomCommunity(community, imageFile);
       toast.success('Community created');
+      naigate(`/c/${community.name}`);
     } catch (error: any) {
       toast.error(error?.message);
     }
