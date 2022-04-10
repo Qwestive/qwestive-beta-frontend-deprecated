@@ -24,7 +24,7 @@ export default function NewCommunityPage({
     <div>
       {postId === 'new-post' && (
         <div className="max-w-3xl mx-auto pb-5">
-          <NewPostPage />
+          <NewPostPage community={community} />
         </div>
       )}
       {postId !== 'new-post' && (

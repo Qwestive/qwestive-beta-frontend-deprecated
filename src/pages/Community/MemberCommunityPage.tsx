@@ -3,7 +3,12 @@ import { useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { QueryDocumentSnapshot } from 'firebase/firestore';
 import { queryPostPreviews } from 'services/Firebase/GetData/PostUtils';
-import { IpostPreview, TpostSorting, ItokenCommunity } from 'types/types';
+import {
+  IpostPreview,
+  TpostSorting,
+  ICustomCommunity,
+  TtokenCommunity,
+} from 'types/types';
 import CategoriesLarge from './Categories/CategoriesLarge';
 import CategoriesSmall from './Categories/CategoriesSmall';
 import PostDisplayList from './Components/PostDisplayList';
@@ -13,7 +18,7 @@ import PostDetailPage from './PostDetail/PostDetailPage';
 const BATCHLENGHT = 8;
 
 type TmemberCommunityPage = {
-  community: ItokenCommunity | undefined;
+  community: TtokenCommunity | ICustomCommunity | undefined;
 };
 
 export default function MemberCommunityPage({
@@ -120,7 +125,7 @@ export default function MemberCommunityPage({
               loadMorePosts={() => addBatchToPostBatchList()}
             />
           )}
-          {postId === 'new-post' && <NewPostPage />}
+          {postId === 'new-post' && <NewPostPage community={community} />}
           {postId && postId !== 'new-post' && (
             <PostDetailPage postId={postId} />
           )}
