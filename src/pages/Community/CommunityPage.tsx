@@ -89,13 +89,13 @@ export default function CommunityPage(): JSX.Element {
       {!loadingPage &&
         hasAccess &&
         cId !== undefined &&
-        community?.communityData === undefined && (
+        community?.categories === undefined && (
           <NewCommunityPage community={community} />
         )}
       {!loadingPage &&
         hasAccess &&
         cId !== undefined &&
-        community?.communityData !== undefined && (
+        community?.categories !== undefined && (
           <MemberCommunityPage community={community} />
         )}
     </div>

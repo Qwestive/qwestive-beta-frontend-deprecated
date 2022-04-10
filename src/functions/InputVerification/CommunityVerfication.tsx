@@ -73,7 +73,7 @@ export async function checkCommunityNameValid(
 
 export function checkCommunityInput(community: ICustomCommunity): void {
   // info verification
-  if (community.info.displayName.length > MAXDISPLAYNAMELENGTH) {
+  if (community.displayName.length > MAXDISPLAYNAMELENGTH) {
     throw new Error('DisplayName too long');
   }
 }

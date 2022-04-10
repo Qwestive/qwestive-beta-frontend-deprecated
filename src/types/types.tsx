@@ -81,10 +81,6 @@ export interface AccountTokensByMintOrCollection {
  */
 
 /* TBD */
-interface IcommunityInfo {
-  displayName: string;
-  image: string;
-}
 
 interface IsolTokenRequirement {
   mint: string;
@@ -98,20 +94,12 @@ interface IsolNFTRequirement {
 
 export type Trequirement = IsolTokenRequirement | IsolNFTRequirement;
 
-export interface ICustomCommunity {
-  id: string;
-  name: string;
-  info: IcommunityInfo;
-  tokens: Array<string>; // for query
-  requirements: string[];
-  managers: Array<string>;
-  categories: [];
-}
 /* TBD */
 
 export enum EcommunityType {
   fungible = 'fungible',
   nonfungible = 'nonfungible',
+  custom = 'custom',
 }
 
 export type TtokenCommunity =
@@ -123,7 +111,14 @@ export interface ItokenCommunity {
   type: EcommunityType;
   name: string;
   imageUrl: string | undefined;
-  communityData: IcommunityData | undefined;
+  categories: Icategory[] | undefined;
+}
+
+export interface ICustomCommunity extends ItokenCommunity {
+  displayName: string;
+  tokens: Array<string>; // for query
+  requirements: string[];
+  managers: Array<string>;
 }
 
 export interface IfungibleTokenCommunity extends ItokenCommunity {
@@ -140,11 +135,6 @@ export interface InonFungibleTokenCommunity extends ItokenCommunity {
 export interface Icategory {
   name: string;
   count: number;
-}
-
-export interface IcommunityData {
-  isActive: boolean;
-  categories: Icategory[];
 }
 
 /*
@@ -171,11 +161,6 @@ export const ARTICLE_TYPE: TpostType = 'article';
 export const POLL_TYPE: TpostType = 'poll';
 export const BOUNTY_TYPE: TpostType = 'bounty';
 export const VOTE_TYPE: TpostType = 'vote';
-
-export interface Icategories {
-  name: string;
-  count: number;
-}
 
 export interface IpostArticle {
   postType: 'article';

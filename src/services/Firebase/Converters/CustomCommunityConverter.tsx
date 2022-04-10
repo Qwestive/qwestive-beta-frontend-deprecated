@@ -1,11 +1,12 @@
 import { DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
-import { ICustomCommunity } from 'types/types';
+import { ICustomCommunity, EcommunityType } from 'types/types';
 
 export const customCommunityConverter = {
   toFirestore: (community: ICustomCommunity): DocumentData => {
     return {
       name: community.name,
-      info: community.info,
+      displayName: community.displayName,
+      imageUrl: community.imageUrl,
       tokens: community.tokens, // for query
       // maybe not allow undefined
       requirements: community.requirements,
@@ -15,9 +16,11 @@ export const customCommunityConverter = {
   },
   fromFirestore(snapshot: QueryDocumentSnapshot): ICustomCommunity {
     return {
-      id: snapshot.id,
+      cid: snapshot.id,
+      type: EcommunityType.custom,
       name: snapshot.data()?.name,
-      info: snapshot.data()?.info,
+      displayName: snapshot.data()?.displayName,
+      imageUrl: snapshot.data()?.imageUrl,
       tokens: snapshot.data()?.tokens, // for query
       // maybe not allow undefined
       requirements: snapshot.data()?.requirements,

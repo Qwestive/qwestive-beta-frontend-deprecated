@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import {
   AccountTokensByMintOrCollection,
   EcommunityType,
+  Icategory,
   IfungibleToken,
   IfungibleTokenCommunity,
   InonFungibleTokenCollection,
@@ -22,9 +23,9 @@ export async function GetFungibleCommunityData(
   tokenRegistry: TokenInfoMap,
   token: IfungibleToken
 ): Promise<IfungibleTokenCommunity> {
-  let communityData;
+  let categories: Icategory[] | undefined;
   try {
-    communityData = await getCommunityData(token.mint);
+    categories = await getCommunityData(token.mint);
   } catch (error) {
     // Do nothing
   }
@@ -34,7 +35,7 @@ export async function GetFungibleCommunityData(
       type: EcommunityType.fungible,
       name: 'Solana',
       imageUrl: solanaLogo,
-      communityData,
+      categories,
       tokenData: token,
       symbol: 'SOL',
     };
@@ -46,7 +47,7 @@ export async function GetFungibleCommunityData(
       type: EcommunityType.fungible,
       name: tokenInfo.name,
       imageUrl: tokenInfo.logoURI,
-      communityData,
+      categories,
       tokenData: token,
       symbol: tokenInfo.symbol,
     };
@@ -56,7 +57,7 @@ export async function GetFungibleCommunityData(
     type: EcommunityType.fungible,
     name: 'Unknown',
     imageUrl: defaultUserProfileImage,
-    communityData,
+    categories,
     tokenData: token,
     symbol: 'Unknown',
   };
@@ -72,9 +73,9 @@ export async function GetNonFunibleCommunityData(
     nftCollection.tokensOwned[getRandomInt(nftCollection.tokensOwned.length)];
   const { uri } = await GetOnChainNftMetadata(collectionToken.mint);
   const data = await GetOffChainNftMetadata(uri);
-  let communityData;
+  let categories;
   try {
-    communityData = await getCommunityData(nftCollection.id);
+    categories = await getCommunityData(nftCollection.id);
   } catch (error) {
     // Do nothing
   }
@@ -83,7 +84,7 @@ export async function GetNonFunibleCommunityData(
     type: EcommunityType.nonfungible,
     name: data.collectionName,
     imageUrl: data.imageUrl,
-    communityData,
+    categories,
     collectionData: {
       id: nftCollection.id,
       metadata: nftCollection.metadata,

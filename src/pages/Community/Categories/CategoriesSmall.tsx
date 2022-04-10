@@ -4,7 +4,7 @@ import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/solid';
 
 import ClassNamesLogic from 'components/Util/ClassNamesLogic';
-import { Icategories, ItokenCommunity } from 'types/types';
+import { Icategory, ItokenCommunity } from 'types/types';
 
 import defaultUserProfileImage from 'assets/defaultUserProfileImage.png';
 
@@ -19,11 +19,11 @@ export default function CategoriesSmall({
   currentCategory,
 }: TcategoriesSmall): JSX.Element {
   const [, setSearchParams] = useSearchParams({});
-  const [categories, setCategories] = useState<Array<Icategories>>([]);
+  const [categories, setCategories] = useState<Array<Icategory>>([]);
 
   useEffect(() => {
-    setCategories(community?.communityData?.categories ?? []);
-  }, [community?.communityData?.categories]);
+    setCategories(community?.categories ?? []);
+  }, [community?.categories]);
 
   return (
     <div

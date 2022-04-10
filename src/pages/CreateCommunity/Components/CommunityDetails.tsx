@@ -130,11 +130,11 @@ export default function CommunityDetails({
             autoComplete="off"
             className="text-field-input shadow-md rounded-xl w-full max-w-sm"
             maxLength={MAXDISPLAYNAMELENGTH}
-            value={community.info.displayName}
+            value={community.displayName}
             onChange={(e) =>
               setCommunity((prev) => ({
                 ...prev,
-                info: { ...prev.info, displayName: e.target.value },
+                displayName: e.target.value,
               }))
             }
           />

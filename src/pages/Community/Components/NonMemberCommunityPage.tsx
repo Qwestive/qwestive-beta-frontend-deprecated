@@ -30,13 +30,13 @@ export default function NonMemberCommunityPage({
         </div>
       )}
       <div className="max-w-sm my-6 mx-auto">
-        <p className="text-color-primary">
+        <p className="text-color-0">
           To gain access to a Qwestive community, your wallet balance must
           contain the underlying token to which the community is associated.
         </p>
         <div className="flex flex-col content-start my-2 text-color-secondary">
           <p className="font-bold">Token Details:</p>
-          {community?.type === EcommunityType.fungible ? (
+          {community?.type === EcommunityType.fungible && (
             <>
               <div>
                 <span className="font-semibold">Type:</span> Fungible
@@ -53,7 +53,9 @@ export default function NonMemberCommunityPage({
                 <br /> {community?.cid}
               </div>
             </>
-          ) : (
+          )}
+
+          {community?.type === EcommunityType.nonfungible && (
             <>
               <div>
                 <span className="font-semibold">Type:</span> Non-Fungible

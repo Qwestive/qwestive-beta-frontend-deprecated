@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ICustomCommunity } from 'types/types';
+import { ICustomCommunity, EcommunityType } from 'types/types';
 import { toast } from 'react-toastify';
 import { userInfoAtom } from 'services/recoil/userInfo';
 import { useRecoilValue } from 'recoil';
@@ -20,9 +20,11 @@ export default function CreateCommunityPage(): JSX.Element {
   const userInfo = useRecoilValue(userInfoAtom);
 
   const [community, setCommunity] = useState<ICustomCommunity>({
-    id: '',
+    cid: '',
+    type: EcommunityType.custom,
     name: '',
-    info: { displayName: '', image: '' },
+    displayName: '',
+    imageUrl: '',
     tokens: [],
     requirements: [],
     managers: [],

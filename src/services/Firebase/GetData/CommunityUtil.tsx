@@ -6,13 +6,14 @@ import {
   collection,
   where,
 } from 'firebase/firestore';
-import { Icategory, IcommunityData } from 'types/types';
+import { Icategory, ICustomCommunity } from 'types/types';
+import { customCommunityConverter } from '../Converters/CustomCommunityConverter';
 import { Firestore } from '../FirebaseConfig';
 import { communityConverter } from '../Converters/CommunityConverter';
 
 export async function getCommunityData(
   id: string
-): Promise<IcommunityData | undefined> {
+): Promise<Icategory[] | undefined> {
   const communityRef = doc(Firestore, 'communities', id).withConverter(
     communityConverter
   );
@@ -45,4 +46,21 @@ export async function checkCommunityNameExist(
   );
   const communitySnapshot = await getDocs(communityQuery);
   return communitySnapshot.docs.length !== 0;
+}
+
+export async function getCustomCommunities(
+  tokenIdList: string[]
+): Promise<ICustomCommunity[]> {
+  const customCommunityList: ICustomCommunity[] = [];
+  if (tokenIdList.length === 0) return customCommunityList;
+  const communityQuery = query(
+    collection(Firestore, 'customCommunities'),
+    where('tokens', 'array-contains-any', tokenIdList)
+  );
+  const communitySnapshot = await getDocs(communityQuery);
+
+  communitySnapshot.forEach((cDoc) => {
+    customCommunityList.push(customCommunityConverter.fromFirestore(cDoc));
+  });
+  return customCommunityList;
 }

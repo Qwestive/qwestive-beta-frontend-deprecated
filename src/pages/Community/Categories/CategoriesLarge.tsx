@@ -25,14 +25,11 @@ export default function CategoriesLarge({
   );
 
   useEffect(() => {
-    setCategories(community?.communityData?.categories ?? []);
+    setCategories(community?.categories ?? []);
     setCategoriesSubset(
-      community?.communityData?.categories?.slice(
-        0,
-        categoriesViewCounter * 5
-      ) ?? []
+      community?.categories?.slice(0, categoriesViewCounter * 5) ?? []
     );
-  }, [community?.communityData?.categories]);
+  }, [community?.categories]);
 
   return (
     <div className="w-full ">
