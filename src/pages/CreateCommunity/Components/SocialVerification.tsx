@@ -30,7 +30,7 @@ export default function SocialVerification(): JSX.Element {
                 <div className="flex gap-5 items-center">
                   <img
                     src={social.logo}
-                    alt="youtubeLogo"
+                    alt="socialLogo"
                     className="rounded-full h-10"
                   />
                   <p className="font-bold text-color-1">{social.name}</p>

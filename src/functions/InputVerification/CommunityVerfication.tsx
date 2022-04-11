@@ -16,17 +16,15 @@ export const wrongLengthMessage = (): JSX.Element => (
   </p>
 );
 
-export const takenMessage = (userNameBeingChecked: string): JSX.Element => (
-  <p className="text-red-500">
-    {`Community name ${userNameBeingChecked} is taken`}
-  </p>
+export const takenMessage = (communityName: string): JSX.Element => (
+  <p className="text-red-500">{`Community name ${communityName} is taken`}</p>
 );
 export const charactersNotAllowed = (
   <p className="text-red-500">Only letters, numbers, - and _ are allowed</p>
 );
-export const availableMessage = (userNameBeingChecked: string): JSX.Element => (
+export const availableMessage = (communityName: string): JSX.Element => (
   <p className="text-neutral-500">
-    {`Community name ${userNameBeingChecked} is available`}
+    {`Community name ${communityName} is available`}
   </p>
 );
 export const unexpectedErrorMessage = (

@@ -19,10 +19,8 @@ export default function CommunityManagers({
     <div className="space-y-5">
       <h2 className="text-color-1 text-lg font-bold">Community managers</h2>
       <div>
-        <div>
-          <div className="flex flex-row my-4">
-            <p className="text-color-1 text-md px-3">{userInfo?.publicKey}</p>
-          </div>
+        <div className="flex flex-row my-4">
+          <p className="text-color-1 text-md px-3">{userInfo?.publicKey}</p>
         </div>
         {community.managers.map((mana, idx) => (
           // eslint-disable-next-line react/no-array-index-key

@@ -117,7 +117,6 @@ export interface ItokenCommunity {
 export interface ICustomCommunity extends ItokenCommunity {
   displayName: string;
   tokens: Array<string>; // for query
-  requirements: string[];
   managers: Array<string>;
 }
 

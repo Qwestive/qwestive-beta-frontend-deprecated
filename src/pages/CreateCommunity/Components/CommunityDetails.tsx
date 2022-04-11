@@ -40,8 +40,8 @@ export default function CommunityDetails({
   async function changeProfileImFile(
     event: React.ChangeEvent<HTMLInputElement>
   ): Promise<void> {
+    setProfileImageLoading(true);
     try {
-      setProfileImageLoading(true);
       if (event.target.files && event.target.files[0]) {
         const file = event.target.files[0];
         IsImageBelowMaxSize(file, 10);
@@ -60,21 +60,20 @@ export default function CommunityDetails({
             },
           });
         });
-        setProfileImageLoading(false);
       } else {
         throw new Error('Your file was not found!');
       }
     } catch (error: any) {
       toast.error(error?.message);
-      setProfileImageLoading(false);
     }
+    setProfileImageLoading(false);
   }
 
   return (
     <div className="space-y-5">
       <h2 className="text-color-1 text-lg font-bold">Community details</h2>
       {/* Community name */}
-      <div className="">
+      <div>
         <p className="block text-sm font-medium text-color-0">Community Name</p>
         <p className="block text-xs font-medium text-color-secondary">
           needs to be unique. Only letters, numbers, - and _ are allowed. ( max
@@ -93,8 +92,6 @@ export default function CommunityDetails({
           </span>
           <input
             type="text"
-            name="company-website"
-            id="company-website"
             className="text-field-input
                     rounded-none rounded-r-xl
                     block w-full text-sm"
@@ -125,8 +122,6 @@ export default function CommunityDetails({
         <div className="mt-2">
           <input
             type="text"
-            name="username"
-            id="displayname"
             autoComplete="off"
             className="text-field-input shadow-md rounded-xl w-full max-w-sm"
             maxLength={MAXDISPLAYNAMELENGTH}
@@ -167,7 +162,6 @@ export default function CommunityDetails({
             ref={inputProfileImButton}
             accept="image/*"
             type="file"
-            id="file"
             style={{ display: 'none' }}
             onChange={(e) => changeProfileImFile(e)}
             onClick={(e) => {

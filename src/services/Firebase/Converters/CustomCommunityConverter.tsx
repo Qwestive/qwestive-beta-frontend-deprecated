@@ -9,7 +9,6 @@ export const customCommunityConverter = {
       imageUrl: community.imageUrl,
       tokens: community.tokens, // for query
       // maybe not allow undefined
-      requirements: community.requirements,
       managers: community.managers,
       categories: [],
     };
@@ -23,7 +22,6 @@ export const customCommunityConverter = {
       imageUrl: snapshot.data()?.imageUrl,
       tokens: snapshot.data()?.tokens, // for query
       // maybe not allow undefined
-      requirements: snapshot.data()?.requirements,
       categories: snapshot.data()?.categories ?? [],
       managers: snapshot.data()?.managers,
     } as ICustomCommunity;

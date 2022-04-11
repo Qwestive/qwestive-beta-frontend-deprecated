@@ -13,7 +13,7 @@ import {
   GetOffChainNftMetadata,
 } from 'services/Solana/GetData/GetTokenData';
 
-type TtokenList = {
+type TtokenListItem = {
   id: string;
   name: string;
   imageUrl: string;
@@ -29,9 +29,11 @@ export default function ConnectedTokens({
   setRequirements,
 }: TconnectedTokens): JSX.Element {
   const [query, setQuery] = useState('');
-  const [selectedTokenList, setSelectedTokenList] = useState<TtokenList[]>([]);
+  const [selectedTokenList, setSelectedTokenList] = useState<TtokenListItem[]>(
+    []
+  );
 
-  const [tokenList, setTokenList] = useState<TtokenList[]>([]);
+  const [tokenList, setTokenList] = useState<TtokenListItem[]>([]);
 
   const userInfo = useRecoilValue(userInfoAtom);
   const tokenRegistry = useTokenRegistry();

@@ -18,7 +18,7 @@ import CommunityManagers from './Components/CommunityManagers';
 
 export default function CreateCommunityPage(): JSX.Element {
   const userInfo = useRecoilValue(userInfoAtom);
-  const naigate = useNavigate();
+  const navigate = useNavigate();
 
   const [community, setCommunity] = useState<ICustomCommunity>({
     cid: '',
@@ -27,7 +27,6 @@ export default function CreateCommunityPage(): JSX.Element {
     displayName: '',
     imageUrl: '',
     tokens: [],
-    requirements: [],
     managers: [],
     categories: [],
   });
@@ -38,11 +37,9 @@ export default function CreateCommunityPage(): JSX.Element {
   const [loadingCheckCommunityName, setLoadingCheckCommunityName] =
     useState(false);
 
-  async function checkCommunityName(
-    userNameBeingChecked: string
-  ): Promise<boolean> {
+  async function checkCommunityName(communityName: string): Promise<boolean> {
     return checkCommunityNameValid(
-      userNameBeingChecked,
+      communityName,
       setLoadingCheckCommunityName,
       setAvailabilityMessage
     );
@@ -68,7 +65,6 @@ export default function CreateCommunityPage(): JSX.Element {
     );
     communityBeingChecked.managers = managersSubmitted;
     communityBeingChecked.tokens = Array.from(requirements);
-    communityBeingChecked.requirements = Array.from(requirements);
 
     try {
       if (!(await checkCommunityName(communityBeingChecked.name))) {
@@ -77,7 +73,7 @@ export default function CreateCommunityPage(): JSX.Element {
       checkCommunityInput(communityBeingChecked);
       await CreateCustomCommunity(community, imageFile);
       toast.success('Community created');
-      naigate(`/c/${community.name}`);
+      navigate(`/c/${community.name}`);
     } catch (error: any) {
       toast.error(error?.message);
     }
