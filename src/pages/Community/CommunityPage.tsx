@@ -6,11 +6,12 @@ import { userInfoAtom } from 'services/recoil/userInfo';
 import { getTokenCommunityData } from 'services/Solana/GetData/GetCommunityData';
 import { toggleReloadCommunityAtom } from 'services/recoil/appState';
 import LoadingDots from 'components/Util/LoadingDots';
-
+import { getCustomCommunityData } from 'services/Firebase/GetData/CommunityUtil';
 import {
   IfungibleToken,
   InonFungibleTokenCollection,
   TtokenCommunity,
+  ICustomCommunity,
 } from 'types/types';
 
 import NonMemberCommunityPage from './Components/NonMemberCommunityPage';
@@ -32,7 +33,9 @@ export default function CommunityPage(): JSX.Element {
   const [hasAccess, setHasAccess] = useState(false);
   const [loadingPage, setLoadingPage] = useState(true);
 
-  const [community, setCommunity] = useState<TtokenCommunity | undefined>();
+  const [community, setCommunity] = useState<
+    TtokenCommunity | ICustomCommunity | undefined
+  >();
   const [tokenRegistryHasLoaded, setTokenRegistryHasLoaded] = useState(false);
 
   async function handleLoadPage() {
@@ -46,12 +49,29 @@ export default function CommunityPage(): JSX.Element {
             undefined
         ) {
           setHasAccess(true);
+          setCommunity(
+            await getTokenCommunityData(tokenRegistry, userAccountTokens, cId)
+          );
         } else {
-          throw new Error('You do not have access to this community');
+          const customCommunityData = await getCustomCommunityData(cId);
+          if (customCommunityData !== undefined) {
+            if (
+              Array.from(
+                userAccountTokens?.fungibleAccountTokensByMint.keys()
+              ).some((ai) => customCommunityData.tokens.includes(ai)) ||
+              Array.from(
+                userAccountTokens?.nonFungibleAccountTokensByCollection.keys()
+              ).some((ai) => customCommunityData.tokens.includes(ai))
+            ) {
+              setHasAccess(true);
+              setCommunity(customCommunityData);
+            } else {
+              throw new Error('You do not have access to this community');
+            }
+          } else {
+            throw new Error('You do not have access to this community');
+          }
         }
-        setCommunity(
-          await getTokenCommunityData(tokenRegistry, userAccountTokens, cId)
-        );
       } catch (error: any) {
         toast.error(error?.message);
       }
@@ -89,13 +109,13 @@ export default function CommunityPage(): JSX.Element {
       {!loadingPage &&
         hasAccess &&
         cId !== undefined &&
-        community?.communityData === undefined && (
+        community?.categories === undefined && (
           <NewCommunityPage community={community} />
         )}
       {!loadingPage &&
         hasAccess &&
         cId !== undefined &&
-        community?.communityData !== undefined && (
+        community?.categories !== undefined && (
           <MemberCommunityPage community={community} />
         )}
     </div>

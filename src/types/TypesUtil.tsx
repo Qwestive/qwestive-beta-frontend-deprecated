@@ -3,10 +3,11 @@ import {
   IfungibleTokenCommunity,
   InonFungibleTokenCommunity,
   TtokenCommunity,
+  ICustomCommunity,
 } from 'types/types';
 
 export function getCommunitySymbol(
-  community: TtokenCommunity | undefined
+  community: TtokenCommunity | ICustomCommunity | undefined
 ): string {
   if (community === undefined) return '';
   if (community?.type === EcommunityType.fungible) {

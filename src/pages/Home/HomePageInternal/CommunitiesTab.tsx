@@ -4,9 +4,10 @@ import { toast } from 'react-toastify';
 import { SearchIcon } from '@heroicons/react/solid';
 import { useTokenRegistry } from 'components/Solana/TokenRegistry';
 import LoadingDots from 'components/Util/LoadingDots';
-import { TtokenCommunity } from 'types/types';
+import { TtokenCommunity, ICustomCommunity } from 'types/types';
 import { userFinishedLoadingAtom } from 'services/recoil/appState';
 import { userInfoAtom } from 'services/recoil/userInfo';
+import { getCustomCommunities } from 'services/Firebase/GetData/CommunityUtil';
 import {
   GetFungibleCommunityData,
   GetNonFunibleCommunityData,
@@ -25,6 +26,12 @@ export default function CommunitiesTab(): JSX.Element {
   const [tokenCommunitySearchResults, setTokenCommunitySearchResults] =
     useState<TtokenCommunity[]>([]);
 
+  const [customCommunities, setCustomCommunities] = useState<
+    ICustomCommunity[]
+  >([]);
+  const [customCommunitySearchResults, setCustomCommunitySearchResults] =
+    useState<ICustomCommunity[]>([]);
+
   const [loading, setLoading] = useState(true);
   const [searchPredicate, setSearchPredicate] = useState('');
 
@@ -38,6 +45,14 @@ export default function CommunitiesTab(): JSX.Element {
             .indexOf(event.target.value.toLowerCase()) !== -1 ?? false
       )
     );
+    setCustomCommunitySearchResults(
+      customCommunities.filter(
+        (token) =>
+          token.name
+            ?.toLowerCase()
+            .indexOf(event.target.value.toLowerCase()) !== -1 ?? false
+      )
+    );
   }
 
   async function generateCommunityList() {
@@ -45,14 +60,17 @@ export default function CommunitiesTab(): JSX.Element {
     if (userPublicKey !== undefined) {
       try {
         const communityDataPromises: Promise<TtokenCommunity>[] = [];
+        const holdingIds: string[] = [];
         userAccountTokens?.fungibleAccountTokensByMint?.forEach((value) => {
           communityDataPromises.push(
             GetFungibleCommunityData(tokenRegistry, value)
           );
+          holdingIds.push(value.mint);
         });
         userAccountTokens?.nonFungibleAccountTokensByCollection?.forEach(
           (value) => {
             communityDataPromises.push(GetNonFunibleCommunityData(value));
+            holdingIds.push(value.id);
           }
         );
         const communityData: TtokenCommunity[] = await Promise.all(
@@ -60,6 +78,9 @@ export default function CommunitiesTab(): JSX.Element {
         );
         setTokenCommunities(communityData);
         setTokenCommunitySearchResults(communityData);
+        const customCommunityData = await getCustomCommunities(holdingIds);
+        setCustomCommunitySearchResults(customCommunityData);
+        setCustomCommunities(customCommunityData);
         setSearchPredicate('');
       } catch (error) {
         /// TODO: Make the user log in if their public key is undefined.
@@ -113,7 +134,10 @@ export default function CommunitiesTab(): JSX.Element {
             </div>
           </div>
         ) : (
-          <OwnedTokenGrid ownedTokenCommunities={tokenCommunitySearchResults} />
+          <OwnedTokenGrid
+            ownedTokenCommunities={tokenCommunitySearchResults}
+            customCommunities={customCommunitySearchResults}
+          />
         )}
       </div>
     </div>

@@ -3,7 +3,7 @@ import { FirebaseAuth, FirebaseStorage } from './FirebaseConfig';
 
 export default async function UploadFile(
   filePath: string,
-  file: File
+  file: File | Blob
 ): Promise<[string, string]> {
   if (FirebaseAuth.currentUser != null) {
     const newImageRef = ref(FirebaseStorage, filePath);
