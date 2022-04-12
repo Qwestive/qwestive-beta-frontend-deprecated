@@ -11,6 +11,7 @@ import AppContent from 'components/AppContent/AppContent';
 import useDarkMode from 'components/Util/useDarkMode';
 
 import 'style/global.css';
+import 'style/Components/toastify.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App(): JSX.Element {
