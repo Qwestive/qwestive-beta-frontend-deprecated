@@ -259,7 +259,7 @@ function HomePageExternal(): JSX.Element {
             Email Us
           </a>
           <a
-            href="https://discord.gg/x6d8yDBQ"
+            href="https://discord.gg/EKdfrsgYjB"
             target="_blank"
             rel="noreferrer">
             Discord
