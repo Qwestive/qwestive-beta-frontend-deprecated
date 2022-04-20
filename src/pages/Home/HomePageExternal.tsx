@@ -95,7 +95,7 @@ function HomePageExternal(): JSX.Element {
           </p>
           <div className="flex space-x-3 mt-8">
             <a
-              href="https://discord.gg/x6d8yDBQ"
+              href="https://discord.gg/EKdfrsgYjB"
               target="_blank"
               rel="noreferrer">
               <img className="h-8" src={discordLogo} alt="" />
